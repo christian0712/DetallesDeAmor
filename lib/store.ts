@@ -158,7 +158,15 @@ export const getStoredOrders = (): Order[] => {
     return initialOrders;
   }
   try {
-    return JSON.parse(stored);
+    const parsed: Order[] = JSON.parse(stored);
+    // Filter out old test sample demo orders automatically
+    const cleaned = parsed.filter(
+      (o) => o.id !== 'ord-1001' && o.id !== 'ord-1002' && o.slug !== 'carlos-y-sofia' && o.slug !== 'mateo-y-valeria'
+    );
+    if (cleaned.length !== parsed.length) {
+      localStorage.setItem(ORDERS_KEY, JSON.stringify(cleaned));
+    }
+    return cleaned;
   } catch (e) {
     return initialOrders;
   }
