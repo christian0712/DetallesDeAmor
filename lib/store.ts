@@ -151,50 +151,8 @@ export const savePaymentConfig = (config: PaymentMethodsConfig): PaymentMethodsC
   return config;
 };
 
-// Initial sample orders for demonstration
-const initialOrders: Order[] = [
-  {
-    id: 'ord-1001',
-    slug: 'carlos-y-sofia',
-    clientCode: 'AMOR-1001',
-    coupleTitle: 'Carlos & Sofía',
-    recipientName: 'Sofía',
-    senderName: 'Carlos',
-    phoneNumber: '77123456',
-    paymentMethod: 'qr_bolivia',
-    status: 'APROBADO',
-    createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-    approvedAt: new Date(Date.now() - 86400000).toISOString(),
-    amountBs: 49,
-    amountUsdt: 7,
-    receiptUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80',
-    pageData: defaultRomanticData,
-    qrUrl: '/p/carlos-y-sofia',
-  },
-  {
-    id: 'ord-1002',
-    slug: 'mateo-y-valeria',
-    clientCode: 'AMOR-1002',
-    coupleTitle: 'Mateo & Valeria',
-    recipientName: 'Valeria',
-    senderName: 'Mateo',
-    phoneNumber: '68098765',
-    paymentMethod: 'tigo_money',
-    status: 'PENDIENTE',
-    createdAt: new Date(Date.now() - 3600000 * 3).toISOString(),
-    amountBs: 49,
-    amountUsdt: 7,
-    receiptUrl: 'https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=600&q=80',
-    pageData: {
-      ...defaultRomanticData,
-      id: 'ord-1002-data',
-      recipientName: 'Valeria',
-      senderName: 'Mateo',
-      coupleTitle: 'Mateo & Valeria',
-      anniversaryDate: '2022-09-21',
-    },
-  },
-];
+// Initial orders list (empty by default for production)
+const initialOrders: Order[] = [];
 
 export const getStoredOrders = (): Order[] => {
   if (typeof window === 'undefined') return initialOrders;
