@@ -96,13 +96,13 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (username.trim() === 'admin' && password === '123') {
+    if (username.trim() === 'chris0712' && password === '75949161') {
       setIsAuthenticated(true);
       setLoginError('');
       sessionStorage.setItem('admin_authenticated', 'true');
       loadData();
     } else {
-      setLoginError('Usuario o contraseña incorrectos (Usar: admin / 123)');
+      setLoginError('Usuario o contraseña incorrectos.');
     }
   };
 
@@ -286,7 +286,7 @@ export default function AdminPage() {
               </label>
               <input
                 type="text"
-                placeholder="admin"
+                placeholder="Ingresa tu usuario"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full bg-[#28133b] border border-rose-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-rose-400"
@@ -301,7 +301,7 @@ export default function AdminPage() {
               </label>
               <input
                 type="password"
-                placeholder="123"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-[#28133b] border border-rose-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-rose-400"
@@ -316,10 +316,6 @@ export default function AdminPage() {
               Iniciar Sesión
             </button>
           </form>
-
-          <div className="mt-6 pt-4 border-t border-rose-500/20 text-center text-[11px] text-rose-300/60 font-mono">
-            Credenciales de prueba: admin / 123
-          </div>
         </motion.div>
       </div>
     );
