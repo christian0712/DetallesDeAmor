@@ -95,95 +95,145 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {availableTemplates.map((template, idx) => (
-              <motion.div
-                key={template.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: idx * 0.15 }}
-                className="glass-card-rose rounded-3xl overflow-hidden shadow-2xl border border-rose-500/30 group hover:border-rose-500/60 transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  {/* Thumbnail Image Container */}
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <img
-                      src={template.thumbnailUrl}
-                      alt={template.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#180a24] via-transparent to-transparent" />
-                    
-                    {/* Badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 rounded-full bg-rose-600/90 text-white font-bold text-xs shadow-lg backdrop-blur-md border border-white/20">
-                        {template.tag}
-                      </span>
-                    </div>
-
-                    {template.popular && (
-                      <div className="absolute top-4 right-4">
-                        <span className="px-3 py-1 rounded-full bg-amber-500 text-amber-950 font-extrabold text-xs shadow-lg flex items-center gap-1">
-                          <Star className="w-3.5 h-3.5 fill-amber-950" />
-                          Más Elegido
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold font-serif text-white mb-2 group-hover:text-rose-300 transition">
-                      {template.title}
-                    </h3>
-                    <p className="text-rose-200/70 text-sm leading-relaxed mb-4">
-                      {template.description}
-                    </p>
-
-                    {/* Features checklist */}
-                    <div className="space-y-1.5 mb-6 text-xs text-rose-300/80">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                        <span>Sobre 3D interactivo con sello de cera</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                        <span>Contador de tiempo en años, meses y días</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                        <span>Botón interactivo con lluvia masiva de corazones</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Card Action Footer */}
-                <div className="p-6 pt-0">
-                  <Link
-                    href={template.demoUrl}
-                    className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-sm shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 transition duration-300 active:scale-95"
-                  >
-                    <Eye className="w-4 h-4" />
-                    <span>Ver y Personalizar</span>
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-
-            {/* TARJETA DORADA PERSONALIZADA VIP 99 Bs */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* 1. SOBRE DE AMOR ANIMADO */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="glass-card-rose rounded-3xl overflow-hidden shadow-2xl border border-rose-500/30 group hover:border-rose-500/60 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={availableTemplates[0].thumbnailUrl}
+                    alt={availableTemplates[0].title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#180a24] via-transparent to-transparent" />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 rounded-full bg-rose-600/90 text-white font-bold text-xs shadow-lg backdrop-blur-md border border-white/20">
+                      {availableTemplates[0].tag}
+                    </span>
+                  </div>
+
+                  {availableTemplates[0].popular && (
+                    <div className="absolute top-4 right-4">
+                      <span className="px-3 py-1 rounded-full bg-amber-500 text-amber-950 font-extrabold text-xs shadow-lg flex items-center gap-1">
+                        <Star className="w-3.5 h-3.5 fill-amber-950" />
+                        Más Elegido
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-6">
+                  <h3 className="text-xl font-bold font-serif text-white mb-2 group-hover:text-rose-300 transition">
+                    {availableTemplates[0].title}
+                  </h3>
+                  <p className="text-rose-200/70 text-sm leading-relaxed mb-4">
+                    {availableTemplates[0].description}
+                  </p>
+
+                  <div className="space-y-1.5 mb-6 text-xs text-rose-300/80">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Sobre 3D interactivo con sello de cera</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Contador de tiempo en años, meses y días</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Botón interactivo con lluvia masiva de corazones</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 pt-0">
+                <Link
+                  href={availableTemplates[0].demoUrl}
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-sm shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 transition duration-300 active:scale-95"
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>Ver y Personalizar</span>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* 2. GALAXIA DE RECUERDOS */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="glass-card-rose rounded-3xl overflow-hidden shadow-2xl border border-rose-500/30 group hover:border-rose-500/60 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={availableTemplates[1].thumbnailUrl}
+                    alt={availableTemplates[1].title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#180a24] via-transparent to-transparent" />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 rounded-full bg-rose-600/90 text-white font-bold text-xs shadow-lg backdrop-blur-md border border-white/20">
+                      {availableTemplates[1].tag}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <h3 className="text-xl font-bold font-serif text-white mb-2 group-hover:text-rose-300 transition">
+                    {availableTemplates[1].title}
+                  </h3>
+                  <p className="text-rose-200/70 text-sm leading-relaxed mb-4">
+                    {availableTemplates[1].description}
+                  </p>
+
+                  <div className="space-y-1.5 mb-6 text-xs text-rose-300/80">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Fondo galáctico interactivo animado</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Constelación romántica con fechas clave</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Carta flotante con reproductor espacial de música</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 pt-0">
+                <Link
+                  href={availableTemplates[1].demoUrl}
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-sm shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 transition duration-300 active:scale-95"
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>Ver y Personalizar</span>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* 3. TARJETA DORADA PERSONALIZADA VIP (99 Bs) */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-b from-[#2b1b04] via-[#241302] to-[#170a00] border-2 border-amber-400/80 group hover:border-amber-300 transition-all duration-300 flex flex-col justify-between"
             >
-              {/* Glowing ambient gold background */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/20 blur-2xl pointer-events-none rounded-full" />
               <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-500/10 blur-2xl pointer-events-none rounded-full" />
 
               <div>
-                {/* Thumbnail Container */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-tr from-amber-950 to-amber-900 flex items-center justify-center p-4">
                   <img
                     src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80"
@@ -192,7 +242,6 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1b0d02] via-transparent to-black/30" />
                   
-                  {/* VIP Gold Badge */}
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-950 font-extrabold text-xs shadow-lg flex items-center gap-1">
                       <Crown className="w-3.5 h-3.5 fill-amber-950" />
@@ -200,7 +249,6 @@ export default function Home() {
                     </span>
                   </div>
 
-                  {/* Price Badge */}
                   <div className="absolute top-4 right-4">
                     <span className="px-3.5 py-1.5 rounded-2xl bg-amber-400 text-amber-950 font-black text-sm shadow-xl border border-amber-300">
                       99 Bs
@@ -214,7 +262,6 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-1">
                     <Crown className="w-5 h-5 text-amber-400 fill-amber-400 animate-bounce" />
@@ -226,7 +273,6 @@ export default function Home() {
                     Diseñamos tu página web romántica desde cero adaptada a tus propias ideas, colores, fotos, música y elementos exclusivos.
                   </p>
 
-                  {/* Features checklist */}
                   <div className="space-y-2 mb-6 text-xs text-amber-200/90">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
@@ -244,7 +290,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Button Action */}
               <div className="p-6 pt-0">
                 <a
                   href="https://wa.me/59177123456?text=Hola,%20quisiera%20solicitar%20el%20Dise%C3%B1o%20100%25%20Personalizado%20VIP%20de%2099%20Bs."
@@ -255,6 +300,118 @@ export default function Home() {
                   <Crown className="w-4 h-4 fill-amber-950" />
                   <span>Trato Directo WhatsApp (99 Bs)</span>
                 </a>
+              </div>
+            </motion.div>
+
+            {/* 4. ÁLBUM POLAROID VINTAGE & VINILO (SEGUNDA FILA) */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="glass-card-rose rounded-3xl overflow-hidden shadow-2xl border border-rose-500/30 group hover:border-rose-500/60 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={availableTemplates[2].thumbnailUrl}
+                    alt={availableTemplates[2].title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#180a24] via-transparent to-transparent" />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 rounded-full bg-rose-600/90 text-white font-bold text-xs shadow-lg backdrop-blur-md border border-white/20">
+                      {availableTemplates[2].tag}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <h3 className="text-xl font-bold font-serif text-white mb-2 group-hover:text-rose-300 transition">
+                    {availableTemplates[2].title}
+                  </h3>
+                  <p className="text-rose-200/70 text-sm leading-relaxed mb-4">
+                    {availableTemplates[2].description}
+                  </p>
+
+                  <div className="space-y-1.5 mb-6 text-xs text-rose-300/80">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Cámara Polaroid retro interactiva</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Fotografías animadas con notas manuscritas</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Reproductor de disco vinilo animado</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 pt-0">
+                <Link
+                  href={availableTemplates[2].demoUrl}
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-sm shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 transition duration-300 active:scale-95"
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>Ver y Personalizar</span>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* 5. PRÓXIMAMENTE / NUEVO DISEÑO EN CAMINO */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="glass-card-rose rounded-3xl overflow-hidden shadow-2xl border border-rose-500/20 opacity-90 group hover:border-pink-500/40 transition-all duration-300 flex flex-col justify-between relative bg-gradient-to-b from-[#1a0b29] to-[#0f051c]"
+            >
+              <div>
+                <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-tr from-purple-950 to-pink-950 flex items-center justify-center">
+                  <img
+                    src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80"
+                    alt="Próximamente"
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-40 blur-[1px]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f051c] via-purple-950/40 to-transparent" />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 rounded-full bg-pink-600/90 text-white font-bold text-xs shadow-lg backdrop-blur-md border border-white/20 flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5 text-pink-200" />
+                      Próximamente 🚀
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <h3 className="text-xl font-bold font-serif text-pink-200 mb-2">
+                    Nuevo Diseño Sorpresa ✨
+                  </h3>
+                  <p className="text-rose-200/60 text-sm leading-relaxed mb-4">
+                    Estamos creando una nueva plantilla interactiva llena de magia y efectos especiales para sorprender a tu pareja.
+                  </p>
+
+                  <div className="space-y-1.5 mb-6 text-xs text-rose-300/60">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+                      <span>Efectos sorpresa de aniversario</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+                      <span>Nuevas animaciones interactivas</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 pt-0">
+                <div className="w-full py-3.5 rounded-2xl bg-white/5 border border-rose-500/20 text-rose-300/70 font-semibold text-xs flex items-center justify-center gap-2 cursor-not-allowed">
+                  <Sparkles className="w-4 h-4 text-pink-400" />
+                  <span>Próximamente (En Desarrollo)</span>
+                </div>
               </div>
             </motion.div>
           </div>
