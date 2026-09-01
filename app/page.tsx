@@ -292,7 +292,7 @@ export default function Home() {
 
               <div className="p-6 pt-0">
                 <a
-                  href="https://wa.me/59177123456?text=Hola,%20quisiera%20solicitar%20el%20Dise%C3%B1o%20100%25%20Personalizado%20VIP%20de%2099%20Bs."
+                  href="https://wa.me/59175949161?text=Hola,%20quisiera%20solicitar%20el%20Dise%C3%B1o%20100%25%20Personalizado%20VIP%20de%2099%20Bs."
                   target="_blank"
                   rel="noreferrer"
                   className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-500 hover:to-yellow-500 text-amber-950 font-extrabold text-sm shadow-xl shadow-amber-500/30 flex items-center justify-center gap-2 transition duration-300 transform active:scale-95 border border-yellow-300"
