@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Heart, Sparkles, ArrowRight, Play, Eye, Flame, Gift, Star, CheckCircle, Lock, User } from 'lucide-react';
+import { Heart, Sparkles, ArrowRight, Play, Eye, Flame, Gift, Star, CheckCircle, Lock, User, Crown } from 'lucide-react';
 import { availableTemplates } from '@/lib/defaultData';
 
 export default function Home() {
@@ -91,11 +91,11 @@ export default function Home() {
               Galería de Diseños Exclusivos ✨
             </h2>
             <p className="text-rose-200/70 text-sm sm:text-base">
-              Selecciona una plantilla y comienza a editarla de inmediato.
+              Selecciona una plantilla para personalizarla o solicita un diseño 100% a la medida.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {availableTemplates.map((template, idx) => (
               <motion.div
                 key={template.id}
@@ -165,11 +165,98 @@ export default function Home() {
                     className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-sm shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 transition duration-300 active:scale-95"
                   >
                     <Eye className="w-4 h-4" />
-                    <span>Ver y Personalizar Diseño</span>
+                    <span>Ver y Personalizar</span>
                   </Link>
                 </div>
               </motion.div>
             ))}
+
+            {/* TARJETA DORADA PERSONALIZADA VIP 99 Bs */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-b from-[#2b1b04] via-[#241302] to-[#170a00] border-2 border-amber-400/80 group hover:border-amber-300 transition-all duration-300 flex flex-col justify-between"
+            >
+              {/* Glowing ambient gold background */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/20 blur-2xl pointer-events-none rounded-full" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-500/10 blur-2xl pointer-events-none rounded-full" />
+
+              <div>
+                {/* Thumbnail Container */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-tr from-amber-950 to-amber-900 flex items-center justify-center p-4">
+                  <img
+                    src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80"
+                    alt="Diseño Personalizado 99 Bs"
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-60"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1b0d02] via-transparent to-black/30" />
+                  
+                  {/* VIP Gold Badge */}
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-950 font-extrabold text-xs shadow-lg flex items-center gap-1">
+                      <Crown className="w-3.5 h-3.5 fill-amber-950" />
+                      VIP Exclusivo
+                    </span>
+                  </div>
+
+                  {/* Price Badge */}
+                  <div className="absolute top-4 right-4">
+                    <span className="px-3.5 py-1.5 rounded-2xl bg-amber-400 text-amber-950 font-black text-sm shadow-xl border border-amber-300">
+                      99 Bs
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 right-3 text-center">
+                    <span className="text-amber-200 font-serif font-bold text-xs tracking-wide bg-amber-950/80 px-3 py-1 rounded-full border border-amber-500/40">
+                      ✨ Trato Directo 1 a 1 por WhatsApp
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Crown className="w-5 h-5 text-amber-400 fill-amber-400 animate-bounce" />
+                    <h3 className="text-xl font-bold font-serif text-amber-300 group-hover:text-amber-200 transition">
+                      Diseño 100% Personalizado
+                    </h3>
+                  </div>
+                  <p className="text-amber-100/80 text-xs sm:text-sm leading-relaxed mb-4">
+                    Diseñamos tu página web romántica desde cero adaptada a tus propias ideas, colores, fotos, música y elementos exclusivos.
+                  </p>
+
+                  {/* Features checklist */}
+                  <div className="space-y-2 mb-6 text-xs text-amber-200/90">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span>Atención 1 a 1 personalizada por WhatsApp</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span>Diseño único según tus requerimientos</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span>Fotos, música, Código QR y alojamiento incluido</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Button Action */}
+              <div className="p-6 pt-0">
+                <a
+                  href="https://wa.me/59177123456?text=Hola,%20quisiera%20solicitar%20el%20Dise%C3%B1o%20100%25%20Personalizado%20VIP%20de%2099%20Bs."
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-500 hover:to-yellow-500 text-amber-950 font-extrabold text-sm shadow-xl shadow-amber-500/30 flex items-center justify-center gap-2 transition duration-300 transform active:scale-95 border border-yellow-300"
+                >
+                  <Crown className="w-4 h-4 fill-amber-950" />
+                  <span>Trato Directo WhatsApp (99 Bs)</span>
+                </a>
+              </div>
+            </motion.div>
           </div>
         </section>
       </main>
