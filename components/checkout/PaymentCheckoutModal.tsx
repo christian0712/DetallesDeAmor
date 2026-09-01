@@ -61,8 +61,7 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
   const availableMethods = [
     { id: 'qr_bolivia', label: 'QR Bolivia', icon: QrCode, badge: 'Recomendado', enabled: paymentConfig.qrBolivia?.enabled },
     { id: 'bank_transfer', label: 'Bancos', icon: CreditCard, enabled: paymentConfig.bankTransfer?.enabled },
-    { id: 'tigo_money', label: 'Tigo Money', icon: Smartphone, enabled: paymentConfig.tigoMoney?.enabled },
-    { id: 'binance_pay', label: 'Binance Pay', icon: Coins, enabled: paymentConfig.binancePay?.enabled },
+    { id: 'binance_pay', label: 'Binance & USDT', icon: Coins, enabled: paymentConfig.binancePay?.enabled },
   ].filter((m) => m.enabled !== false);
 
   React.useEffect(() => {
@@ -185,7 +184,7 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
             </div>
 
             {/* Payment Method Selector Tabs */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+            <div className="grid grid-cols-3 gap-2 mb-6">
               {availableMethods.map((method) => {
                 const Icon = method.icon;
                 const active = paymentMethod === method.id;
@@ -215,14 +214,26 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
                     {paymentConfig.qrBolivia.instructions}
                   </span>
                   
-                  {/* Generated QR visual preview */}
-                  <div className="w-44 h-44 bg-white p-3 rounded-2xl shadow-xl mx-auto flex items-center justify-center border-4 border-rose-500">
-                    <QRCodeSVG
-                      value={paymentConfig.qrBolivia.qrValue || 'https://qr.simple.bo/pay/detalles-de-amor-49bs'}
-                      size={150}
-                      level="H"
-                      includeMargin={false}
-                    />
+                  {/* Display Uploaded QR Image or Generated QR */}
+                  <div className="mx-auto flex items-center justify-center">
+                    {paymentConfig.qrBolivia.qrImageUrl ? (
+                      <div className="p-2 bg-white rounded-2xl border-4 border-rose-500 shadow-xl max-w-[220px]">
+                        <img
+                          src={paymentConfig.qrBolivia.qrImageUrl}
+                          alt="QR Bolivia Oficial"
+                          className="max-h-56 w-auto object-contain rounded-xl mx-auto"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-44 h-44 bg-white p-3 rounded-2xl shadow-xl border-4 border-rose-500 flex items-center justify-center">
+                        <QRCodeSVG
+                          value={paymentConfig.qrBolivia.qrValue || 'https://qr.simple.bo/pay/detalles-de-amor-49bs'}
+                          size={150}
+                          level="H"
+                          includeMargin={false}
+                        />
+                      </div>
+                    )}
                   </div>
 
                   <p className="text-[11px] text-rose-200/80 font-mono">
@@ -258,56 +269,60 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
                 </div>
               )}
 
-              {paymentMethod === 'tigo_money' && paymentConfig.tigoMoney && (
-                <div className="space-y-3 text-xs text-center">
-                  <p className="text-rose-200 font-semibold">
-                    {paymentConfig.tigoMoney.instructions}
-                  </p>
-
-                  <div className="bg-[#240d38] p-4 rounded-xl border border-rose-500/30 inline-flex items-center gap-4">
-                    <span className="text-xl font-bold font-mono text-amber-400">{paymentConfig.tigoMoney.phoneNumber}</span>
-                    <button
-                      onClick={() => handleCopy(paymentConfig.tigoMoney.phoneNumber, 'tigo')}
-                      className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold text-xs flex items-center gap-1"
-                    >
-                      {copiedText === 'tigo' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedText === 'tigo' ? 'Copiado' : 'Copiar'}</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-
               {paymentMethod === 'binance_pay' && paymentConfig.binancePay && (
-                <div className="space-y-3 text-xs">
+                <div className="space-y-4 text-xs">
+                  <div className="text-center pb-1">
+                    <span className="text-xs text-rose-300 font-semibold">
+                      Elige tu opción de pago en Criptomonedas (Monto: {paymentConfig.priceUsdt} USDT):
+                    </span>
+                  </div>
+
+                  {/* Option 1: Binance Pay */}
                   {paymentConfig.binancePay.payId && (
-                    <div className="bg-[#240d38] p-3 rounded-xl border border-rose-500/20 flex items-center justify-between">
-                      <div>
-                        <span className="font-bold text-amber-400 block">Binance Pay ID</span>
-                        <span className="text-rose-200 font-mono">{paymentConfig.binancePay.payId}</span>
+                    <div className="bg-[#240d38] p-3.5 rounded-xl border border-amber-500/40 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-amber-400 text-xs flex items-center gap-1.5">
+                          <span>💎 Opción 1: Binance Pay ID</span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(paymentConfig.binancePay.payId, 'binance_id')}
+                          className="px-3 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold text-xs flex items-center gap-1"
+                        >
+                          {copiedText === 'binance_id' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                          <span>{copiedText === 'binance_id' ? 'Copiado' : 'Copiar Pay ID'}</span>
+                        </button>
                       </div>
-                      <button
-                        onClick={() => handleCopy(paymentConfig.binancePay.payId, 'binance_id')}
-                        className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold text-xs flex items-center gap-1"
-                      >
-                        {copiedText === 'binance_id' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
-                        <span>{copiedText === 'binance_id' ? 'Copiado' : 'Copiar'}</span>
-                      </button>
+                      <div className="font-mono text-base font-bold text-white bg-[#190829] p-2 rounded-lg text-center border border-amber-500/20">
+                        {paymentConfig.binancePay.payId}
+                      </div>
                     </div>
                   )}
 
+                  {/* Option 2: Crypto USDT Transfer */}
                   {paymentConfig.binancePay.usdtAddress && (
-                    <div className="bg-[#240d38] p-3 rounded-xl border border-rose-500/20 flex items-center justify-between">
-                      <div>
-                        <span className="font-bold text-amber-400 block">Dirección USDT ({paymentConfig.binancePay.network || 'BEP20'})</span>
-                        <span className="text-rose-300 font-mono text-[10px] break-all">{paymentConfig.binancePay.usdtAddress}</span>
+                    <div className="bg-[#240d38] p-3.5 rounded-xl border border-rose-500/30 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-rose-300 text-xs flex items-center gap-1.5">
+                          <span>🌐 Opción 2: Transferencia Cripto USDT</span>
+                        </span>
+                        <span className="text-[10px] font-mono text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-500/40">
+                          Red: {paymentConfig.binancePay.network || 'BEP20'}
+                        </span>
                       </div>
-                      <button
-                        onClick={() => handleCopy(paymentConfig.binancePay.usdtAddress, 'usdt_address')}
-                        className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold text-xs flex items-center gap-1 shrink-0 ml-2"
-                      >
-                        {copiedText === 'usdt_address' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
-                        <span>{copiedText === 'usdt_address' ? 'Copiado' : 'Copiar'}</span>
-                      </button>
+                      <div className="flex items-center justify-between bg-[#190829] p-2 rounded-lg border border-rose-500/20 gap-2">
+                        <span className="text-rose-200 font-mono text-[11px] break-all">
+                          {paymentConfig.binancePay.usdtAddress}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(paymentConfig.binancePay.usdtAddress, 'usdt_address')}
+                          className="px-3 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold text-xs flex items-center gap-1 shrink-0"
+                        >
+                          {copiedText === 'usdt_address' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                          <span>{copiedText === 'usdt_address' ? 'Copiado' : 'Copiar Wallet'}</span>
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>

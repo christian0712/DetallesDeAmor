@@ -43,7 +43,7 @@ export interface TemplateInfo {
   popular?: boolean;
 }
 
-export type PaymentMethod = 'qr_bolivia' | 'bank_transfer' | 'tigo_money' | 'binance_pay';
+export type PaymentMethod = 'qr_bolivia' | 'bank_transfer' | 'binance_pay';
 export type OrderStatus = 'PENDIENTE' | 'APROBADO' | 'RECHAZADO';
 
 export interface AdminSong {
@@ -69,6 +69,7 @@ export interface PaymentMethodsConfig {
   qrBolivia: {
     enabled: boolean;
     qrValue: string;
+    qrImageUrl?: string;
     holder: string;
     instructions: string;
   };
@@ -76,11 +77,6 @@ export interface PaymentMethodsConfig {
     enabled: boolean;
     instructions: string;
     accounts: BankAccount[];
-  };
-  tigoMoney: {
-    enabled: boolean;
-    phoneNumber: string;
-    instructions: string;
   };
   binancePay: {
     enabled: boolean;

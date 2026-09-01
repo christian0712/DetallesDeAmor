@@ -51,6 +51,7 @@ import {
   deleteOrder,
 } from '@/lib/store';
 import { getYouTubeVideoId } from '@/lib/musicCatalog';
+import { uploadClientPhotoToSupabase } from '@/lib/supabase';
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function AdminPage() {
@@ -677,7 +678,7 @@ export default function AdminPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-rose-300 mb-1">
-                  Enlace o Código para Generar el Código QR
+                  Enlace o Código QR Texto (Opcional)
                 </label>
                 <input
                   type="text"
@@ -690,6 +691,50 @@ export default function AdminPage() {
                   }
                   className="w-full bg-[#240e36] border border-rose-500/40 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-rose-400 font-mono"
                 />
+              </div>
+
+              {/* Subir Imagen del QR */}
+              <div className="md:col-span-2 bg-[#1b0a29] p-4 rounded-2xl border border-rose-500/20 space-y-3">
+                <label className="block text-xs font-bold text-amber-300 mb-1 flex items-center gap-2">
+                  <span>📸 Imagen Oficial del Código QR (Subir a Supabase Storage)</span>
+                </label>
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <label className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white font-bold text-xs cursor-pointer shadow-lg flex items-center gap-2">
+                    <span>Subir Foto del QR</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const uploadedUrl = await uploadClientPhotoToSupabase(
+                            file,
+                            'admin-config',
+                            'qr-bolivia-oficial.jpg'
+                          );
+                          setPaymentConfig({
+                            ...paymentConfig,
+                            qrBolivia: {
+                              ...paymentConfig.qrBolivia,
+                              qrImageUrl: uploadedUrl,
+                            },
+                          });
+                        }
+                      }}
+                    />
+                  </label>
+                  {paymentConfig.qrBolivia.qrImageUrl && (
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={paymentConfig.qrBolivia.qrImageUrl}
+                        alt="QR Bolivia Preview"
+                        className="w-16 h-16 object-contain bg-white p-1 rounded-lg border border-rose-500/40"
+                      />
+                      <span className="text-xs text-emerald-400 font-semibold">✓ Imagen de QR guardada en Supabase</span>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="md:col-span-2">
@@ -830,73 +875,12 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* 4. TIGO MONEY */}
-          <div className="glass-card-rose p-6 rounded-3xl border border-rose-500/30 space-y-4">
-            <div className="flex items-center justify-between border-b border-rose-500/20 pb-3">
-              <h3 className="text-lg font-bold text-white font-serif flex items-center gap-2">
-                <Smartphone className="w-5 h-5 text-rose-400" />
-                Tigo Money
-              </h3>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={paymentConfig.tigoMoney?.enabled ?? true}
-                  onChange={(e) =>
-                    setPaymentConfig({
-                      ...paymentConfig,
-                      tigoMoney: { ...paymentConfig.tigoMoney, enabled: e.target.checked },
-                    })
-                  }
-                  className="w-4 h-4 accent-rose-500 rounded"
-                />
-                <span className="text-xs font-bold text-rose-200">Habilitar este método</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-rose-300 mb-1">
-                  Número de Celular Tigo Money
-                </label>
-                <input
-                  type="text"
-                  value={paymentConfig.tigoMoney.phoneNumber}
-                  onChange={(e) =>
-                    setPaymentConfig({
-                      ...paymentConfig,
-                      tigoMoney: { ...paymentConfig.tigoMoney, phoneNumber: e.target.value },
-                    })
-                  }
-                  className="w-full bg-[#240e36] border border-rose-500/40 rounded-xl px-4 py-2.5 text-white font-mono font-bold text-sm focus:outline-none focus:border-rose-400"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-rose-300 mb-1">
-                  Instrucciones para el Usuario
-                </label>
-                <input
-                  type="text"
-                  value={paymentConfig.tigoMoney.instructions}
-                  onChange={(e) =>
-                    setPaymentConfig({
-                      ...paymentConfig,
-                      tigoMoney: { ...paymentConfig.tigoMoney, instructions: e.target.value },
-                    })
-                  }
-                  className="w-full bg-[#240e36] border border-rose-500/40 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-rose-400"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* 5. BINANCE PAY / CRIPTO */}
+          {/* 4. BINANCE PAY & CRIPTO (USDT) */}
           <div className="glass-card-rose p-6 rounded-3xl border border-rose-500/30 space-y-4">
             <div className="flex items-center justify-between border-b border-rose-500/20 pb-3">
               <h3 className="text-lg font-bold text-white font-serif flex items-center gap-2">
                 <Coins className="w-5 h-5 text-amber-400" />
-                Binance Pay / Criptomonedas (USDT)
+                Binance Pay & Criptomonedas (USDT)
               </h3>
 
               <label className="flex items-center gap-2 cursor-pointer">
@@ -918,7 +902,7 @@ export default function AdminPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-rose-300 mb-1">
-                  Binance Pay ID
+                  Opción 1: Binance Pay ID
                 </label>
                 <input
                   type="text"
@@ -930,12 +914,31 @@ export default function AdminPage() {
                     })
                   }
                   className="w-full bg-[#240e36] border border-rose-500/40 rounded-xl px-4 py-2.5 text-white font-mono text-sm focus:outline-none focus:border-rose-400"
+                  placeholder="Ej: 89230192"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-rose-300 mb-1">
-                  Nombre de la Red
+                  Opción 2: Dirección Wallet USDT
+                </label>
+                <input
+                  type="text"
+                  value={paymentConfig.binancePay.usdtAddress}
+                  onChange={(e) =>
+                    setPaymentConfig({
+                      ...paymentConfig,
+                      binancePay: { ...paymentConfig.binancePay, usdtAddress: e.target.value },
+                    })
+                  }
+                  className="w-full bg-[#240e36] border border-rose-500/40 rounded-xl px-4 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-rose-400"
+                  placeholder="Ej: 0x71C7656EC7ab88..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-rose-300 mb-1">
+                  Red USDT (Network)
                 </label>
                 <input
                   type="text"
@@ -947,24 +950,7 @@ export default function AdminPage() {
                     })
                   }
                   className="w-full bg-[#240e36] border border-rose-500/40 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-rose-400"
-                  placeholder="BEP20"
-                />
-              </div>
-
-              <div className="md:col-span-3">
-                <label className="block text-xs font-semibold text-rose-300 mb-1">
-                  Dirección de Billetera USDT
-                </label>
-                <input
-                  type="text"
-                  value={paymentConfig.binancePay.usdtAddress}
-                  onChange={(e) =>
-                    setPaymentConfig({
-                      ...paymentConfig,
-                      binancePay: { ...paymentConfig.binancePay, usdtAddress: e.target.value },
-                    })
-                  }
-                  className="w-full bg-[#240e36] border border-rose-500/40 rounded-xl px-4 py-2.5 text-white font-mono text-sm focus:outline-none focus:border-rose-400"
+                  placeholder="Ej: BEP20 / TRC20 / Polygon"
                 />
               </div>
             </div>

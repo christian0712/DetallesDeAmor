@@ -90,6 +90,7 @@ export const defaultPaymentConfig: PaymentMethodsConfig = {
   qrBolivia: {
     enabled: true,
     qrValue: 'https://qr.simple.bo/pay/detalles-de-amor-49bs',
+    qrImageUrl: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=400&q=80',
     holder: 'Detalles de Amor SRL',
     instructions: 'Escanea el código QR desde cualquier aplicación bancaria de Bolivia (BNB, BCP, Mercantil, Bisa, GanaMóvil)',
   },
@@ -112,11 +113,6 @@ export const defaultPaymentConfig: PaymentMethodsConfig = {
         accountType: 'Cuenta Corriente',
       },
     ],
-  },
-  tigoMoney: {
-    enabled: true,
-    phoneNumber: '77123456',
-    instructions: 'Envía el dinero mediante la aplicación Tigo Money al número registrado:',
   },
   binancePay: {
     enabled: true,
