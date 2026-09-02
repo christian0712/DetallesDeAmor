@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { getOrderBySlug } from '@/lib/store';
+import { getOrderBySlug, findOrderByClientCodeOrPhone } from '@/lib/store';
 import { defaultRomanticData } from '@/lib/defaultData';
 import { Order, RomanticPageData } from '@/types';
 import { InteractiveEnvelope } from '@/components/romantic/InteractiveEnvelope';
@@ -28,20 +28,25 @@ export default function PublicQRInvitationPage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (slug) {
-      const found = getOrderBySlug(slug);
-      if (found) {
-        setOrder(found);
-        setData(found.pageData);
-      } else {
-        // Fallback to default romantic data for demo
-        setData({
-          ...defaultRomanticData,
-          coupleTitle: slug.replace(/-/g, ' ').toUpperCase(),
-        });
+    async function fetchOrderData() {
+      if (slug) {
+        const found = await findOrderByClientCodeOrPhone(slug);
+        if (found) {
+          setOrder(found);
+          if (found.pageData) {
+            setData(found.pageData);
+          }
+        } else {
+          // Fallback to default romantic data for demo
+          setData({
+            ...defaultRomanticData,
+            coupleTitle: slug.replace(/-/g, ' ').toUpperCase(),
+          });
+        }
       }
+      setIsLoaded(true);
     }
-    setIsLoaded(true);
+    fetchOrderData();
   }, [slug]);
 
   const handleEnvelopeOpen = () => {

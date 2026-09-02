@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InteractiveEnvelope } from '@/components/romantic/InteractiveEnvelope';
 import { AnniversaryCounter } from '@/components/romantic/AnniversaryCounter';
@@ -13,7 +14,7 @@ import { InlineEditorModal } from '@/components/romantic/InlineEditorModal';
 import { PaymentCheckoutModal } from '@/components/checkout/PaymentCheckoutModal';
 import { defaultRomanticData } from '@/lib/defaultData';
 import { RomanticPageData, Order } from '@/types';
-import { Heart, Sparkles, Share2, Check, QrCode, ShoppingBag } from 'lucide-react';
+import { Heart, Sparkles, Share2, Check, QrCode, ArrowLeft } from 'lucide-react';
 
 export default function RomanticEnvelopePage() {
   const [data, setData] = useState<RomanticPageData>(defaultRomanticData);
@@ -57,6 +58,17 @@ export default function RomanticEnvelopePage() {
           </div>
         ))}
       </div>
+
+      {/* Top Floating Return Header (Z-50) */}
+      <header className="fixed top-4 left-4 z-50">
+        <Link
+          href="/"
+          className="px-4 py-2 rounded-full bg-[#180a24]/90 hover:bg-[#28133b] text-rose-200 border border-rose-500/40 text-xs font-semibold backdrop-blur-md shadow-xl flex items-center gap-2 transition hover:scale-105"
+        >
+          <ArrowLeft className="w-3.5 h-3.5 text-rose-400" />
+          <span>Volver al inicio / Elegir otra plantilla</span>
+        </Link>
+      </header>
 
       {/* Persistent Audio Player */}
       <AudioPlayer
@@ -182,7 +194,7 @@ export default function RomanticEnvelopePage() {
           className="pointer-events-auto px-5 py-3 rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white font-bold text-xs sm:text-sm shadow-2xl shadow-emerald-500/50 border border-emerald-300/40 flex items-center gap-2 transform hover:scale-105 active:scale-95 transition-all backdrop-blur-md"
         >
           <QrCode className="w-4 h-4 text-white" />
-          <span>Pagar y Generar Mi QR (49 Bs)</span>
+          <span>Comprar (49bs)</span>
         </button>
       </div>
 

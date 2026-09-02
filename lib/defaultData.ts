@@ -17,53 +17,200 @@ Gracias por enseñarme lo hermoso que es amar y sentirse amado. Eres la razón p
   yesResponseSubtitle: '¡Prometo hacerte sonreír todos y cada uno de mis días a tu lado! 💖✨',
   audioTitle: 'Perfect',
   audioArtist: 'Ed Sheeran',
-  audioUrl: 'https://www.youtube.com/watch?v=2Vv-BfVoq4g',
+  audioUrl: 'https://www.youtube.com/watch?v=cNGjD0VG4R8',
   photos: [
     {
       id: '1',
-      url: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=80',
-      caption: 'Nuestra primera cita bajo el atardecer 🌅',
+      url: '/demo-photos/foto1.jpg',
+      caption: 'Almorzando juntos ❤️',
     },
     {
       id: '2',
-      url: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80',
-      caption: 'Viaje inolvidable juntos ✈️❤️',
+      url: '/demo-photos/foto2.jpg',
+      caption: 'Momentos mágicos a tu lado ✈️❤️',
     },
     {
       id: '3',
-      url: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1200&q=80',
-      caption: 'Abrazos sinceros que abrigan el alma 🤗',
+      url: '/demo-photos/foto3.jpg',
+      caption: 'Disfrutando de un aniversario juntos ❤️',
     },
     {
       id: '4',
-      url: 'https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=1200&q=80',
+      url: '/demo-photos/foto4.jpg',
       caption: 'Risas interminables que llenan mi corazón 💕',
+    },
+    {
+      id: '5',
+      url: '/demo-photos/foto5.jpg',
+      caption: 'Juntos por siempre, mi amor 💖✨',
     },
   ],
   memories: [
     {
       id: 'm1',
-      date: '15 de Mayo, 2023',
+      date: '13 de Abril, 2025',
       title: 'El Día que Comenzó Todo',
-      description: 'Nuestra primera salida juntos donde nos quedamos hablando por horas.',
+      description: 'Nuestra salida juntos donde declare lo que sentia por ti y me dijiste que si, fue el dia mas feliz de mi vida.',
       icon: '✨',
     },
     {
       id: 'm2',
-      date: '31 de Diciembre, 2023',
+      date: '31 de Diciembre, 2025',
       title: 'Año Nuevo Juntos',
-      description: 'Recibimos el año abrazados pidiendo el mismo deseo: seguir siempre unidos.',
+      description: 'Recibimos el año abrazados pidiendo el mismo deseo: seguir siempre unidos y que nunca nos falte el amor el uno del otro',
       icon: '🎆',
     },
     {
       id: 'm3',
-      date: '14 de Febrero, 2024',
-      title: 'San Valentín Mágico',
-      description: 'Una cena romántica bajo la luz de las velas y estrellas.',
+      date: '14 de Agosto, 2026',
+      title: 'Celebramos tu cumpleaños mi amor ❤️ ',
+      description: 'Desde primeras horas de la mañana disfutamos juntos cocinando, compartiendo en familia y comiendo torta.',
       icon: '🌹',
     },
   ],
   themeColor: 'rose',
+};
+
+export const defaultGalaxyData: RomanticPageData = {
+  id: 'galaxia-de-amor-demo',
+  recipientName: 'Valeria',
+  senderName: 'Mateo',
+  coupleTitle: 'Mateo & Valeria',
+  envelopeTitle: 'Para la estrella más brillante de mi universo:',
+  envelopeSubtitle: 'Toca el Núcleo Galáctico para iniciar el viaje por nuestras estrellas 🌌✨',
+  anniversaryDate: '2024-09-18',
+  loveLetterTitle: 'Nuestro Amor Escrito en las Estrellas',
+  loveLetterBody: `Si cada estrella en el firmamento representara un motivo por el cual te amo, no alcanzaría el universo entero para contar nuestras razones.
+
+Desde el día en que nuestras constelaciones se cruzaron, supe que mi destino era orbitar siempre a tu lado. Gracias por iluminar mi mundo incluso en las noches más oscuras. Te amo hasta el infinito y más allá.`,
+  questionTitle: '¿Te gustaría seguir explorando el universo a mi lado para siempre?',
+  yesButtonText: '¡Sí, mi universo entero! 🚀💖',
+  yesResponseSubtitle: '¡Prometo iluminar cada uno de tus días bajo este hermoso cielo estrellado! ✨🌌',
+  audioTitle: 'Golden Hour',
+  audioArtist: 'JVKE',
+  audioUrl: 'https://www.youtube.com/watch?v=PEM0Vs8jf1w',
+  photos: [
+    {
+      id: 'g1',
+      url: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Bajo el cielo estrellado de nuestra primera noche ✨',
+    },
+    {
+      id: 'g2',
+      url: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Nuestra galaxia de recuerdos infinitos 🌌',
+    },
+    {
+      id: 'g3',
+      url: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Abrazados viendo una lluvia de estrellas fugaces 🌠',
+    },
+    {
+      id: 'g4',
+      url: 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Nuestra mejor hora dorada juntos 🌅✨',
+    },
+    {
+      id: 'g5',
+      url: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Contemplando la luna y soñando juntos 🌙💖',
+    },
+  ],
+  memories: [
+    {
+      id: 'gm1',
+      date: '18 de Septiembre, 2024',
+      title: 'El Eclipse de Nuestras Miradas',
+      description: 'La noche en que miramos las estrellas y decidimos empezar nuestro viaje juntos.',
+      icon: '🌌',
+    },
+    {
+      id: 'gm2',
+      date: '31 de Diciembre, 2024',
+      title: 'Deseos Bajo el Cielo Estrellado',
+      description: 'Pedimos exactamente el mismo deseo a una estrella fugaz: no separarnos jamás.',
+      icon: '⭐',
+    },
+    {
+      id: 'gm3',
+      date: '14 de Febrero, 2025',
+      title: 'Noche de Astrología & Amor',
+      description: 'Una velada mágica observando la luna con chocolate caliente y abrazos infinitos.',
+      icon: '🚀',
+    },
+  ],
+  themeColor: 'purple',
+};
+
+export const defaultVintageData: RomanticPageData = {
+  id: 'polaroid-memories-demo',
+  recipientName: 'Sofía',
+  senderName: 'Carlos',
+  coupleTitle: 'Carlos & Sofía',
+  envelopeTitle: 'Álbum Polaroid Vintage de:',
+  envelopeSubtitle: 'Toca el obturador de la cámara retro para revelar nuestras fotos inolvidables 📸✨',
+  anniversaryDate: '2023-11-05',
+  loveLetterTitle: 'Carta Guardada en el Álbum Retro',
+  loveLetterBody: `Mirar nuestras fotografías en papel es como volver a vivir cada sonrisa, cada abrazo y cada momento mágico capturado en el tiempo.
+
+Dicen que una imagen vale más que mil palabras, pero nuestro amor va mucho más allá de lo que cualquier lente puede capturar. Gracias por ser la protagonista de mi mejor historia. Te amo infinitamente.`,
+  questionTitle: '¿Te gustaría seguir llenando este álbum de fotos a mi lado?',
+  yesButtonText: '¡Sí, mi amor para siempre! 📸❤️',
+  yesResponseSubtitle: '¡Prometo capturar los mejores momentos de nuestra vida juntos cada día! 📸✨',
+  audioTitle: 'Completamente Enamorados',
+  audioArtist: 'Chayanne',
+  audioUrl: 'https://www.youtube.com/watch?v=XXeoQXXDUMk',
+  photos: [
+    {
+      id: 'v1',
+      url: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Nuestra primera captura Polaroid retro 📸',
+    },
+    {
+      id: 'v2',
+      url: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Paseo vintage de tarde en el parque ☕📜',
+    },
+    {
+      id: 'v3',
+      url: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Notas a mano grabadas en el alma 💌',
+    },
+    {
+      id: 'v4',
+      url: 'https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Risas capturadas en sepia y sol ☀️🎞️',
+    },
+    {
+      id: 'v5',
+      url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Escuchando vinilos y recordando momentos 🎵💿',
+    },
+  ],
+  memories: [
+    {
+      id: 'vm1',
+      date: '05 de Noviembre, 2023',
+      title: 'La Primera Foto Polaroid',
+      description: 'Nos tomamos nuestra primera foto instantánea y escribimos la fecha al reverso.',
+      icon: '📸',
+    },
+    {
+      id: 'vm2',
+      date: '25 de Diciembre, 2023',
+      title: 'Navidad con Aroma a Café & Vinilos',
+      description: 'Pusimos discos antiguos y bailamos suavemente en la sala.',
+      icon: '☕',
+    },
+    {
+      id: 'vm3',
+      date: '14 de Febrero, 2024',
+      title: 'Cartas Escritas a Máquina',
+      description: 'Nos regalamos cartas en papel antiguo atadas con hilo rojo.',
+      icon: '📜',
+    },
+  ],
+  themeColor: 'gold',
 };
 
 export const availableTemplates: TemplateInfo[] = [

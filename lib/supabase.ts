@@ -243,6 +243,9 @@ export async function saveAdminSongsToSupabase(songs: AdminSong[]): Promise<bool
       cover_url: s.coverUrl,
     }));
 
+    // Clean existing catalog in Supabase DB to avoid stale reverted rows
+    await supabase.from('admin_songs').delete().neq('id', 'dummy_never_matches');
+
     const { error } = await supabase.from('admin_songs').upsert(payload, { onConflict: 'id' });
     if (error) {
       console.warn('Supabase admin songs save error:', error.message);

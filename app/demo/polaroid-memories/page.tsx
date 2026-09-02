@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InteractivePolaroidIntro } from '@/components/vintage/InteractivePolaroidIntro';
 import { VintageAnniversaryCounter } from '@/components/vintage/VintageAnniversaryCounter';
@@ -11,31 +12,12 @@ import { MemoriesTimeline } from '@/components/romantic/MemoriesTimeline';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import { InlineEditorModal } from '@/components/romantic/InlineEditorModal';
 import { PaymentCheckoutModal } from '@/components/checkout/PaymentCheckoutModal';
-import { defaultRomanticData } from '@/lib/defaultData';
+import { defaultVintageData } from '@/lib/defaultData';
 import { RomanticPageData, Order } from '@/types';
 import { Sparkles, Share2, Check, QrCode, ArrowLeft, Camera } from 'lucide-react';
-import Link from 'next/link';
-
-// Vintage Polaroid Data
-const vintageInitialData: RomanticPageData = {
-  ...defaultRomanticData,
-  id: 'polaroid-memories-demo',
-  envelopeTitle: 'Álbum Polaroid Vintage:',
-  envelopeSubtitle: 'Toca el obturador de la cámara retro para revelar nuestras fotos inolvidables 📸✨',
-  loveLetterTitle: 'Carta Guardada en el Álbum',
-  loveLetterBody: `Mirar nuestras fotografías juntos es como volver a vivir cada sonrisa, cada abrazo y cada momento mágico.
-
-Dicen que una imagen vale más que mil palabras, pero nuestro amor va mucho más allá de lo que cualquier foto puede capturar. Gracias por ser el protagonista de mi mejor historia. Te amo infinitamente.`,
-  questionTitle: '¿Te gustaría seguir llenando este álbum de fotos a mi lado?',
-  yesButtonText: '¡Sí, mi amor para siempre! 📸❤️',
-  yesResponseSubtitle: '¡Prometo capturar los mejores momentos de nuestra vida juntos cada día! 📸✨',
-  audioTitle: 'A Thousand Years',
-  audioArtist: 'Christina Perri',
-  audioUrl: 'https://www.youtube.com/watch?v=rtOvBOTyX03',
-};
 
 export default function PolaroidThemePage() {
-  const [data, setData] = useState<RomanticPageData>(vintageInitialData);
+  const [data, setData] = useState<RomanticPageData>(defaultVintageData);
   const [isOpened, setIsOpened] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -77,6 +59,17 @@ export default function PolaroidThemePage() {
         ))}
       </div>
 
+      {/* Top Floating Return Header (Z-50) */}
+      <header className="fixed top-4 left-4 z-50">
+        <Link
+          href="/"
+          className="px-4 py-2 rounded-full bg-[#2a1a0c]/90 hover:bg-[#3d2713] text-amber-200 border border-amber-500/40 text-xs font-semibold backdrop-blur-md shadow-xl flex items-center gap-2 transition hover:scale-105"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Volver al inicio / Elegir otra plantilla</span>
+        </Link>
+      </header>
+
       {/* Persistent Audio Player */}
       <AudioPlayer
         audioUrl={data.audioUrl}
@@ -84,17 +77,6 @@ export default function PolaroidThemePage() {
         audioArtist={data.audioArtist}
         autoPlayTrigger={isOpened}
       />
-
-      {/* Top Floating Return to Catalog Header */}
-      <header className="fixed top-4 left-4 z-40">
-        <Link
-          href="/"
-          className="px-4 py-2 rounded-full bg-[#2a1a0c]/80 hover:bg-[#3d2713] text-amber-200 border border-amber-500/30 text-xs font-semibold backdrop-blur-md shadow-lg flex items-center gap-2 transition"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Volver al Catálogo</span>
-        </Link>
-      </header>
 
       {/* Stage 1: Closed Polaroid Camera Intro */}
       <AnimatePresence mode="wait">
@@ -212,7 +194,7 @@ export default function PolaroidThemePage() {
           className="pointer-events-auto px-5 py-3 rounded-full bg-gradient-to-r from-amber-600 via-amber-700 to-rose-700 hover:from-amber-700 hover:to-rose-800 text-white font-bold text-xs sm:text-sm shadow-2xl shadow-amber-900/50 border border-amber-300/40 flex items-center gap-2 transform hover:scale-105 active:scale-95 transition-all backdrop-blur-md"
         >
           <QrCode className="w-4 h-4 text-white" />
-          <span>Pagar y Generar Mi QR</span>
+          <span>Comprar (49bs)</span>
         </button>
       </div>
 

@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Music, Search, Check, Link as LinkIcon, X, Sparkles, Youtube } from 'lucide-react';
+import { Music, Search, Check, Link as LinkIcon, X, Sparkles, Youtube, Play, Pause } from 'lucide-react';
 import { getYouTubeVideoId } from '@/lib/musicCatalog';
 import { getAdminSongs } from '@/lib/store';
+import { fetchAdminSongsFromSupabase } from '@/lib/supabase';
+import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import { AdminSong } from '@/types';
 
 interface MusicPickerModalProps {
@@ -24,6 +26,7 @@ export const MusicPickerModal: React.FC<MusicPickerModalProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
   const [activeTab, setActiveTab] = useState<'catalog' | 'link'>('catalog');
+  const [previewSong, setPreviewSong] = useState<AdminSong | null>(null);
 
   // Custom link state
   const [customLink, setCustomLink] = useState('');
@@ -31,9 +34,25 @@ export const MusicPickerModal: React.FC<MusicPickerModalProps> = ({
   const [customArtist, setCustomArtist] = useState('');
 
   useEffect(() => {
-    const updateSongs = () => setSongs(getAdminSongs());
-    updateSongs();
+    async function loadLatestSongs() {
+      const local = getAdminSongs();
+      setSongs(local);
+      const remoteSongs = await fetchAdminSongsFromSupabase();
+      if (remoteSongs && remoteSongs.length > 0) {
+        setSongs(remoteSongs);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('detalles_amor_admin_songs', JSON.stringify(remoteSongs));
+        }
+      }
+    }
+    if (isOpen) {
+      loadLatestSongs();
+    } else {
+      setPreviewSong(null);
+    }
+
     if (typeof window !== 'undefined') {
+      const updateSongs = () => setSongs(getAdminSongs());
       window.addEventListener('admin-songs-updated', updateSongs);
       return () => window.removeEventListener('admin-songs-updated', updateSongs);
     }
@@ -50,6 +69,7 @@ export const MusicPickerModal: React.FC<MusicPickerModalProps> = ({
   });
 
   const handleSelectSongTrack = (song: AdminSong) => {
+    setPreviewSong(null);
     onSelectSong({
       title: song.title,
       artist: song.artist,
@@ -61,6 +81,7 @@ export const MusicPickerModal: React.FC<MusicPickerModalProps> = ({
   const handleApplyCustomLink = (e: React.FormEvent) => {
     e.preventDefault();
     if (!customLink) return;
+    setPreviewSong(null);
     onSelectSong({
       title: customTitle || 'Canción de YouTube / Spotify',
       artist: customArtist || 'Personalizado',
@@ -69,19 +90,34 @@ export const MusicPickerModal: React.FC<MusicPickerModalProps> = ({
     onClose();
   };
 
+  const handleCloseModal = () => {
+    setPreviewSong(null);
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+      {/* Live Audio Player for Previewing Song Track */}
+      {previewSong && (
+        <AudioPlayer
+          audioUrl={previewSong.youtubeUrl}
+          audioTitle={previewSong.title}
+          audioArtist={previewSong.artist}
+          autoPlayTrigger={true}
+        />
+      )}
+
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-xl bg-[#150824] rounded-3xl p-6 border border-rose-500/40 shadow-2xl text-white max-h-[88vh] flex flex-col"
+        className="relative w-full max-w-xl bg-[#150824] rounded-3xl p-6 border border-rose-500/40 shadow-2xl text-white max-h-[88vh] flex flex-col z-10"
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleCloseModal}
           className="absolute top-4 right-4 text-rose-300 hover:text-white p-2 rounded-full hover:bg-rose-500/20 transition z-10"
         >
           <X className="w-6 h-6" />
@@ -91,13 +127,13 @@ export const MusicPickerModal: React.FC<MusicPickerModalProps> = ({
         <div className="text-center mb-5 shrink-0">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-xs font-semibold mb-2 border border-red-500/30">
             <Youtube className="w-3.5 h-3.5 text-red-400" />
-            <span>Música Disponible & Enlaces Personalizados</span>
+            <span>Escucha previa & Enlaces Personalizados</span>
           </div>
           <h3 className="text-2xl font-serif font-bold text-white">
             Elegir Música de Fondo 🎵
           </h3>
           <p className="text-xs text-rose-200/70 mt-1">
-            Escoge entre las canciones disponibles o agrega tu propio enlace de YouTube / Spotify.
+            Prueba cómo suena cada canción antes de elegirla o agrega tu propio enlace.
           </p>
         </div>
 
@@ -172,6 +208,7 @@ export const MusicPickerModal: React.FC<MusicPickerModalProps> = ({
               ) : (
                 filteredSongs.map((song) => {
                   const isSelected = currentAudioUrl === song.youtubeUrl;
+                  const isPreviewing = previewSong?.id === song.id;
                   const ytId = getYouTubeVideoId(song.youtubeUrl);
                   const coverUrl =
                     song.coverUrl ||
@@ -180,10 +217,11 @@ export const MusicPickerModal: React.FC<MusicPickerModalProps> = ({
                   return (
                     <div
                       key={song.id}
-                      onClick={() => handleSelectSongTrack(song)}
-                      className={`p-3 rounded-2xl border flex items-center justify-between gap-3 cursor-pointer transition-all ${
+                      className={`p-3 rounded-2xl border flex items-center justify-between gap-3 transition-all ${
                         isSelected
                           ? 'bg-gradient-to-r from-rose-900/60 to-pink-900/60 border-rose-400 shadow-lg'
+                          : isPreviewing
+                          ? 'bg-rose-950/70 border-rose-400 shadow-md'
                           : 'bg-[#220c36] border-rose-500/20 hover:bg-rose-900/30 hover:border-rose-500/40'
                       }`}
                     >
@@ -213,8 +251,40 @@ export const MusicPickerModal: React.FC<MusicPickerModalProps> = ({
                         </div>
                       </div>
 
-                      {/* Select Action Button */}
+                      {/* Action Buttons: Escuchar (Preview) + Elegir (Select) */}
                       <div className="shrink-0 flex items-center gap-2">
+                        {/* Play / Pause Preview Button */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (isPreviewing) {
+                              setPreviewSong(null);
+                            } else {
+                              setPreviewSong(song);
+                            }
+                          }}
+                          className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                            isPreviewing
+                              ? 'bg-red-600 text-white shadow-md animate-pulse border border-red-300'
+                              : 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-500/30'
+                          }`}
+                          title={isPreviewing ? 'Pausar vista previa' : 'Escuchar canción en vivo'}
+                        >
+                          {isPreviewing ? (
+                            <>
+                              <Pause className="w-3.5 h-3.5 fill-white" />
+                              <span>Pausar</span>
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-3.5 h-3.5 text-rose-300 fill-rose-300 ml-0.5" />
+                              <span>Escuchar</span>
+                            </>
+                          )}
+                        </button>
+
+                        {/* Choose / Selected Button */}
                         {isSelected ? (
                           <span className="px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400 text-emerald-300 font-bold text-xs flex items-center gap-1">
                             <Check className="w-3.5 h-3.5" />

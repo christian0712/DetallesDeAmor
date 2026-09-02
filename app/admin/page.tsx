@@ -34,9 +34,13 @@ import {
   Check,
   ArrowLeft,
   Music,
-  Youtube
+  Youtube,
+  Play,
+  Pause,
+  Volume2
 } from 'lucide-react';
 import { Order, OrderStatus, PaymentMethodsConfig, BankAccount, AdminSong } from '@/types';
+import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import {
   getStoredOrders,
   approveOrder,
@@ -74,6 +78,7 @@ export default function AdminPage() {
   // Admin Music Songs Catalog State
   const [adminSongs, setAdminSongs] = useState<AdminSong[]>(defaultAdminSongs);
   const [saveSuccessMessage, setSaveSuccessMessage] = useState<string | null>(null);
+  const [activePreviewSong, setActivePreviewSong] = useState<AdminSong | null>(null);
 
   const loadData = async () => {
     setOrders(getStoredOrders());
@@ -968,6 +973,14 @@ export default function AdminPage() {
       {/* TAB 3: ADMIN MUSIC CATALOG MANAGEMENT */}
       {activeTab === 'music_catalog' && (
         <form onSubmit={handleSaveAdminSongs} className="max-w-7xl mx-auto space-y-8">
+          {activePreviewSong && (
+            <AudioPlayer
+              audioUrl={activePreviewSong.youtubeUrl}
+              audioTitle={activePreviewSong.title}
+              audioArtist={activePreviewSong.artist}
+              autoPlayTrigger={true}
+            />
+          )}
           {/* Header Bar */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-card-rose p-6 rounded-3xl border border-rose-500/30">
             <div>
@@ -1035,14 +1048,44 @@ export default function AdminPage() {
                         </div>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveAdminSong(index)}
-                        className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 text-xs font-semibold flex items-center gap-1 transition"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        <span>Eliminar</span>
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (activePreviewSong?.id === song.id) {
+                              setActivePreviewSong(null);
+                            } else {
+                              setActivePreviewSong(song);
+                            }
+                          }}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition ${
+                            activePreviewSong?.id === song.id
+                              ? 'bg-rose-600 text-white shadow-lg animate-pulse border border-rose-300'
+                              : 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-500/30'
+                          }`}
+                        >
+                          {activePreviewSong?.id === song.id ? (
+                            <>
+                              <Pause className="w-3.5 h-3.5 text-white" />
+                              <span>Pausar</span>
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-3.5 h-3.5 text-rose-400 fill-rose-400" />
+                              <span>Escuchar Canción 🎵</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveAdminSong(index)}
+                          className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 text-xs font-semibold flex items-center gap-1 transition"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>Eliminar</span>
+                        </button>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-2">

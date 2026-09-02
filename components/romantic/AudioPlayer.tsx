@@ -20,7 +20,9 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   // Helper to extract Spotify Embed URL
   const getSpotifyEmbedUrl = (url: string): string | null => {
@@ -36,22 +38,51 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   const youtubeId = getYouTubeVideoId(audioUrl);
   const spotifyEmbedUrl = getSpotifyEmbedUrl(audioUrl);
 
+  // Handle Autoplay Trigger when Envelope Opens
   useEffect(() => {
-    if (!youtubeId && !spotifyEmbedUrl && autoPlayTrigger && !hasInteracted && audioRef.current) {
-      audioRef.current
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-          setHasInteracted(true);
-        })
-        .catch(() => {
-          setIsPlaying(false);
-        });
+    if (autoPlayTrigger) {
+      setIsPlaying(true);
+      setHasInteracted(true);
+      if (!youtubeId && !spotifyEmbedUrl && audioRef.current) {
+        audioRef.current
+          .play()
+          .catch(() => {
+            setIsPlaying(false);
+          });
+      }
     }
-  }, [autoPlayTrigger, hasInteracted, spotifyEmbedUrl, youtubeId]);
+  }, [autoPlayTrigger, audioUrl, spotifyEmbedUrl, youtubeId]);
+
+  // YouTube postMessage controller for smooth Play / Pause without reloading iframe
+  useEffect(() => {
+    if (!youtubeId || !iframeRef.current?.contentWindow) return;
+    try {
+      const command = isPlaying ? 'playVideo' : 'pauseVideo';
+      iframeRef.current.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: command, args: '' }),
+        '*'
+      );
+    } catch (e) {
+      console.log('YouTube postMessage error:', e);
+    }
+  }, [isPlaying, youtubeId]);
+
+  // YouTube postMessage controller for Mute / Unmute
+  useEffect(() => {
+    if (!youtubeId || !iframeRef.current?.contentWindow) return;
+    try {
+      const command = isMuted ? 'mute' : 'unMute';
+      iframeRef.current.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: command, args: '' }),
+        '*'
+      );
+    } catch (e) {
+      console.log('YouTube postMessage error:', e);
+    }
+  }, [isMuted, youtubeId]);
 
   const togglePlay = () => {
-    if (audioRef.current) {
+    if (!youtubeId && !spotifyEmbedUrl && audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
@@ -65,7 +96,8 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
           .catch((err) => console.log('Audio play failed:', err));
       }
     } else {
-      setIsPlaying(!isPlaying);
+      setIsPlaying((prev) => !prev);
+      setHasInteracted(true);
     }
   };
 
@@ -80,18 +112,20 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   if (youtubeId) {
     return (
       <div className="fixed top-4 right-4 z-50">
-        {/* Hidden / Compact YouTube Player Iframe */}
-        <div className="relative glass-card-rose rounded-full px-4 py-2 flex items-center gap-3 shadow-xl backdrop-blur-md border border-rose-500/40 text-white transition-all duration-300 hover:scale-105">
-          <div className="hidden">
-            <iframe
-              width="1"
-              height="1"
-              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=${autoPlayTrigger || isPlaying ? 1 : 0}&loop=1&playlist=${youtubeId}&controls=0&mute=${isMuted ? 1 : 0}`}
-              title="YouTube Audio Player"
-              allow="autoplay; encrypted-media"
-            />
-          </div>
+        {/* In-Viewport Transparent YouTube Player Iframe (kept in viewport so Chrome viewport observer allows audio) */}
+        <div className="absolute top-0 right-0 w-1 h-1 opacity-0 pointer-events-none overflow-hidden -z-10">
+          <iframe
+            key={`yt-${youtubeId}-${autoPlayTrigger ? 'active' : 'idle'}`}
+            ref={iframeRef}
+            width="200"
+            height="200"
+            src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&autoplay=${autoPlayTrigger || isPlaying ? 1 : 0}&loop=1&playlist=${youtubeId}&controls=0&mute=${isMuted ? 1 : 0}&playsinline=1`}
+            title="YouTube Audio Player"
+            allow="autoplay; encrypted-media"
+          />
+        </div>
 
+        <div className="relative glass-card-rose rounded-full px-4 py-2 flex items-center gap-3 shadow-xl backdrop-blur-md border border-rose-500/40 text-white transition-all duration-300 hover:scale-105">
           <button
             onClick={togglePlay}
             className="relative w-9 h-9 rounded-full bg-gradient-to-r from-red-600 to-rose-600 flex items-center justify-center shadow-lg hover:shadow-red-500/50 transition-all active:scale-95 shrink-0"

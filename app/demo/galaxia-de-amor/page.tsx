@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InteractiveCosmosIntro } from '@/components/galaxy/InteractiveCosmosIntro';
 import { GalaxyAnniversaryCounter } from '@/components/galaxy/GalaxyAnniversaryCounter';
@@ -11,31 +12,12 @@ import { MemoriesTimeline } from '@/components/romantic/MemoriesTimeline';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import { InlineEditorModal } from '@/components/romantic/InlineEditorModal';
 import { PaymentCheckoutModal } from '@/components/checkout/PaymentCheckoutModal';
-import { defaultRomanticData } from '@/lib/defaultData';
+import { defaultGalaxyData } from '@/lib/defaultData';
 import { RomanticPageData, Order } from '@/types';
 import { Sparkles, Share2, Check, QrCode, Orbit, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-
-// Custom cosmic initial data for Theme 2
-const galaxyInitialData: RomanticPageData = {
-  ...defaultRomanticData,
-  id: 'galaxia-de-amor-demo',
-  envelopeTitle: 'Para el centro de mi universo:',
-  envelopeSubtitle: 'Toca el Núcleo Galáctico para iniciar el viaje por nuestras estrellas 🌌✨',
-  loveLetterTitle: 'Nuestro Amor Escrito en las Estrellas',
-  loveLetterBody: `Si cada estrella en el cielo representara un motivo por el cual te amo, no alcanzaría el universo entero para contar nuestras razones.
-
-Desde el día en que nuestras constelaciones se unieron, supe que mi destino era orbitar siempre a tu lado. Gracias por iluminar mi mundo incluso en las noches más oscuras. Te amo hasta el infinito y más allá.`,
-  questionTitle: '¿Te gustaría seguir explorando el universo a mi lado para siempre?',
-  yesButtonText: '¡Sí, mi universo entero! 🚀💖',
-  yesResponseSubtitle: '¡Prometo iluminar cada uno de tus días bajo este hermoso cielo estrellado! ✨🌌',
-  audioTitle: 'Golden Hour',
-  audioArtist: 'JVKE',
-  audioUrl: 'https://www.youtube.com/watch?v=PEM0Vs8jf1w',
-};
 
 export default function GalaxyThemePage() {
-  const [data, setData] = useState<RomanticPageData>(galaxyInitialData);
+  const [data, setData] = useState<RomanticPageData>(defaultGalaxyData);
   const [isOpened, setIsOpened] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -77,6 +59,17 @@ export default function GalaxyThemePage() {
         ))}
       </div>
 
+      {/* Top Floating Return Header (Z-50) */}
+      <header className="fixed top-4 left-4 z-50">
+        <Link
+          href="/"
+          className="px-4 py-2 rounded-full bg-[#110729]/90 hover:bg-[#1f0e47] text-cyan-300 border border-cyan-500/40 text-xs font-semibold backdrop-blur-md shadow-xl flex items-center gap-2 transition hover:scale-105"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Volver al inicio / Elegir otra plantilla</span>
+        </Link>
+      </header>
+
       {/* Persistent Audio Player */}
       <AudioPlayer
         audioUrl={data.audioUrl}
@@ -84,17 +77,6 @@ export default function GalaxyThemePage() {
         audioArtist={data.audioArtist}
         autoPlayTrigger={isOpened}
       />
-
-      {/* Top Floating Return to Catalog Header */}
-      <header className="fixed top-4 left-4 z-40">
-        <Link
-          href="/"
-          className="px-4 py-2 rounded-full bg-[#110729]/80 hover:bg-[#1f0e47] text-cyan-300 border border-cyan-500/30 text-xs font-semibold backdrop-blur-md shadow-lg flex items-center gap-2 transition"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Volver al Catálogo</span>
-        </Link>
-      </header>
 
       {/* Stage 1: Closed Cosmic Orb Intro */}
       <AnimatePresence mode="wait">
@@ -212,7 +194,7 @@ export default function GalaxyThemePage() {
           className="pointer-events-auto px-5 py-3 rounded-full bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white font-bold text-xs sm:text-sm shadow-2xl shadow-cyan-500/50 border border-cyan-300/40 flex items-center gap-2 transform hover:scale-105 active:scale-95 transition-all backdrop-blur-md"
         >
           <QrCode className="w-4 h-4 text-white" />
-          <span>Pagar y Generar Mi QR</span>
+          <span>Comprar (49bs)</span>
         </button>
       </div>
 

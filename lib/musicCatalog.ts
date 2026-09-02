@@ -11,9 +11,16 @@ export interface SongTrack {
 
 export const getYouTubeVideoId = (url: string): string | null => {
   if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
+  // Match standard watch?v=, embed/, v/, shorts/, youtu.be/, music.youtube.com
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
+  if (match && match[1]) return match[1];
+  
+  // Fallback 11-char extract for direct IDs or dirty URLs
+  const fallback = url.match(/([a-zA-Z0-9_-]{11})/);
+  if (url.includes('youtube') || url.includes('youtu.be')) {
+    return fallback ? fallback[1] : null;
+  }
+  return null;
 };
 
 export const romanticMusicCatalog: SongTrack[] = [
@@ -23,18 +30,18 @@ export const romanticMusicCatalog: SongTrack[] = [
     artist: 'Ed Sheeran',
     category: 'Romántico',
     coverUrl: 'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=300&q=80',
-    audioUrl: 'https://www.youtube.com/watch?v=2Vv-BfVoq4g',
-    youtubeId: '2Vv-BfVoq4g',
+    audioUrl: 'https://www.youtube.com/watch?v=cNGjD0VG4R8',
+    youtubeId: 'cNGjD0VG4R8',
     duration: '4:23',
   },
   {
     id: 'song-2',
-    title: 'A Thousand Years',
-    artist: 'Christina Perri',
-    category: 'Acústico',
+    title: 'Completamente Enamorados',
+    artist: 'Chayanne',
+    category: 'Romántico',
     coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=300&q=80',
-    audioUrl: 'https://www.youtube.com/watch?v=rtOvBOTyX03',
-    youtubeId: 'rtOvBOTyX03',
+    audioUrl: 'https://www.youtube.com/watch?v=XXeoQXXDUMk',
+    youtubeId: 'XXeoQXXDUMk',
     duration: '4:45',
   },
   {
@@ -53,8 +60,8 @@ export const romanticMusicCatalog: SongTrack[] = [
     artist: 'Stephen Sanchez',
     category: 'Romántico',
     coverUrl: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=300&q=80',
-    audioUrl: 'https://www.youtube.com/watch?v=G7KNmW9a75Y',
-    youtubeId: 'G7KNmW9a75Y',
+    audioUrl: 'https://www.youtube.com/watch?v=GhQxrCrVSyw',
+    youtubeId: 'GhQxrCrVSyw',
     duration: '2:57',
   },
   {

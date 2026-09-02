@@ -1,20 +1,71 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Edit3, X, Save, Sparkles, Image as ImageIcon, Heart, Music, Calendar, User, Radio, Disc, Search } from 'lucide-react';
-import { RomanticPageData } from '@/types';
+import {
+  Edit3,
+  X,
+  Save,
+  Sparkles,
+  Image as ImageIcon,
+  Heart,
+  Music,
+  Calendar,
+  User,
+  Disc,
+  Loader2,
+  Clock,
+  Plus,
+  Trash2
+} from 'lucide-react';
+import { RomanticPageData, MemoryItem } from '@/types';
 import { MusicPickerModal } from '@/components/romantic/MusicPickerModal';
+import { uploadClientPhotoToSupabase } from '@/lib/supabase';
+import { defaultRomanticData } from '@/lib/defaultData';
 
 interface InlineEditorModalProps {
   data: RomanticPageData;
   onSave: (newData: RomanticPageData) => void;
 }
 
+const DEFAULT_MEMORIES: MemoryItem[] = [
+  {
+    id: 'm1',
+    date: '13 de Abril, 2025',
+    title: 'El Día que Comenzó Todo',
+    description: 'Nuestra salida juntos donde declare lo que sentia por ti y me dijiste que si, fue el dia mas feliz de mi vida.',
+    icon: '✨',
+  },
+  {
+    id: 'm2',
+    date: '31 de Diciembre, 2025',
+    title: 'Año Nuevo Juntos',
+    description: 'Recibimos el año abrazados pidiendo el mismo deseo: seguir siempre unidos y que nunca nos falte el amor el uno del otro',
+    icon: '🎆',
+  },
+  {
+    id: 'm3',
+    date: '14 de Agosto, 2026',
+    title: 'Celebramos tu cumpleaños mi amor ❤️ ',
+    description: 'Desde primeras horas de la mañana disfutamos juntos cocinando, compartiendo en familia y comiendo torta.',
+    icon: '🌹',
+  },
+];
+
 export const InlineEditorModal: React.FC<InlineEditorModalProps> = ({ data, onSave }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMusicPickerOpen, setIsMusicPickerOpen] = useState(false);
   const [formData, setFormData] = useState<RomanticPageData>(data);
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Ensure memories has 3 default items if empty
+    const initialMemories = data.memories && data.memories.length > 0 ? data.memories : DEFAULT_MEMORIES;
+    setFormData({
+      ...data,
+      memories: initialMemories,
+    });
+  }, [data, isOpen]);
 
   const handleInputChange = (field: keyof RomanticPageData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -24,6 +75,33 @@ export const InlineEditorModal: React.FC<InlineEditorModalProps> = ({ data, onSa
     const updatedPhotos = [...formData.photos];
     updatedPhotos[index] = { ...updatedPhotos[index], url: newUrl };
     setFormData((prev) => ({ ...prev, photos: updatedPhotos }));
+  };
+
+  const handleFileUpload = async (index: number, file: File) => {
+    setUploadingIndex(index);
+    try {
+      const publicUrl = await uploadClientPhotoToSupabase(file, 'personalizar', `photo-${index + 1}-${Date.now()}.jpg`);
+      handlePhotoUrlChange(index, publicUrl);
+    } catch (err) {
+      console.error('Error al subir foto:', err);
+    } finally {
+      setUploadingIndex(null);
+    }
+  };
+
+  const handleMemoryChange = (index: number, field: keyof MemoryItem, value: string) => {
+    const updated = [...(formData.memories || [])];
+    if (!updated[index]) {
+      updated[index] = {
+        id: `m${index + 1}`,
+        date: '',
+        title: '',
+        description: '',
+        icon: '❤️',
+      };
+    }
+    updated[index] = { ...updated[index], [field]: value };
+    setFormData((prev) => ({ ...prev, memories: updated }));
   };
 
   const handleSelectSongFromPicker = (song: { title: string; artist: string; url: string }) => {
@@ -78,7 +156,7 @@ export const InlineEditorModal: React.FC<InlineEditorModalProps> = ({ data, onSa
                     Editar Tu Detalle Romántico
                   </h3>
                   <p className="text-xs text-rose-300/70">
-                    Modifica los datos, fotos y música (Estilo Historias) en tiempo real.
+                    Modifica los datos, fotos, fechas importantes y música en tiempo real.
                   </p>
                 </div>
               </div>
@@ -157,7 +235,7 @@ export const InlineEditorModal: React.FC<InlineEditorModalProps> = ({ data, onSa
                   />
                 </div>
 
-                {/* SECCIÓN MÚSICA ESTILO HISTORIAS (FACEBOOK / INSTAGRAM) */}
+                {/* SECCIÓN MÚSICA ESTILO HISTORIAS */}
                 <div className="bg-gradient-to-r from-[#210c33] via-[#2d1145] to-[#210c33] p-5 rounded-2xl border border-rose-500/40 space-y-3 shadow-xl">
                   <div className="flex items-center justify-between border-b border-rose-500/20 pb-2">
                     <div className="flex items-center gap-2 text-rose-200 text-xs font-bold">
@@ -201,51 +279,152 @@ export const InlineEditorModal: React.FC<InlineEditorModalProps> = ({ data, onSa
                   </div>
                 </div>
 
-                {/* Fotos URLs & Supabase Upload */}
+                {/* FOTOS GALERÍA - DIRECT UPLOAD TO SUPABASE STORAGE */}
                 <div>
-                  <label className="block text-xs font-semibold text-rose-300 mb-2 flex items-center gap-1.5">
-                    <ImageIcon className="w-3.5 h-3.5 text-rose-400" />
-                    Fotos de la Galería (Subir o Pegar URL)
-                  </label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs font-semibold text-rose-300 flex items-center gap-1.5">
+                      <ImageIcon className="w-3.5 h-3.5 text-rose-400" />
+                      Fotos de la Galería (Subida a Supabase Storage)
+                    </label>
+                    <span className="text-[10px] text-rose-300/70">
+                      Subida directa y segura ☁️
+                    </span>
+                  </div>
+
                   <div className="space-y-3">
                     {formData.photos.map((photo, idx) => (
-                      <div key={photo.id} className="p-3 bg-[#210e30] rounded-xl border border-rose-500/20 space-y-2">
+                      <div key={photo.id || idx} className="p-3 bg-[#210e30] rounded-xl border border-rose-500/20 space-y-2">
                         <div className="flex gap-2 items-center">
                           <span className="text-xs text-rose-400 font-mono font-bold w-5">{idx + 1}.</span>
                           <input
                             type="text"
                             value={photo.url}
                             onChange={(e) => handlePhotoUrlChange(idx, e.target.value)}
-                            placeholder="URL de la imagen"
-                            className="flex-1 bg-[#28133b] border border-rose-500/30 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-rose-400"
+                            placeholder="URL de la foto en Supabase / Web"
+                            className="flex-1 bg-[#28133b] border border-rose-500/30 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-rose-400 truncate"
                           />
-                          <label className="px-3 py-1.5 rounded-xl bg-rose-600/30 hover:bg-rose-600/50 text-rose-200 font-bold text-xs cursor-pointer border border-rose-500/30 flex items-center gap-1 shrink-0">
-                            <span>Subir 📸</span>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  const reader = new FileReader();
-                                  reader.onloadend = () => {
-                                    handlePhotoUrlChange(idx, reader.result as string);
-                                  };
-                                  reader.readAsDataURL(file);
-                                }
-                              }}
-                            />
+                          <label className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-bold text-xs cursor-pointer border border-rose-400/40 flex items-center gap-1 shrink-0 shadow-md">
+                            {uploadingIndex === idx ? (
+                              <>
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                <span>Subiendo...</span>
+                              </>
+                            ) : (
+                              <>
+                                <span>Subir Foto 📸</span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      handleFileUpload(idx, file);
+                                    }
+                                  }}
+                                />
+                              </>
+                            )}
                           </label>
                         </div>
+
                         {photo.url && (
-                          <div className="flex items-center gap-2 pl-7">
-                            <img src={photo.url} alt="Preview" className="w-10 h-10 object-cover rounded-lg border border-rose-500/40" />
-                            <span className="text-[10px] text-rose-300/70 truncate">Vista previa cargada</span>
+                          <div className="flex items-center gap-3 pl-7 pt-1">
+                            <img src={photo.url} alt="Preview" className="w-12 h-12 object-cover rounded-lg border border-rose-500/40 shadow-sm" />
+                            <div className="min-w-0">
+                              <span className="text-[11px] text-green-400 font-semibold block flex items-center gap-1">
+                                <span>✓ Almacenada correctamente</span>
+                              </span>
+                              <span className="text-[10px] text-rose-300/60 block truncate max-w-[300px]">
+                                {photo.url}
+                              </span>
+                            </div>
                           </div>
                         )}
                       </div>
                     ))}
+                  </div>
+                </div>
+
+                {/* NUESTRA HISTORIA EN FECHAS (3 FECHAS IMPORTANTES) */}
+                <div className="bg-[#1c0a2c] p-5 rounded-2xl border border-rose-500/30 space-y-4">
+                  <div className="flex items-center justify-between border-b border-rose-500/20 pb-2">
+                    <div className="flex items-center gap-2 text-rose-200 text-xs font-bold">
+                      <Clock className="w-4 h-4 text-rose-400" />
+                      <span>Nuestra Historia en Fechas (3 Fechas Importantes) 🗓️❤️</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {[0, 1, 2].map((idx) => {
+                      const memory = formData.memories?.[idx] || {
+                        id: `m${idx + 1}`,
+                        date: '',
+                        title: '',
+                        description: '',
+                        icon: '❤️',
+                      };
+
+                      return (
+                        <div key={idx} className="p-3.5 bg-[#250d3a] rounded-xl border border-rose-500/20 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-rose-300 font-serif">
+                              Fecha Importante #{idx + 1}
+                            </span>
+                            <div className="flex items-center gap-1">
+                              <span className="text-xs text-rose-300/70">Icono:</span>
+                              <input
+                                type="text"
+                                value={memory.icon || '❤️'}
+                                onChange={(e) => handleMemoryChange(idx, 'icon', e.target.value)}
+                                className="w-10 text-center bg-[#190829] border border-rose-500/30 rounded-lg py-0.5 text-xs text-white"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div>
+                              <label className="block text-[11px] text-rose-300/80 mb-1">
+                                Fecha (ej: 15 de Mayo, 2023):
+                              </label>
+                              <input
+                                type="text"
+                                value={memory.date}
+                                onChange={(e) => handleMemoryChange(idx, 'date', e.target.value)}
+                                placeholder="Ej: 15 de Mayo, 2023"
+                                className="w-full bg-[#190829] border border-rose-500/30 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-rose-400"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-[11px] text-rose-300/80 mb-1">
+                                Título del Recuerdo:
+                              </label>
+                              <input
+                                type="text"
+                                value={memory.title}
+                                onChange={(e) => handleMemoryChange(idx, 'title', e.target.value)}
+                                placeholder="Ej: El Día que Comenzó Todo"
+                                className="w-full bg-[#190829] border border-rose-500/30 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-rose-400"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-[11px] text-rose-300/80 mb-1">
+                              Descripción / Recuerdo:
+                            </label>
+                            <textarea
+                              rows={2}
+                              value={memory.description}
+                              onChange={(e) => handleMemoryChange(idx, 'description', e.target.value)}
+                              placeholder="Ej: Nuestra primera salida juntos donde nos quedamos hablando por horas..."
+                              className="w-full bg-[#190829] border border-rose-500/30 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-rose-400 leading-relaxed"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
