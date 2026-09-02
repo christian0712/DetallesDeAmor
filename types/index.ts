@@ -12,6 +12,14 @@ export interface MemoryItem {
   icon?: string;
 }
 
+export interface LoveVoucherItem {
+  id: string;
+  title: string;
+  description: string;
+  icon?: string;
+  redeemed?: boolean;
+}
+
 export interface RomanticPageData {
   id: string;
   recipientName: string;
@@ -30,7 +38,8 @@ export interface RomanticPageData {
   audioUrl: string; // MP3 URL or audio source
   photos: PhotoItem[];
   memories: MemoryItem[];
-  themeColor: 'rose' | 'wine' | 'purple' | 'gold';
+  vouchers?: LoveVoucherItem[];
+  themeColor: 'rose' | 'wine' | 'purple' | 'gold' | 'emerald';
 }
 
 export interface TemplateInfo {

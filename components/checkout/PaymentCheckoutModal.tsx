@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   CreditCard,
@@ -180,6 +181,7 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
               </h3>
               <p className="text-rose-200/70 text-xs sm:text-sm mt-1">
                 Total a pagar: <strong className="text-amber-400 font-bold text-base">{paymentConfig.priceBs} Bs / {paymentConfig.priceUsdt} USDT</strong>
+                <span className="block text-[11px] text-rose-300/80 mt-0.5 font-medium">✨ Incluye publicación online activa por 1 Año Completo</span>
               </p>
             </div>
 
@@ -395,7 +397,7 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
             </form>
           </div>
         ) : (
-          /* Success Screen with Credentials */
+          /* Success Screen with Credentials Emphasis */
           <div className="text-center py-4 space-y-6">
             <div className="w-16 h-16 rounded-full bg-green-500/20 border-2 border-green-400 text-green-400 flex items-center justify-center mx-auto animate-bounce">
               <CheckCircle2 className="w-10 h-10" />
@@ -403,61 +405,69 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
 
             <div>
               <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white mb-2">
-                ¡Pedido Registrado con Éxito! 🎉
+                ¡Comprobante Registrado con Éxito! 🎉
               </h3>
-              <p className="text-rose-200/80 text-sm max-w-md mx-auto">
-                Tu detalle romántico ha sido enviado al equipo de administración para su revisión y activación.
+              <p className="text-rose-200/90 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
+                Tu detalle para <strong className="text-white font-bold">{createdOrder.coupleTitle}</strong> fue enviado a administración para su revisión y aprobación.
               </p>
             </div>
 
-            {/* Generated Account Card */}
-            <div className="glass-card-rose rounded-2xl p-5 border border-rose-500/40 text-left space-y-3 max-w-md mx-auto">
-              <div className="flex items-center gap-2 text-rose-300 font-bold text-sm border-b border-rose-500/20 pb-2">
-                <UserCheck className="w-4 h-4 text-rose-400" />
-                <span>Datos de tu Cuenta Automática</span>
+            {/* HIGH-IMPACT CREDENTIALS BOX */}
+            <div className="bg-gradient-to-br from-[#2a133a] via-[#1a0a28] to-[#2a133a] rounded-3xl p-5 border-2 border-amber-400/80 shadow-2xl text-left space-y-4 max-w-md mx-auto relative overflow-hidden">
+              <div className="flex items-center gap-2 text-amber-300 font-extrabold text-sm sm:text-base border-b border-amber-500/30 pb-2.5">
+                <Lock className="w-5 h-5 text-amber-400 animate-pulse shrink-0" />
+                <span>¿CÓMO VER EL ESTADO DE TU PEDIDO? 🔑</span>
               </div>
 
-              <div className="text-xs space-y-2">
-                <div className="flex justify-between items-center bg-[#251138] p-2 rounded-lg border border-rose-500/20">
-                  <span className="text-rose-300/70">Código de Usuario:</span>
-                  <span className="font-bold text-amber-300 font-mono text-sm px-2 py-0.5 rounded bg-amber-950/60 border border-amber-500/40">
+              <p className="text-xs text-rose-100 font-light leading-relaxed">
+                Para consultar si tu pedido ya fue aprobado o ver tu página/QR activo en cualquier momento, ingresa a la sección <strong className="text-amber-300 font-bold">"Mi Cuenta"</strong> utilizando tus credenciales de acceso:
+              </p>
+
+              {/* USER & PASSWORD DISPLAYED TOGETHER */}
+              <div className="bg-[#12051f] p-4 rounded-2xl border border-amber-500/40 space-y-3 shadow-inner">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-rose-300/80 font-bold tracking-wider">👤 USUARIO:</span>
+                  <span className="font-mono font-black text-amber-300 text-sm sm:text-base bg-amber-950/80 px-3 py-1 rounded-xl border border-amber-500/50 shadow-sm">
                     {createdOrder.clientCode || createdOrder.id}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-rose-300/70">Pareja:</span>
-                  <span className="font-bold text-white">{createdOrder.coupleTitle}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-rose-300/70">Celular (Contraseña):</span>
-                  <span className="font-bold text-rose-200 font-mono">{createdOrder.phoneNumber}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-rose-300/70">Estado Actual:</span>
-                  <span className="font-bold text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded text-[11px] border border-amber-500/40">
-                    ⏱️ PENDIENTE DE APROBACIÓN
+
+                <div className="flex items-center justify-between gap-2 border-t border-rose-500/20 pt-2.5">
+                  <span className="text-xs text-rose-300/80 font-bold tracking-wider">🔑 CONTRASEÑA:</span>
+                  <span className="font-mono font-black text-rose-200 text-sm sm:text-base bg-rose-950/80 px-3 py-1 rounded-xl border border-rose-500/50 shadow-sm">
+                    {createdOrder.phoneNumber}
                   </span>
                 </div>
               </div>
-            </div>
 
-            <p className="text-xs text-rose-300/70 max-w-sm mx-auto">
-              Una vez que el administrador apruebe tu pago, se generará tu **Código QR Oficial** para ingresar a la invitación.
-            </p>
+              <div className="pt-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                <span className="text-rose-300/80">
+                  Estado: <strong className="text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded text-[11px] border border-amber-500/40">⏱️ PENDIENTE DE APROBACIÓN</strong>
+                </span>
+                <Link
+                  href="/mi-cuenta"
+                  onClick={onClose}
+                  className="font-bold text-amber-300 hover:text-white underline flex items-center gap-1 transition"
+                >
+                  <span>Ir a Login Cliente</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
               <a
-                href={`https://wa.me/59177123456?text=Hola,%20acabo%20de%20realizar%20el%20pedido%20${createdOrder.id}%20para%20${encodeURIComponent(createdOrder.coupleTitle)}.`}
+                href={`https://wa.me/59175949161?text=Hola,%20acabo%20de%20enviar%20el%20comprobante%20de%20pago%20para%20el%20pedido%20${createdOrder.clientCode || createdOrder.id}%20de%20${encodeURIComponent(createdOrder.coupleTitle)}.`}
                 target="_blank"
                 rel="noreferrer"
-                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg"
+                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-xl shadow-emerald-500/30 transition border border-emerald-300/30"
               >
                 <span>Acelerar aprobación por WhatsApp</span>
               </a>
 
               <button
                 onClick={onClose}
-                className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 font-semibold text-sm transition"
+                className="px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-rose-200 font-semibold text-sm transition border border-rose-500/30"
               >
                 Cerrar
               </button>

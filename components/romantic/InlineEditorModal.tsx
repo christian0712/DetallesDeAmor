@@ -371,14 +371,34 @@ export const InlineEditorModal: React.FC<InlineEditorModalProps> = ({ data, onSa
                             <span className="text-xs font-bold text-rose-300 font-serif">
                               Fecha Importante #{idx + 1}
                             </span>
-                            <div className="flex items-center gap-1">
-                              <span className="text-xs text-rose-300/70">Icono:</span>
-                              <input
-                                type="text"
-                                value={memory.icon || '❤️'}
-                                onChange={(e) => handleMemoryChange(idx, 'icon', e.target.value)}
-                                className="w-10 text-center bg-[#190829] border border-rose-500/30 rounded-lg py-0.5 text-xs text-white"
-                              />
+                            <div className="flex items-center gap-2">
+                              <span className="text-[11px] text-rose-300/80 font-semibold">Icono Elegido:</span>
+                              <span className="text-base px-2 py-0.5 rounded-lg bg-rose-500/20 border border-rose-500/40 text-white font-bold">
+                                {memory.icon || '❤️'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Interactive Palette Selection */}
+                          <div>
+                            <span className="block text-[11px] text-rose-300/80 mb-1 font-semibold">
+                              Selecciona un icono de la paleta:
+                            </span>
+                            <div className="flex flex-wrap gap-1.5 p-2 bg-[#190829] rounded-xl border border-rose-500/30 max-h-28 overflow-y-auto">
+                              {['❤️', '✨', '💍', '🌹', '🎆', '☕', '📜', '📸', '🌌', '🚀', '🎁', '🍾', '✈️', '🎶', '💌', '⭐', '🥳', '🍦', '🥂', '🏖️', '🎬', '🎟️'].map((ico) => (
+                                <button
+                                  key={ico}
+                                  type="button"
+                                  onClick={() => handleMemoryChange(idx, 'icon', ico)}
+                                  className={`w-7 h-7 rounded-lg text-sm flex items-center justify-center transition-all ${
+                                    (memory.icon || '❤️') === ico
+                                      ? 'bg-gradient-to-tr from-rose-500 to-pink-600 text-white scale-110 shadow-md border border-white'
+                                      : 'bg-rose-950/40 hover:bg-rose-500/30 text-white'
+                                  }`}
+                                >
+                                  {ico}
+                                </button>
+                              ))}
                             </div>
                           </div>
 

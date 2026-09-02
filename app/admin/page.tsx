@@ -37,7 +37,12 @@ import {
   Youtube,
   Play,
   Pause,
-  Volume2
+  Volume2,
+  BarChart3,
+  TrendingUp,
+  PieChart,
+  ZoomIn,
+  Award
 } from 'lucide-react';
 import { Order, OrderStatus, PaymentMethodsConfig, BankAccount, AdminSong } from '@/types';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
@@ -65,12 +70,13 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState('');
   
   // Dashboard Tabs
-  const [activeTab, setActiveTab] = useState<'orders' | 'payment_methods' | 'music_catalog'>('orders');
+  const [activeTab, setActiveTab] = useState<'orders' | 'analytics' | 'payment_methods' | 'music_catalog'>('orders');
   
   // Orders State
   const [orders, setOrders] = useState<Order[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<'ALL' | OrderStatus>('ALL');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [previewReceiptUrl, setPreviewReceiptUrl] = useState<string | null>(null);
 
   // Payment Methods Config State
   const [paymentConfig, setPaymentConfig] = useState<PaymentMethodsConfig>(defaultPaymentConfig);
@@ -361,6 +367,18 @@ export default function AdminPage() {
             </button>
 
             <button
+              onClick={() => setActiveTab('analytics')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                activeTab === 'analytics'
+                  ? 'bg-gradient-to-r from-amber-500 via-rose-600 to-pink-600 text-white shadow-lg shadow-amber-500/20'
+                  : 'text-amber-300/80 hover:text-white'
+              }`}
+            >
+              <BarChart3 className="w-4 h-4 text-amber-300 animate-pulse" />
+              <span>Dashboard Estadístico 📊</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('payment_methods')}
               className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                 activeTab === 'payment_methods'
@@ -558,6 +576,218 @@ export default function AdminPage() {
                 </motion.div>
               ))
             )}
+          </div>
+        </div>
+      )}
+
+      {/* TAB: STATISTICAL ANALYTICS DASHBOARD */}
+      {activeTab === 'analytics' && (
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Dashboard Header Bar */}
+          <div className="glass-card-rose p-6 rounded-3xl border border-amber-500/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-500/40 mb-2">
+                <BarChart3 className="w-3.5 h-3.5 text-amber-400" />
+                <span>Métricas en Tiempo Real</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white flex items-center gap-2">
+                Análisis Estadístico del Sistema 📊
+              </h2>
+              <p className="text-xs text-rose-200/70 mt-1">
+                Visualización de ingresos, tendencias de ventas por plantilla y canales de pago preferidos.
+              </p>
+            </div>
+
+            <div className="bg-[#1e0a2e] px-4 py-3 rounded-2xl border border-rose-500/30 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg">
+                💰
+              </div>
+              <div>
+                <span className="text-[11px] text-rose-300/70 font-semibold uppercase block">Recaudación Total (Bs)</span>
+                <span className="text-xl font-bold font-mono text-amber-400">
+                  {orders.filter(o => o.status === 'APROBADO').reduce((acc, o) => acc + (o.amountBs || 49), 0)} Bs
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Top 4 KPI Metrics Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* KPI 1: Ingresos Aprobados */}
+            <div className="bg-gradient-to-br from-[#24133b] to-[#140624] p-5 rounded-2xl border border-emerald-500/40 shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 blur-xl pointer-events-none rounded-full" />
+              <span className="text-xs font-bold text-emerald-300 uppercase tracking-wider block mb-1">
+                Ingresos Aprobados
+              </span>
+              <p className="text-3xl font-extrabold font-mono text-white">
+                {orders.filter(o => o.status === 'APROBADO').reduce((acc, o) => acc + (o.amountBs || 49), 0)} <span className="text-base text-emerald-400 font-sans">Bs</span>
+              </p>
+              <span className="text-[11px] text-emerald-300/70 font-mono mt-2 block">
+                / {orders.filter(o => o.status === 'APROBADO').reduce((acc, o) => acc + (o.amountUsdt || 7), 0)} USDT en Crypto
+              </span>
+            </div>
+
+            {/* KPI 2: Ingresos Proyectados (Pendientes) */}
+            <div className="bg-gradient-to-br from-[#2b170c] to-[#170904] p-5 rounded-2xl border border-amber-500/40 shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/10 blur-xl pointer-events-none rounded-full" />
+              <span className="text-xs font-bold text-amber-300 uppercase tracking-wider block mb-1">
+                Ingresos por Aprobar
+              </span>
+              <p className="text-3xl font-extrabold font-mono text-amber-400">
+                {orders.filter(o => o.status === 'PENDIENTE').reduce((acc, o) => acc + (o.amountBs || 49), 0)} <span className="text-base text-amber-300 font-sans">Bs</span>
+              </p>
+              <span className="text-[11px] text-amber-200/70 mt-2 block">
+                ⏱️ {orders.filter(o => o.status === 'PENDIENTE').length} pedidos esperando revisión
+              </span>
+            </div>
+
+            {/* KPI 3: Tasa de Conversión / Aprobación */}
+            <div className="bg-gradient-to-br from-[#2b0c24] to-[#170413] p-5 rounded-2xl border border-rose-500/40 shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/10 blur-xl pointer-events-none rounded-full" />
+              <span className="text-xs font-bold text-rose-300 uppercase tracking-wider block mb-1">
+                Tasa de Aprobación
+              </span>
+              <p className="text-3xl font-extrabold font-mono text-white">
+                {orders.length > 0
+                  ? Math.round((orders.filter(o => o.status === 'APROBADO').length / orders.length) * 100)
+                  : 0}%
+              </p>
+              <span className="text-[11px] text-rose-300/70 mt-2 block">
+                {orders.filter(o => o.status === 'APROBADO').length} aprobados de {orders.length} totales
+              </span>
+            </div>
+
+            {/* KPI 4: Ticket Promedio por Cliente */}
+            <div className="bg-gradient-to-br from-[#0c1f2b] to-[#040e17] p-5 rounded-2xl border border-cyan-500/40 shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/10 blur-xl pointer-events-none rounded-full" />
+              <span className="text-xs font-bold text-cyan-300 uppercase tracking-wider block mb-1">
+                Ticket Promedio
+              </span>
+              <p className="text-3xl font-extrabold font-mono text-cyan-300">
+                {orders.length > 0
+                  ? Math.round(
+                      orders.reduce((acc, o) => acc + (o.amountBs || 49), 0) / orders.length
+                    )
+                  : 49} <span className="text-base text-cyan-400 font-sans">Bs</span>
+              </p>
+              <span className="text-[11px] text-cyan-200/70 mt-2 block">
+                Basado en planes de 49 Bs y 99 Bs VIP
+              </span>
+            </div>
+          </div>
+
+          {/* Detailed Statistics Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Template Popularity Chart / Breakdown */}
+            <div className="glass-card-rose p-6 rounded-3xl border border-rose-500/30 space-y-6">
+              <div className="flex items-center justify-between border-b border-rose-500/20 pb-3">
+                <h3 className="text-lg font-bold font-serif text-white flex items-center gap-2">
+                  <Award className="w-5 h-5 text-amber-400" />
+                  Popularidad por Plantilla Vendida
+                </h3>
+                <span className="text-xs text-rose-300/70 font-mono">Desglose %</span>
+              </div>
+
+              <div className="space-y-5">
+                {[
+                  {
+                    name: '💌 El Sobre de Amor Animado (Plantilla 1)',
+                    count: orders.filter(
+                      o => o.pageData?.themeColor === 'rose' || o.pageData?.themeColor === 'wine' || !o.pageData?.themeColor
+                    ).length,
+                    color: 'from-rose-500 to-pink-600',
+                  },
+                  {
+                    name: '🌌 Galaxia de Recuerdos (Plantilla 2)',
+                    count: orders.filter(o => o.pageData?.themeColor === 'purple').length,
+                    color: 'from-cyan-500 to-purple-600',
+                  },
+                  {
+                    name: '📸 Álbum Polaroid Vintage & Vinilo (Plantilla 3)',
+                    count: orders.filter(o => o.pageData?.themeColor === 'gold').length,
+                    color: 'from-amber-500 to-yellow-600',
+                  },
+                  {
+                    name: '🎁 Caja de Regalo 3D & Vales de Amor (Plantilla 4)',
+                    count: orders.filter(o => o.pageData?.themeColor === 'emerald').length,
+                    color: 'from-emerald-500 to-teal-600',
+                  },
+                ].map((item, idx) => {
+                  const percentage = orders.length > 0 ? Math.round((item.count / orders.length) * 100) : 0;
+                  return (
+                    <div key={idx} className="space-y-1.5">
+                      <div className="flex justify-between items-center text-xs font-semibold">
+                        <span className="text-white">{item.name}</span>
+                        <span className="font-mono text-rose-300">
+                          {item.count} pedidos ({percentage}%)
+                        </span>
+                      </div>
+                      <div className="w-full h-3 bg-[#170929] rounded-full overflow-hidden border border-rose-500/20 p-0.5">
+                        <div
+                          className={`h-full rounded-full bg-gradient-to-r ${item.color} transition-all duration-700`}
+                          style={{ width: `${Math.max(percentage, 5)}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Payment Methods Distribution */}
+            <div className="glass-card-rose p-6 rounded-3xl border border-rose-500/30 space-y-6">
+              <div className="flex items-center justify-between border-b border-rose-500/20 pb-3">
+                <h3 className="text-lg font-bold font-serif text-white flex items-center gap-2">
+                  <PieChart className="w-5 h-5 text-cyan-400" />
+                  Canales de Pago Preferidos
+                </h3>
+                <span className="text-xs text-cyan-300/70 font-mono">Porcentaje de Uso</span>
+              </div>
+
+              <div className="space-y-5">
+                {[
+                  {
+                    label: '📱 QR Bolivia (QR Simple / Pago Móvil)',
+                    count: orders.filter(o => o.paymentMethod === 'qr_bolivia').length,
+                    badge: 'Recomendado',
+                    color: 'bg-emerald-500',
+                  },
+                  {
+                    label: '🏦 Transferencias Bancarias',
+                    count: orders.filter(o => o.paymentMethod === 'bank_transfer').length,
+                    badge: 'Bancos',
+                    color: 'bg-indigo-500',
+                  },
+                  {
+                    label: '🪙 Binance Pay & Crypto (USDT)',
+                    count: orders.filter(o => o.paymentMethod === 'binance_pay').length,
+                    badge: 'Crypto',
+                    color: 'bg-amber-500',
+                  },
+                ].map((m, idx) => {
+                  const pct = orders.length > 0 ? Math.round((m.count / orders.length) * 100) : 0;
+                  return (
+                    <div key={idx} className="bg-[#1a082b] p-4 rounded-2xl border border-rose-500/20 space-y-2">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="font-bold text-white flex items-center gap-2">
+                          <span className={`w-2.5 h-2.5 rounded-full ${m.color}`} />
+                          {m.label}
+                        </span>
+                        <span className="font-mono text-amber-300 font-bold">
+                          {m.count} ({pct}%)
+                        </span>
+                      </div>
+                      <div className="w-full h-2 bg-[#0d0417] rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${m.color} transition-all duration-700`}
+                          style={{ width: `${Math.max(pct, 3)}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -1196,17 +1426,38 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* Receipt Image Preview */}
+                {/* Receipt Image Preview with Full Uncropped Display */}
                 {selectedOrder.receiptUrl && (
-                  <div>
-                    <span className="block font-semibold text-rose-300 mb-2">Comprobante de Pago:</span>
-                    <div className="rounded-xl overflow-hidden border border-rose-500/30 max-h-56 bg-black">
+                  <div className="bg-[#210c33] p-4 rounded-2xl border border-rose-500/30 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-rose-300 text-xs flex items-center gap-1.5">
+                        <span>📸 Comprobante de Pago Adjuntado</span>
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() => setPreviewReceiptUrl(selectedOrder.receiptUrl || null)}
+                        className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-xs flex items-center gap-1.5 border border-amber-500/40 transition shadow-sm"
+                      >
+                        <ZoomIn className="w-3.5 h-3.5" />
+                        <span>Ver Foto Completa 🔍</span>
+                      </button>
+                    </div>
+
+                    <div
+                      onClick={() => setPreviewReceiptUrl(selectedOrder.receiptUrl || null)}
+                      className="rounded-2xl overflow-hidden border-2 border-rose-500/40 bg-black/80 cursor-pointer hover:border-amber-400 transition p-2 flex items-center justify-center min-h-[220px] max-h-[55vh]"
+                    >
                       <img
                         src={selectedOrder.receiptUrl}
-                        alt="Comprobante"
-                        className="w-full h-full object-contain"
+                        alt="Comprobante de Pago"
+                        className="max-h-[50vh] w-auto max-w-full object-contain rounded-xl shadow-2xl"
                       />
                     </div>
+
+                    <p className="text-[11px] text-rose-300/70 text-center font-light">
+                      💡 Haz clic sobre la imagen para abrir la captura del comprobante en alta resolución.
+                    </p>
                   </div>
                 )}
 
@@ -1264,6 +1515,56 @@ export default function AdminPage() {
                 >
                   Cerrar
                 </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+      {/* Full-Screen Receipt Lightbox Modal */}
+      <AnimatePresence>
+        {previewReceiptUrl && (
+          <div
+            onClick={() => setPreviewReceiptUrl(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl overflow-y-auto cursor-pointer"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl max-h-[92vh] bg-[#140621] p-4 sm:p-6 rounded-3xl border-2 border-amber-400/80 shadow-[0_0_50px_rgba(245,158,11,0.3)] flex flex-col items-center justify-center text-white"
+            >
+              <button
+                onClick={() => setPreviewReceiptUrl(null)}
+                className="absolute top-4 right-4 text-white hover:text-rose-300 px-3 py-1.5 rounded-full bg-rose-600/80 hover:bg-rose-600 border border-white/20 z-20 font-bold text-xs shadow-lg transition"
+              >
+                ✕ Cerrar Vista
+              </button>
+
+              <div className="text-center mb-3">
+                <span className="text-amber-300 text-xs font-bold font-mono uppercase tracking-wider block">
+                  🔍 Comprobante de Pago Alta Resolución
+                </span>
+              </div>
+
+              <div className="overflow-auto max-h-[75vh] w-full flex items-center justify-center p-2 bg-black/60 rounded-2xl border border-rose-500/20">
+                <img
+                  src={previewReceiptUrl}
+                  alt="Comprobante Completo"
+                  className="max-h-[72vh] w-auto max-w-full object-contain rounded-xl shadow-2xl"
+                />
+              </div>
+
+              <div className="mt-4 flex gap-3">
+                <a
+                  href={previewReceiptUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xl transition"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Abrir en Nueva Pestaña / Descargar</span>
+                </a>
               </div>
             </motion.div>
           </div>

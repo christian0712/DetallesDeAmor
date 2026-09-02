@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Heart, Sparkles, ArrowRight, Play, Eye, Flame, Gift, Star, CheckCircle, Lock, User, Crown } from 'lucide-react';
+import { Heart, Sparkles, ArrowRight, Play, Eye, Flame, Gift, Star, CheckCircle, Lock, User, Crown, Clock } from 'lucide-react';
 import { availableTemplates } from '@/lib/defaultData';
 
 export default function Home() {
@@ -30,7 +30,7 @@ export default function Home() {
           className="px-4 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition backdrop-blur-md shadow-lg"
         >
           <User className="w-4 h-4 text-rose-400" />
-          <span>Login Cliente / Mi Cuenta</span>
+          <span>Mi Cuenta</span>
         </Link>
       </header>
 
@@ -118,14 +118,17 @@ export default function Home() {
                     </span>
                   </div>
 
-                  {availableTemplates[0].popular && (
-                    <div className="absolute top-4 right-4">
+                  <div className="absolute top-4 right-4 flex items-center gap-2">
+                    <span className="px-3 py-1 rounded-full bg-rose-500/90 text-white font-extrabold text-xs shadow-lg border border-white/20">
+                      49 Bs
+                    </span>
+                    {availableTemplates[0].popular && (
                       <span className="px-3 py-1 rounded-full bg-amber-500 text-amber-950 font-extrabold text-xs shadow-lg flex items-center gap-1">
                         <Star className="w-3.5 h-3.5 fill-amber-950" />
                         Más Elegido
                       </span>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
 
                 <div className="p-6">
@@ -136,18 +139,30 @@ export default function Home() {
                     {availableTemplates[0].description}
                   </p>
 
-                  <div className="space-y-1.5 mb-6 text-xs text-rose-300/80">
+                  <div className="space-y-2 mb-6 text-xs text-rose-300/90">
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Sobre 3D interactivo con sello de cera</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <span>Sobre 3D interactivo con sello de cera que se abre</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Contador de tiempo en años, meses y días</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <span>Reproductor de música romántica personalizada</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Botón interactivo con lluvia masiva de corazones</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <span>Contador de aniversario en vivo (Años, Meses, Días)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <span>Carrusel interactivo de 5 fotos + Carta romántica</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <span>Línea del tiempo con 3 fechas/momentos inolvidables</span>
+                    </div>
+                    <div className="flex items-center gap-2 font-semibold text-rose-200 bg-rose-500/10 px-2.5 py-1.5 rounded-xl border border-rose-500/20 mt-3">
+                      <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
+                      <span>Publicación online por <strong>1 Año Completo</strong></span>
                     </div>
                   </div>
                 </div>
@@ -185,6 +200,11 @@ export default function Home() {
                       {availableTemplates[1].tag}
                     </span>
                   </div>
+                  <div className="absolute top-4 right-4">
+                    <span className="px-3 py-1 rounded-full bg-rose-500/90 text-white font-extrabold text-xs shadow-lg border border-white/20">
+                      49 Bs
+                    </span>
+                  </div>
                 </div>
 
                 <div className="p-6">
@@ -195,18 +215,30 @@ export default function Home() {
                     {availableTemplates[1].description}
                   </p>
 
-                  <div className="space-y-1.5 mb-6 text-xs text-rose-300/80">
+                  <div className="space-y-2 mb-6 text-xs text-rose-300/90">
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Fondo galáctico interactivo animado</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      <span>Fondo galáctico 3D con partículas estelares y constelaciones</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Constelación romántica con fechas clave</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      <span>Portal Núcleo Cósmico para abrir la carta espacial</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Carta flotante con reproductor espacial de música</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      <span>Contador de órbitas solares (vueltas al Sol juntos)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      <span>Grid de 5 fotos estelares flotantes en el universo</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      <span>Constelación espacial interactiva de 3 fechas clave</span>
+                    </div>
+                    <div className="flex items-center gap-2 font-semibold text-rose-200 bg-rose-500/10 px-2.5 py-1.5 rounded-xl border border-rose-500/20 mt-3">
+                      <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
+                      <span>Publicación online por <strong>1 Año Completo</strong></span>
                     </div>
                   </div>
                 </div>
@@ -280,11 +312,15 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>Diseño único según tus requerimientos</span>
+                      <span>Diseño único 100% exclusivo según tus requerimientos</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>Fotos, música, Código QR y alojamiento incluido</span>
+                      <span>Fotos, fechas, canciones y textos sin límites</span>
+                    </div>
+                    <div className="flex items-center gap-2 font-semibold text-amber-200 bg-amber-500/20 px-2.5 py-1.5 rounded-xl border border-amber-500/40 mt-3">
+                      <Clock className="w-4 h-4 text-amber-300 shrink-0 animate-pulse" />
+                      <span>Publicación online por <strong>1 Año Completo</strong></span>
                     </div>
                   </div>
                 </div>
@@ -324,6 +360,11 @@ export default function Home() {
                       {availableTemplates[2].tag}
                     </span>
                   </div>
+                  <div className="absolute top-4 right-4">
+                    <span className="px-3 py-1 rounded-full bg-rose-500/90 text-white font-extrabold text-xs shadow-lg border border-white/20">
+                      49 Bs
+                    </span>
+                  </div>
                 </div>
 
                 <div className="p-6">
@@ -334,18 +375,30 @@ export default function Home() {
                     {availableTemplates[2].description}
                   </p>
 
-                  <div className="space-y-1.5 mb-6 text-xs text-rose-300/80">
+                  <div className="space-y-2 mb-6 text-xs text-rose-300/90">
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Cámara Polaroid retro interactiva</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Cámara Polaroid retro con obturador interactivo y flash</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Fotografías animadas con notas manuscritas</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Reproductor de Disco Vinilo animado de 33 RPM</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Reproductor de disco vinilo animado</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Galería de 5 fotos Polaroid con notas escritas a mano</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Carta manuscrita en pergamino retro a máquina</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Bitácora timeline sepia de recuerdos memorables</span>
+                    </div>
+                    <div className="flex items-center gap-2 font-semibold text-rose-200 bg-rose-500/10 px-2.5 py-1.5 rounded-xl border border-rose-500/20 mt-3">
+                      <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
+                      <span>Publicación online por <strong>1 Año Completo</strong></span>
                     </div>
                   </div>
                 </div>
@@ -362,11 +415,83 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* 5. PRÓXIMAMENTE / NUEVO DISEÑO EN CAMINO */}
+            {/* 5. CAJA DE REGALO 3D & VALES DE AMOR (PLANTILLA 4) */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
+              className="glass-card-rose rounded-3xl overflow-hidden shadow-2xl border border-emerald-500/30 group hover:border-emerald-500/60 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={availableTemplates[3].thumbnailUrl}
+                    alt={availableTemplates[3].title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#180a24] via-transparent to-transparent" />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 rounded-full bg-emerald-600/90 text-white font-bold text-xs shadow-lg backdrop-blur-md border border-white/20">
+                      {availableTemplates[3].tag}
+                    </span>
+                  </div>
+                  <div className="absolute top-4 right-4">
+                    <span className="px-3 py-1 rounded-full bg-rose-500/90 text-white font-extrabold text-xs shadow-lg border border-white/20">
+                      49 Bs
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <h3 className="text-xl font-bold font-serif text-white mb-2 group-hover:text-emerald-300 transition">
+                    {availableTemplates[3].title}
+                  </h3>
+                  <p className="text-rose-200/70 text-sm leading-relaxed mb-4">
+                    {availableTemplates[3].description}
+                  </p>
+
+                  <div className="space-y-2 mb-6 text-xs text-emerald-200/90">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>Caja sorpresa 3D con lazo desatable interactivo</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>Talonario de 4 Cupones / Vales de Amor canjeables</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>Lluvia de Fuegos Artificiales al aceptar la propuesta</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>Mural de 5 fotos colgadas de luces LED brillante</span>
+                    </div>
+                    <div className="flex items-center gap-2 font-semibold text-rose-200 bg-emerald-500/10 px-2.5 py-1.5 rounded-xl border border-emerald-500/20 mt-3">
+                      <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
+                      <span>Publicación online por <strong>1 Año Completo</strong></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 pt-0">
+                <Link
+                  href={availableTemplates[3].demoUrl}
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-sm shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2 transition duration-300 active:scale-95 border border-emerald-300/30"
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>Ver y Personalizar</span>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* 6. PRÓXIMAMENTE / NUEVO DISEÑO EN CAMINO */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
               className="glass-card-rose rounded-3xl overflow-hidden shadow-2xl border border-rose-500/20 opacity-90 group hover:border-pink-500/40 transition-all duration-300 flex flex-col justify-between relative bg-gradient-to-b from-[#1a0b29] to-[#0f051c]"
             >
               <div>

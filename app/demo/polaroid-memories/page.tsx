@@ -8,7 +8,8 @@ import { VintageAnniversaryCounter } from '@/components/vintage/VintageAnniversa
 import { VintagePolaroidGallery } from '@/components/vintage/VintagePolaroidGallery';
 import { VintageLoveLetter } from '@/components/vintage/VintageLoveLetter';
 import { VintageProposal } from '@/components/vintage/VintageProposal';
-import { MemoriesTimeline } from '@/components/romantic/MemoriesTimeline';
+import { VintageMemoriesTimeline } from '@/components/vintage/VintageMemoriesTimeline';
+import { VintageVinylPlayer } from '@/components/vintage/VintageVinylPlayer';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import { InlineEditorModal } from '@/components/romantic/InlineEditorModal';
 import { PaymentCheckoutModal } from '@/components/checkout/PaymentCheckoutModal';
@@ -127,16 +128,23 @@ export default function PolaroidThemePage() {
               </p>
             </div>
 
-            {/* Section 1: Vintage Anniversary Live Counter */}
+            {/* Section 1: Vinyl Disc Player */}
+            <VintageVinylPlayer
+              audioTitle={data.audioTitle}
+              audioArtist={data.audioArtist}
+              isPlaying={isOpened}
+            />
+
+            {/* Section 2: Vintage Anniversary Live Counter */}
             <VintageAnniversaryCounter
               startDate={data.anniversaryDate}
               coupleNames={data.coupleTitle}
             />
 
-            {/* Section 2: Polaroid Photo Gallery */}
+            {/* Section 3: Polaroid Photo Gallery */}
             <VintagePolaroidGallery photos={data.photos} />
 
-            {/* Section 3: Vintage Love Letter */}
+            {/* Section 4: Vintage Love Letter */}
             <VintageLoveLetter
               title={data.loveLetterTitle}
               body={data.loveLetterBody}
@@ -144,7 +152,7 @@ export default function PolaroidThemePage() {
               recipientName={data.recipientName}
             />
 
-            {/* Section 4: Vintage Proposal Question */}
+            {/* Section 5: Vintage Proposal Question */}
             <VintageProposal
               questionTitle={data.questionTitle}
               yesButtonText={data.yesButtonText}
@@ -153,8 +161,8 @@ export default function PolaroidThemePage() {
               recipientName={data.recipientName}
             />
 
-            {/* Section 5: Memories Timeline */}
-            <MemoriesTimeline memories={data.memories} />
+            {/* Section 6: Vintage Memories Timeline */}
+            <VintageMemoriesTimeline memories={data.memories} />
 
             {/* Share / Copy Link Banner */}
             <div className="max-w-md mx-auto px-4 text-center">

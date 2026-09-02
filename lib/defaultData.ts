@@ -213,6 +213,103 @@ Dicen que una imagen vale más que mil palabras, pero nuestro amor va mucho más
   themeColor: 'gold',
 };
 
+export const defaultGiftBoxData: RomanticPageData = {
+  id: 'caja-sorpresa-demo',
+  recipientName: 'Camila',
+  senderName: 'Gabriel',
+  coupleTitle: 'Gabriel & Camila',
+  envelopeTitle: 'Un Regalo Especial Para:',
+  envelopeSubtitle: 'Desata el lazo de la caja para descubrir tu sorpresa de amor 🎁✨',
+  anniversaryDate: '2024-05-20',
+  loveLetterTitle: 'Carta Escondida en tu Caja de Regalo',
+  loveLetterBody: `Esta caja de regalo guarda solo una pequeña parte de todo lo que siento por ti. Cada día a tu lado es una sorpresa llena de risas, complicidad y momentos que jamás olvidaré.
+
+Gracias por hacerme el hombre más afortunado del mundo. Te amo infinitamente y prometo seguir llenando tu vida de regalos, detalles y amor verdadero.`,
+  questionTitle: '¿Te gustaría seguir abriendo juntos cada regalo que la vida nos prepare?',
+  yesButtonText: '¡Sí, mi regalo eterno! 🎁❤️',
+  yesResponseSubtitle: '¡Prometo sorprenderte y hacerte sonreír todos y cada uno de mis días! 💖✨',
+  audioTitle: 'Until I Found You',
+  audioArtist: 'Stephen Sanchez',
+  audioUrl: 'https://www.youtube.com/watch?v=GxldQ9eX2wo',
+  photos: [
+    {
+      id: 'gb1',
+      url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Nuestra primera sorpresa juntos 🎁',
+    },
+    {
+      id: 'gb2',
+      url: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Abrazos bajo las luces festivas ✨',
+    },
+    {
+      id: 'gb3',
+      url: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Celebrando el mejor regalo de mi vida: Tú ❤️',
+    },
+    {
+      id: 'gb4',
+      url: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Risas sin parar y felicidad pura ✨',
+    },
+    {
+      id: 'gb5',
+      url: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Un amor que crece cada segundo 💖',
+    },
+  ],
+  memories: [
+    {
+      id: 'gbm1',
+      date: '20 de Mayo, 2024',
+      title: 'El Día del Primer Regalo',
+      description: 'Nos encontramos para tomar café y nos dimos cuenta de que estábamos hechos el uno para el otro.',
+      icon: '🎁',
+    },
+    {
+      id: 'gbm2',
+      date: '14 de Febrero, 2025',
+      title: 'Sorpresa con Globos & Luces',
+      description: 'Una noche inolvidable cenando bajo una lluvia de fuegos artificiales.',
+      icon: '🎆',
+    },
+    {
+      id: 'gbm3',
+      date: '20 de Mayo, 2025',
+      title: 'Nuestro Aniversario Especial',
+      description: 'Celebrando nuestro primer año juntos canjeando cupones de amor.',
+      icon: '🎟️',
+    },
+  ],
+  vouchers: [
+    {
+      id: 'v1',
+      title: 'Cena Romántica Especial 🍽️',
+      description: 'Válido por una cena preparada por mí con tu platillo favorito, velas y vino.',
+      icon: '🍽️',
+    },
+    {
+      id: 'v2',
+      title: 'Maratón de Pelis & Helado 🍿',
+      description: 'Válido por una tarde/noche completa eligiendo tus películas favoritas sin interrupciones.',
+      icon: '🍿',
+    },
+    {
+      id: 'v3',
+      title: 'Masaje Relajante de 30 Min 💆‍♂️',
+      description: 'Válido por una sesión de masajes relajantes con música suave y aromas.',
+      icon: '💆‍♀️',
+    },
+    {
+      id: 'v4',
+      title: 'Un Deseo Libre Concedido ✨',
+      description: 'Válido por cualquier deseo especial que quieras pedirme sin excusas.',
+      icon: '✨',
+    },
+  ],
+  themeColor: 'emerald',
+};
+
 export const availableTemplates: TemplateInfo[] = [
   {
     id: 'sobre-romantico',
@@ -238,5 +335,13 @@ export const availableTemplates: TemplateInfo[] = [
     tag: 'Vintage & Retro 📸',
     thumbnailUrl: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80',
     demoUrl: '/demo/polaroid-memories',
+  },
+  {
+    id: 'caja-sorpresa',
+    title: 'Caja de Regalo 3D & Vales de Amor',
+    description: 'Caja sorpresa 3D con lazo desatable, fuegos artificiales, talonario de cupones de amor canjeables y fotos colgadas de luces LED.',
+    tag: 'Nuevo & Sorprendente 🎁',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80',
+    demoUrl: '/demo/caja-sorpresa',
   },
 ];

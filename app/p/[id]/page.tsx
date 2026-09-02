@@ -4,18 +4,44 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { getOrderBySlug, findOrderByClientCodeOrPhone } from '@/lib/store';
-import { defaultRomanticData } from '@/lib/defaultData';
+import { motion, AnimatePresence } from 'framer-motion';
+import { findOrderByClientCodeOrPhone } from '@/lib/store';
+import { defaultRomanticData, defaultGalaxyData, defaultVintageData, defaultGiftBoxData } from '@/lib/defaultData';
 import { Order, RomanticPageData } from '@/types';
+
+// Romantic Envelope Components
 import { InteractiveEnvelope } from '@/components/romantic/InteractiveEnvelope';
 import { AnniversaryCounter } from '@/components/romantic/AnniversaryCounter';
 import { PhotoSlider } from '@/components/romantic/PhotoSlider';
 import { LoveLetter } from '@/components/romantic/LoveLetter';
 import { ProposalQuestion } from '@/components/romantic/ProposalQuestion';
 import { MemoriesTimeline } from '@/components/romantic/MemoriesTimeline';
+
+// Galaxy Components
+import { InteractiveCosmosIntro } from '@/components/galaxy/InteractiveCosmosIntro';
+import { GalaxyAnniversaryCounter } from '@/components/galaxy/GalaxyAnniversaryCounter';
+import { GalaxyPhotoGrid } from '@/components/galaxy/GalaxyPhotoGrid';
+import { GalaxyLoveLetter } from '@/components/galaxy/GalaxyLoveLetter';
+import { GalaxyProposal } from '@/components/galaxy/GalaxyProposal';
+import { GalaxyMemoriesTimeline } from '@/components/galaxy/GalaxyMemoriesTimeline';
+
+// Vintage Components
+import { InteractivePolaroidIntro } from '@/components/vintage/InteractivePolaroidIntro';
+import { VintageAnniversaryCounter } from '@/components/vintage/VintageAnniversaryCounter';
+import { VintagePolaroidGallery } from '@/components/vintage/VintagePolaroidGallery';
+import { VintageLoveLetter } from '@/components/vintage/VintageLoveLetter';
+import { VintageProposal } from '@/components/vintage/VintageProposal';
+import { VintageMemoriesTimeline } from '@/components/vintage/VintageMemoriesTimeline';
+import { VintageVinylPlayer } from '@/components/vintage/VintageVinylPlayer';
+
+// Gift Box Components
+import { InteractiveGiftBoxIntro } from '@/components/giftbox/InteractiveGiftBoxIntro';
+import { GiftBoxVouchers } from '@/components/giftbox/GiftBoxVouchers';
+import { GiftBoxPhotoString } from '@/components/giftbox/GiftBoxPhotoString';
+import { GiftBoxProposal } from '@/components/giftbox/GiftBoxProposal';
+
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
-import { Heart, Clock, Lock, Sparkles, Share2, Check } from 'lucide-react';
+import { Heart, Clock, Orbit, Camera, Gift, Sparkles, Share2, Check } from 'lucide-react';
 
 export default function PublicQRInvitationPage() {
   const params = useParams();
@@ -37,11 +63,16 @@ export default function PublicQRInvitationPage() {
             setData(found.pageData);
           }
         } else {
-          // Fallback to default romantic data for demo
-          setData({
-            ...defaultRomanticData,
-            coupleTitle: slug.replace(/-/g, ' ').toUpperCase(),
-          });
+          // Fallback demo matching
+          if (slug.includes('caja') || slug.includes('regalo') || slug.includes('sorpresa')) {
+            setData({ ...defaultGiftBoxData, coupleTitle: slug.replace(/-/g, ' ').toUpperCase() });
+          } else if (slug.includes('galaxia') || slug.includes('universo')) {
+            setData({ ...defaultGalaxyData, coupleTitle: slug.replace(/-/g, ' ').toUpperCase() });
+          } else if (slug.includes('polaroid') || slug.includes('vintage')) {
+            setData({ ...defaultVintageData, coupleTitle: slug.replace(/-/g, ' ').toUpperCase() });
+          } else {
+            setData({ ...defaultRomanticData, coupleTitle: slug.replace(/-/g, ' ').toUpperCase() });
+          }
         }
       }
       setIsLoaded(true);
@@ -49,7 +80,7 @@ export default function PublicQRInvitationPage() {
     fetchOrderData();
   }, [slug]);
 
-  const handleEnvelopeOpen = () => {
+  const handleOpen = () => {
     setIsOpened(true);
   };
 
@@ -100,131 +131,217 @@ export default function PublicQRInvitationPage() {
     );
   }
 
-  // Approved Public Romantic Invitation Page
+  const isGiftBox = data.themeColor === 'emerald';
+  const isGalaxy = data.themeColor === 'purple';
+  const isVintage = data.themeColor === 'gold';
+
+  // Render Theme 4: Gift Box 3D & Love Vouchers
+  if (isGiftBox) {
+    return (
+      <div className="min-h-screen bg-[#07140e] text-white relative font-sans overflow-x-hidden selection:bg-emerald-500 selection:text-slate-950">
+        <AudioPlayer
+          audioUrl={data.audioUrl}
+          audioTitle={data.audioTitle}
+          audioArtist={data.audioArtist}
+          autoPlayTrigger={isOpened}
+        />
+        {!isOpened ? (
+          <InteractiveGiftBoxIntro
+            recipientName={data.recipientName}
+            senderName={data.senderName}
+            envelopeTitle={data.envelopeTitle}
+            envelopeSubtitle={data.envelopeSubtitle}
+            onOpen={handleOpen}
+          />
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="relative z-10 pt-16 pb-24 space-y-16"
+          >
+            <div className="text-center px-4 max-w-3xl mx-auto pt-8">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-600 to-emerald-700 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-emerald-500/40 border border-emerald-300/40">
+                <Gift className="w-8 h-8 text-white animate-bounce" />
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white mb-2">
+                Un Regalo Inolvidable Para: <span className="text-gradient-rose font-cursive text-4xl sm:text-6xl">{data.recipientName}</span>
+              </h1>
+              <p className="text-emerald-200/80 text-sm sm:text-lg font-light max-w-lg mx-auto">
+                Este espacio fue creado especialmente para sorprenderte.
+              </p>
+            </div>
+            <AnniversaryCounter startDate={data.anniversaryDate} coupleNames={data.coupleTitle} />
+            <GiftBoxVouchers vouchers={data.vouchers} recipientName={data.recipientName} />
+            <GiftBoxPhotoString photos={data.photos} />
+            <LoveLetter title={data.loveLetterTitle} body={data.loveLetterBody} senderName={data.senderName} recipientName={data.recipientName} />
+            <GiftBoxProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
+            <MemoriesTimeline memories={data.memories} />
+            <div className="max-w-md mx-auto px-4 text-center">
+              <button onClick={handleShareLink} className="w-full px-6 py-3.5 rounded-2xl bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-200 font-semibold text-sm border border-emerald-500/40 flex items-center justify-center gap-2 transition backdrop-blur-md">
+                {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-emerald-400" />}
+                <span>{copiedLink ? '¡Enlace copiado!' : 'Compartir este Regalo'}</span>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    );
+  }
+
+  // Render Theme 1: Galaxy Cosmic Theme
+  if (isGalaxy) {
+    return (
+      <div className="min-h-screen bg-[#03010a] text-white relative font-sans overflow-x-hidden selection:bg-cyan-500 selection:text-black">
+        <AudioPlayer
+          audioUrl={data.audioUrl}
+          audioTitle={data.audioTitle}
+          audioArtist={data.audioArtist}
+          autoPlayTrigger={isOpened}
+        />
+        {!isOpened ? (
+          <InteractiveCosmosIntro
+            recipientName={data.recipientName}
+            senderName={data.senderName}
+            envelopeTitle={data.envelopeTitle}
+            envelopeSubtitle={data.envelopeSubtitle}
+            onOpen={handleOpen}
+          />
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="relative z-10 pt-16 pb-24 space-y-16"
+          >
+            <div className="text-center px-4 max-w-3xl mx-auto pt-8">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-cyan-500/30 border border-cyan-300/40">
+                <Orbit className="w-8 h-8 text-cyan-200 animate-spin" style={{ animationDuration: '12s' }} />
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white mb-2">
+                Para la estrella de mi vida: <span className="text-gradient-cyan font-cursive text-4xl sm:text-6xl">{data.recipientName}</span>
+              </h1>
+              <p className="text-cyan-200/70 text-sm sm:text-lg font-light max-w-lg mx-auto">
+                Nuestro universo estelar personal creado para ti.
+              </p>
+            </div>
+            <GalaxyAnniversaryCounter startDate={data.anniversaryDate} coupleNames={data.coupleTitle} />
+            <GalaxyPhotoGrid photos={data.photos} />
+            <GalaxyLoveLetter title={data.loveLetterTitle} body={data.loveLetterBody} senderName={data.senderName} recipientName={data.recipientName} />
+            <GalaxyProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
+            <GalaxyMemoriesTimeline memories={data.memories} />
+            <div className="max-w-md mx-auto px-4 text-center">
+              <button onClick={handleShareLink} className="w-full px-6 py-3.5 rounded-2xl bg-cyan-950/40 hover:bg-cyan-900/60 text-cyan-200 font-semibold text-sm border border-cyan-500/30 flex items-center justify-center gap-2 transition backdrop-blur-md">
+                {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-cyan-400" />}
+                <span>{copiedLink ? '¡Enlace copiado!' : 'Compartir este Detalle'}</span>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    );
+  }
+
+  // Render Theme 2: Vintage Polaroid Theme
+  if (isVintage) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-[#1b120a] via-[#2a1d12] to-[#1b120a] text-amber-100 relative font-sans overflow-x-hidden selection:bg-amber-500 selection:text-slate-900">
+        <AudioPlayer
+          audioUrl={data.audioUrl}
+          audioTitle={data.audioTitle}
+          audioArtist={data.audioArtist}
+          autoPlayTrigger={isOpened}
+        />
+        {!isOpened ? (
+          <InteractivePolaroidIntro
+            recipientName={data.recipientName}
+            senderName={data.senderName}
+            envelopeTitle={data.envelopeTitle}
+            envelopeSubtitle={data.envelopeSubtitle}
+            onOpen={handleOpen}
+          />
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="relative z-10 pt-16 pb-24 space-y-16"
+          >
+            <div className="text-center px-4 max-w-3xl mx-auto pt-8">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-600 via-amber-700 to-rose-700 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-amber-900/40 border-2 border-amber-300/40">
+                <Camera className="w-8 h-8 text-amber-100" />
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-serif font-bold text-amber-100 mb-2">
+                Álbum Polaroid de: <span className="font-cursive text-4xl sm:text-6xl text-amber-300">{data.recipientName}</span>
+              </h1>
+              <p className="text-amber-200/80 text-sm sm:text-lg font-light max-w-lg mx-auto">
+                Nuestras memorias capturadas en papel retro.
+              </p>
+            </div>
+            <VintageVinylPlayer audioTitle={data.audioTitle} audioArtist={data.audioArtist} isPlaying={isOpened} />
+            <VintageAnniversaryCounter startDate={data.anniversaryDate} coupleNames={data.coupleTitle} />
+            <VintagePolaroidGallery photos={data.photos} />
+            <VintageLoveLetter title={data.loveLetterTitle} body={data.loveLetterBody} senderName={data.senderName} recipientName={data.recipientName} />
+            <VintageProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
+            <VintageMemoriesTimeline memories={data.memories} />
+            <div className="max-w-md mx-auto px-4 text-center">
+              <button onClick={handleShareLink} className="w-full px-6 py-3.5 rounded-2xl bg-[#352314]/80 hover:bg-[#48301d] text-amber-200 font-semibold text-sm border border-amber-500/30 flex items-center justify-center gap-2 transition backdrop-blur-md">
+                {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-amber-400" />}
+                <span>{copiedLink ? '¡Enlace copiado!' : 'Compartir este Detalle'}</span>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    );
+  }
+
+  // Render Theme 3: Default Romantic Envelope Theme
   return (
     <div className="min-h-screen bg-[#0b0512] text-white relative font-sans overflow-x-hidden selection:bg-rose-500 selection:text-white">
-      
-      {/* Background Floating Hearts */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute text-rose-500/15 text-2xl animate-float-slow"
-            style={{
-              top: `${(i * 7) % 100}%`,
-              left: `${(i * 13) % 100}%`,
-              animationDelay: `${i * 0.4}s`,
-            }}
-          >
-            ❤️
-          </div>
-        ))}
-      </div>
-
-      {/* Persistent Music Player */}
       <AudioPlayer
         audioUrl={data.audioUrl}
         audioTitle={data.audioTitle}
         audioArtist={data.audioArtist}
         autoPlayTrigger={isOpened}
       />
-
-      {/* Envelope Intro Stage */}
       {!isOpened ? (
         <InteractiveEnvelope
           recipientName={data.recipientName}
           senderName={data.senderName}
           envelopeTitle={data.envelopeTitle}
           envelopeSubtitle={data.envelopeSubtitle}
-          onOpen={handleEnvelopeOpen}
+          onOpen={handleOpen}
         />
       ) : (
-        /* Main Interactive Romantic Page */
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
+          transition={{ duration: 1 }}
           className="relative z-10 pt-16 pb-24 space-y-16"
         >
-          {/* Header Banner */}
           <div className="text-center px-4 max-w-3xl mx-auto pt-8">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.6 }}
-              className="w-16 h-16 rounded-full bg-gradient-to-tr from-rose-500 to-pink-600 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-rose-500/40"
-            >
+            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-rose-500 to-pink-600 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-rose-500/40">
               <Heart className="w-8 h-8 text-white fill-white animate-heart-beat" />
-            </motion.div>
-
+            </div>
             <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white mb-2">
-              Para el amor de mi vida:{' '}
-              <span className="text-gradient-rose font-cursive text-4xl sm:text-6xl block sm:inline mt-1 sm:mt-0">
-                {data.recipientName}
-              </span>
+              Para el amor de mi vida: <span className="text-gradient-rose font-cursive text-4xl sm:text-6xl">{data.recipientName}</span>
             </h1>
-
             <p className="text-rose-200/80 text-sm sm:text-lg font-light max-w-lg mx-auto">
               Este rincón fue creado especialmente para ti con todo mi amor.
             </p>
           </div>
-
-          {/* 1. Counter */}
-          <AnniversaryCounter
-            startDate={data.anniversaryDate}
-            coupleNames={data.coupleTitle}
-          />
-
-          {/* 2. Photo Carousel */}
+          <AnniversaryCounter startDate={data.anniversaryDate} coupleNames={data.coupleTitle} />
           <PhotoSlider photos={data.photos} />
-
-          {/* 3. Love Letter */}
-          <LoveLetter
-            title={data.loveLetterTitle}
-            body={data.loveLetterBody}
-            senderName={data.senderName}
-            recipientName={data.recipientName}
-          />
-
-          {/* 4. Interactive Proposal Question */}
-          <ProposalQuestion
-            questionTitle={data.questionTitle}
-            yesButtonText={data.yesButtonText}
-            yesResponseSubtitle={data.yesResponseSubtitle}
-            senderName={data.senderName}
-            recipientName={data.recipientName}
-          />
-
-          {/* 5. Memories */}
+          <LoveLetter title={data.loveLetterTitle} body={data.loveLetterBody} senderName={data.senderName} recipientName={data.recipientName} />
+          <ProposalQuestion questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
           <MemoriesTimeline memories={data.memories} />
-
-          {/* Share */}
           <div className="max-w-md mx-auto px-4 text-center">
-            <button
-              onClick={handleShareLink}
-              className="w-full px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-rose-200 font-semibold text-sm border border-rose-500/30 flex items-center justify-center gap-2 transition backdrop-blur-md"
-            >
-              {copiedLink ? (
-                <>
-                  <Check className="w-4 h-4 text-green-400" />
-                  <span className="text-green-300">¡Enlace copiado!</span>
-                </>
-              ) : (
-                <>
-                  <Share2 className="w-4 h-4 text-rose-400" />
-                  <span>Compartir este Detalle</span>
-                </>
-              )}
+            <button onClick={handleShareLink} className="w-full px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-rose-200 font-semibold text-sm border border-rose-500/30 flex items-center justify-center gap-2 transition backdrop-blur-md">
+              {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-rose-400" />}
+              <span>{copiedLink ? '¡Enlace copiado!' : 'Compartir este Detalle'}</span>
             </button>
           </div>
-
-          {/* Footer */}
-          <footer className="text-center text-xs text-rose-300/50 pt-8 border-t border-rose-500/20 max-w-3xl mx-auto">
-            <p>
-              Con mucho amor de <span className="text-rose-300 font-bold">{data.senderName}</span> para{' '}
-              <span className="text-rose-300 font-bold">{data.recipientName}</span>.
-            </p>
-          </footer>
         </motion.div>
       )}
     </div>
