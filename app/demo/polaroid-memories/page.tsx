@@ -4,12 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InteractivePolaroidIntro } from '@/components/vintage/InteractivePolaroidIntro';
-import { VintageAnniversaryCounter } from '@/components/vintage/VintageAnniversaryCounter';
+import { VintageVinylPlayer } from '@/components/vintage/VintageVinylPlayer';
+import { VintageSlideProjector } from '@/components/vintage/VintageSlideProjector';
 import { VintagePolaroidGallery } from '@/components/vintage/VintagePolaroidGallery';
 import { VintageLoveLetter } from '@/components/vintage/VintageLoveLetter';
-import { VintageProposal } from '@/components/vintage/VintageProposal';
-import { VintageMemoriesTimeline } from '@/components/vintage/VintageMemoriesTimeline';
-import { VintageVinylPlayer } from '@/components/vintage/VintageVinylPlayer';
+import { VintageLockboxProposal } from '@/components/vintage/VintageLockboxProposal';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import { InlineEditorModal } from '@/components/romantic/InlineEditorModal';
 import { PaymentCheckoutModal } from '@/components/checkout/PaymentCheckoutModal';
@@ -128,23 +127,23 @@ export default function PolaroidThemePage() {
               </p>
             </div>
 
-            {/* Section 1: Vinyl Disc Player */}
+            {/* Módulo 1: Tocadiscos de Vinilo Interactivo */}
             <VintageVinylPlayer
               audioTitle={data.audioTitle}
               audioArtist={data.audioArtist}
               isPlaying={isOpened}
             />
 
-            {/* Section 2: Vintage Anniversary Live Counter */}
-            <VintageAnniversaryCounter
-              startDate={data.anniversaryDate}
-              coupleNames={data.coupleTitle}
+            {/* Módulo 2: Proyector de Diapositivas Retro (View-Master) */}
+            <VintageSlideProjector
+              recipientName={data.recipientName}
+              senderName={data.senderName}
             />
 
-            {/* Section 3: Polaroid Photo Gallery */}
+            {/* Módulo 3: Álbum Polaroid Instantáneo con Sellos */}
             <VintagePolaroidGallery photos={data.photos} />
 
-            {/* Section 4: Vintage Love Letter */}
+            {/* Módulo 4: Carta a Máquina de Escribir */}
             <VintageLoveLetter
               title={data.loveLetterTitle}
               body={data.loveLetterBody}
@@ -152,17 +151,14 @@ export default function PolaroidThemePage() {
               recipientName={data.recipientName}
             />
 
-            {/* Section 5: Vintage Proposal Question */}
-            <VintageProposal
+            {/* Módulo 5: Cofre Secreto Vintage con Candado de Llave Dorada */}
+            <VintageLockboxProposal
               questionTitle={data.questionTitle}
               yesButtonText={data.yesButtonText}
               yesResponseSubtitle={data.yesResponseSubtitle}
               senderName={data.senderName}
               recipientName={data.recipientName}
             />
-
-            {/* Section 6: Vintage Memories Timeline */}
-            <VintageMemoriesTimeline memories={data.memories} />
 
             {/* Share / Copy Link Banner */}
             <div className="max-w-md mx-auto px-4 text-center">

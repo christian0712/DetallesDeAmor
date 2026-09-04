@@ -19,25 +19,26 @@ import { MemoriesTimeline } from '@/components/romantic/MemoriesTimeline';
 
 // Galaxy Components
 import { InteractiveCosmosIntro } from '@/components/galaxy/InteractiveCosmosIntro';
-import { GalaxyAnniversaryCounter } from '@/components/galaxy/GalaxyAnniversaryCounter';
+import { GalaxyReasonsConstellation } from '@/components/galaxy/GalaxyReasonsConstellation';
 import { GalaxyPhotoGrid } from '@/components/galaxy/GalaxyPhotoGrid';
 import { GalaxyLoveLetter } from '@/components/galaxy/GalaxyLoveLetter';
+import { GalaxyShootingStarWishes } from '@/components/galaxy/GalaxyShootingStarWishes';
 import { GalaxyProposal } from '@/components/galaxy/GalaxyProposal';
-import { GalaxyMemoriesTimeline } from '@/components/galaxy/GalaxyMemoriesTimeline';
 
 // Vintage Components
 import { InteractivePolaroidIntro } from '@/components/vintage/InteractivePolaroidIntro';
-import { VintageAnniversaryCounter } from '@/components/vintage/VintageAnniversaryCounter';
+import { VintageVinylPlayer } from '@/components/vintage/VintageVinylPlayer';
+import { VintageSlideProjector } from '@/components/vintage/VintageSlideProjector';
 import { VintagePolaroidGallery } from '@/components/vintage/VintagePolaroidGallery';
 import { VintageLoveLetter } from '@/components/vintage/VintageLoveLetter';
-import { VintageProposal } from '@/components/vintage/VintageProposal';
-import { VintageMemoriesTimeline } from '@/components/vintage/VintageMemoriesTimeline';
-import { VintageVinylPlayer } from '@/components/vintage/VintageVinylPlayer';
+import { VintageLockboxProposal } from '@/components/vintage/VintageLockboxProposal';
 
 // Gift Box Components
 import { InteractiveGiftBoxIntro } from '@/components/giftbox/InteractiveGiftBoxIntro';
 import { GiftBoxVouchers } from '@/components/giftbox/GiftBoxVouchers';
+import { GiftBoxUnboxingSurprises } from '@/components/giftbox/GiftBoxUnboxingSurprises';
 import { GiftBoxPhotoString } from '@/components/giftbox/GiftBoxPhotoString';
+import { GiftBoxScratchCard } from '@/components/giftbox/GiftBoxScratchCard';
 import { GiftBoxProposal } from '@/components/giftbox/GiftBoxProposal';
 
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
@@ -171,12 +172,11 @@ export default function PublicQRInvitationPage() {
                 Este espacio fue creado especialmente para sorprenderte.
               </p>
             </div>
-            <AnniversaryCounter startDate={data.anniversaryDate} coupleNames={data.coupleTitle} />
             <GiftBoxVouchers vouchers={data.vouchers} recipientName={data.recipientName} />
+            <GiftBoxUnboxingSurprises recipientName={data.recipientName} surprises={data.giftSurprises} />
             <GiftBoxPhotoString photos={data.photos} />
-            <LoveLetter title={data.loveLetterTitle} body={data.loveLetterBody} senderName={data.senderName} recipientName={data.recipientName} />
+            <GiftBoxScratchCard recipientName={data.recipientName} />
             <GiftBoxProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
-            <MemoriesTimeline memories={data.memories} />
             <div className="max-w-md mx-auto px-4 text-center">
               <button onClick={handleShareLink} className="w-full px-6 py-3.5 rounded-2xl bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-200 font-semibold text-sm border border-emerald-500/40 flex items-center justify-center gap-2 transition backdrop-blur-md">
                 {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-emerald-400" />}
@@ -225,11 +225,11 @@ export default function PublicQRInvitationPage() {
                 Nuestro universo estelar personal creado para ti.
               </p>
             </div>
-            <GalaxyAnniversaryCounter startDate={data.anniversaryDate} coupleNames={data.coupleTitle} />
+            <GalaxyReasonsConstellation recipientName={data.recipientName} />
             <GalaxyPhotoGrid photos={data.photos} />
             <GalaxyLoveLetter title={data.loveLetterTitle} body={data.loveLetterBody} senderName={data.senderName} recipientName={data.recipientName} />
+            <GalaxyShootingStarWishes recipientName={data.recipientName} />
             <GalaxyProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
-            <GalaxyMemoriesTimeline memories={data.memories} />
             <div className="max-w-md mx-auto px-4 text-center">
               <button onClick={handleShareLink} className="w-full px-6 py-3.5 rounded-2xl bg-cyan-950/40 hover:bg-cyan-900/60 text-cyan-200 font-semibold text-sm border border-cyan-500/30 flex items-center justify-center gap-2 transition backdrop-blur-md">
                 {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-cyan-400" />}
@@ -279,11 +279,10 @@ export default function PublicQRInvitationPage() {
               </p>
             </div>
             <VintageVinylPlayer audioTitle={data.audioTitle} audioArtist={data.audioArtist} isPlaying={isOpened} />
-            <VintageAnniversaryCounter startDate={data.anniversaryDate} coupleNames={data.coupleTitle} />
+            <VintageSlideProjector recipientName={data.recipientName} senderName={data.senderName} />
             <VintagePolaroidGallery photos={data.photos} />
             <VintageLoveLetter title={data.loveLetterTitle} body={data.loveLetterBody} senderName={data.senderName} recipientName={data.recipientName} />
-            <VintageProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
-            <VintageMemoriesTimeline memories={data.memories} />
+            <VintageLockboxProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
             <div className="max-w-md mx-auto px-4 text-center">
               <button onClick={handleShareLink} className="w-full px-6 py-3.5 rounded-2xl bg-[#352314]/80 hover:bg-[#48301d] text-amber-200 font-semibold text-sm border border-amber-500/30 flex items-center justify-center gap-2 transition backdrop-blur-md">
                 {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-amber-400" />}

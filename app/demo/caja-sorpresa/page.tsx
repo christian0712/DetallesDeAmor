@@ -5,11 +5,10 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InteractiveGiftBoxIntro } from '@/components/giftbox/InteractiveGiftBoxIntro';
 import { GiftBoxVouchers } from '@/components/giftbox/GiftBoxVouchers';
+import { GiftBoxUnboxingSurprises } from '@/components/giftbox/GiftBoxUnboxingSurprises';
 import { GiftBoxPhotoString } from '@/components/giftbox/GiftBoxPhotoString';
+import { GiftBoxScratchCard } from '@/components/giftbox/GiftBoxScratchCard';
 import { GiftBoxProposal } from '@/components/giftbox/GiftBoxProposal';
-import { AnniversaryCounter } from '@/components/romantic/AnniversaryCounter';
-import { LoveLetter } from '@/components/romantic/LoveLetter';
-import { MemoriesTimeline } from '@/components/romantic/MemoriesTimeline';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import { InlineEditorModal } from '@/components/romantic/InlineEditorModal';
 import { PaymentCheckoutModal } from '@/components/checkout/PaymentCheckoutModal';
@@ -127,30 +126,22 @@ export default function GiftBoxThemePage() {
               </p>
             </div>
 
-            {/* 1. Live Anniversary Counter */}
-            <AnniversaryCounter
-              startDate={data.anniversaryDate}
-              coupleNames={data.coupleTitle}
-            />
-
-            {/* 2. Interactive Love Vouchers / Cupones de Amor */}
+            {/* Módulo 1: Interactive Love Vouchers / Cupones de Amor Canjeables */}
             <GiftBoxVouchers
               vouchers={data.vouchers}
               recipientName={data.recipientName}
             />
 
-            {/* 3. Photo String LED Lights Gallery */}
+            {/* Módulo 2: Cajas Misteriosas Unboxing por Abrir */}
+            <GiftBoxUnboxingSurprises recipientName={data.recipientName} surprises={data.giftSurprises} />
+
+            {/* Módulo 3: Photo String LED Lights Gallery */}
             <GiftBoxPhotoString photos={data.photos} />
 
-            {/* 4. Hidden Love Letter */}
-            <LoveLetter
-              title={data.loveLetterTitle}
-              body={data.loveLetterBody}
-              senderName={data.senderName}
-              recipientName={data.recipientName}
-            />
+            {/* Módulo 4: Tarjeta Raspa y Gana Sorpresa */}
+            <GiftBoxScratchCard recipientName={data.recipientName} />
 
-            {/* 5. Fireworks Proposal Question */}
+            {/* Módulo 5: Fireworks Proposal Question */}
             <GiftBoxProposal
               questionTitle={data.questionTitle}
               yesButtonText={data.yesButtonText}
@@ -158,9 +149,6 @@ export default function GiftBoxThemePage() {
               senderName={data.senderName}
               recipientName={data.recipientName}
             />
-
-            {/* 6. Memories Timeline */}
-            <MemoriesTimeline memories={data.memories} />
 
             {/* Share / Copy Link Banner */}
             <div className="max-w-md mx-auto px-4 text-center">

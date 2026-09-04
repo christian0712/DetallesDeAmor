@@ -18,6 +18,17 @@ export interface LoveVoucherItem {
   description: string;
   icon?: string;
   redeemed?: boolean;
+  unlockDate?: string;
+}
+
+export interface GiftBoxSurpriseItem {
+  id: string;
+  title: string;
+  question: string;
+  options: string[];
+  correctAnswerIndex: number;
+  surpriseText: string;
+  icon?: string;
 }
 
 export interface RomanticPageData {
@@ -39,6 +50,7 @@ export interface RomanticPageData {
   photos: PhotoItem[];
   memories: MemoryItem[];
   vouchers?: LoveVoucherItem[];
+  giftSurprises?: GiftBoxSurpriseItem[];
   themeColor: 'rose' | 'wine' | 'purple' | 'gold' | 'emerald';
 }
 

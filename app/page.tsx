@@ -137,16 +137,10 @@ export default function Home() {
                   </h3>
                   <p className="text-rose-200/70 text-sm leading-relaxed mb-4">
                     {availableTemplates[0].description}
-                  </p>
-
-                  <div className="space-y-2 mb-6 text-xs text-rose-300/90">
+                             <div className="space-y-2 mb-6 text-xs text-rose-300/90">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                       <span>Sobre 3D interactivo con sello de cera que se abre</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-                      <span>Reproductor de música romántica personalizada</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
@@ -154,17 +148,22 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-                      <span>Carrusel interactivo de 5 fotos + Carta romántica</span>
+                      <span>Carrusel interactivo de fotos con descripciones</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-                      <span>Línea del tiempo con 3 fechas/momentos inolvidables</span>
+                      <span>Carta de amor romántica + Pregunta con lluvia de corazones</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <span>Línea del tiempo con 3 fechas y momentos inolvidables</span>
                     </div>
                     <div className="flex items-center gap-2 font-semibold text-rose-200 bg-rose-500/10 px-2.5 py-1.5 rounded-xl border border-rose-500/20 mt-3">
                       <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
                       <span>Publicación online por <strong>1 Año Completo</strong></span>
                     </div>
                   </div>
+                  </p>
                 </div>
               </div>
 
@@ -218,15 +217,11 @@ export default function Home() {
                   <div className="space-y-2 mb-6 text-xs text-rose-300/90">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                      <span>Fondo galáctico 3D con partículas estelares y constelaciones</span>
+                      <span>Fondo galáctico 3D con Partículas Estelares y Núcleo Cósmico</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                      <span>Portal Núcleo Cósmico para abrir la carta espacial</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                      <span>Contador de órbitas solares (vueltas al Sol juntos)</span>
+                      <span>Mapa de Constelaciones de Amor (Razones por las que te amo)</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
@@ -234,7 +229,11 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                      <span>Constelación espacial interactiva de 3 fechas clave</span>
+                      <span>Carta de amor interestelar bajo un manto estelar</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      <span>Cápsula de Estrellas Fugaces con deseos + Pregunta Supernova</span>
                     </div>
                     <div className="flex items-center gap-2 font-semibold text-rose-200 bg-rose-500/10 px-2.5 py-1.5 rounded-xl border border-rose-500/20 mt-3">
                       <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
@@ -260,67 +259,50 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-b from-[#2b1b04] via-[#241302] to-[#170a00] border-2 border-amber-400/80 group hover:border-amber-300 transition-all duration-300 flex flex-col justify-between"
+              className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-amber-400/80 bg-gradient-to-b from-[#2a1d0d] via-[#1d1206] to-[#120a02] group hover:border-amber-300 transition-all duration-300 flex flex-col justify-between"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/20 blur-2xl pointer-events-none rounded-full" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-500/10 blur-2xl pointer-events-none rounded-full" />
-
               <div>
-                <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-tr from-amber-950 to-amber-900 flex items-center justify-center p-4">
+                {/* VIP Thumbnail Header Image */}
+                <div className="relative aspect-[16/10] overflow-hidden">
                   <img
-                    src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80"
-                    alt="Diseño Personalizado 99 Bs"
-                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-60"
+                    src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80"
+                    alt="Servicio VIP Personalizado 99 Bs"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1b0d02] via-transparent to-black/30" />
-                  
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-950 font-extrabold text-xs shadow-lg flex items-center gap-1">
-                      <Crown className="w-3.5 h-3.5 fill-amber-950" />
-                      VIP Exclusivo
-                    </span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2a1d0d] via-amber-950/40 to-transparent" />
+                  <div className="absolute top-3 right-3 px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-slate-950 font-extrabold text-xs shadow-xl">
+                    99 Bs VIP
                   </div>
-
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3.5 py-1.5 rounded-2xl bg-amber-400 text-amber-950 font-black text-sm shadow-xl border border-amber-300">
-                      99 Bs
-                    </span>
-                  </div>
-
-                  <div className="absolute bottom-3 left-3 right-3 text-center">
-                    <span className="text-amber-200 font-serif font-bold text-xs tracking-wide bg-amber-950/80 px-3 py-1 rounded-full border border-amber-500/40">
-                      ✨ Trato Directo 1 a 1 por WhatsApp
-                    </span>
+                  <div className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-amber-400/60 text-amber-300 text-xs font-semibold flex items-center gap-1.5 shadow-lg">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-spin" style={{ animationDuration: '8s' }} />
+                    <span>Diseño Exclusivo A Medida</span>
                   </div>
                 </div>
 
                 <div className="p-6">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Crown className="w-5 h-5 text-amber-400 fill-amber-400 animate-bounce" />
-                    <h3 className="text-xl font-bold font-serif text-amber-300 group-hover:text-amber-200 transition">
-                      Diseño 100% Personalizado
-                    </h3>
-                  </div>
-                  <p className="text-amber-100/80 text-xs sm:text-sm leading-relaxed mb-4">
-                    Diseñamos tu página web romántica desde cero adaptada a tus propias ideas, colores, fotos, música y elementos exclusivos.
+                  <h3 className="text-2xl font-bold font-serif text-amber-200 mb-2">
+                    Diseño 100% A Tu Gusto 👑
+                  </h3>
+                  <p className="text-amber-100/70 text-sm leading-relaxed mb-4">
+                    ¿Quieres una plantilla exclusiva o con detalles únicos? Nuestro equipo la crea para ti.
                   </p>
 
                   <div className="space-y-2 mb-6 text-xs text-amber-200/90">
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>Atención 1 a 1 personalizada por WhatsApp</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Elegimos tus colores, canciones y estilo preferido</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>Diseño único 100% exclusivo según tus requerimientos</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Agregamos fotos ilimitadas y secciones personalizadas</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>Fotos, fechas, canciones y textos sin límites</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Atención directa por WhatsApp para armar tu pedido</span>
                     </div>
-                    <div className="flex items-center gap-2 font-semibold text-amber-200 bg-amber-500/20 px-2.5 py-1.5 rounded-xl border border-amber-500/40 mt-3">
-                      <Clock className="w-4 h-4 text-amber-300 shrink-0 animate-pulse" />
-                      <span>Publicación online por <strong>1 Año Completo</strong></span>
+                    <div className="flex items-center gap-2 font-semibold text-amber-200 bg-amber-500/10 px-2.5 py-1.5 rounded-xl border border-amber-500/20 mt-3">
+                      <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
+                      <span>Entrega rápida en <strong>menos de 24 horas</strong></span>
                     </div>
                   </div>
                 </div>
@@ -328,13 +310,13 @@ export default function Home() {
 
               <div className="p-6 pt-0">
                 <a
-                  href="https://wa.me/59175949161?text=Hola,%20quisiera%20solicitar%20el%20Dise%C3%B1o%20100%25%20Personalizado%20VIP%20de%2099%20Bs."
+                  href="https://wa.me/59178945612?text=Hola,%20quisiera%20solicitar%20el%20servicio%20VIP%20Personalizado%20(99bs)"
                   target="_blank"
-                  rel="noreferrer"
-                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-500 hover:to-yellow-500 text-amber-950 font-extrabold text-sm shadow-xl shadow-amber-500/30 flex items-center justify-center gap-2 transition duration-300 transform active:scale-95 border border-yellow-300"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/30 flex items-center justify-center gap-2 transition duration-300 active:scale-95"
                 >
-                  <Crown className="w-4 h-4 fill-amber-950" />
-                  <span>Trato Directo WhatsApp (99 Bs)</span>
+                  <Sparkles className="w-4 h-4" />
+                  <span>Pedir Diseño VIP por WhatsApp</span>
                 </a>
               </div>
             </motion.div>
@@ -378,23 +360,23 @@ export default function Home() {
                   <div className="space-y-2 mb-6 text-xs text-rose-300/90">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                      <span>Cámara Polaroid retro con obturador interactivo y flash</span>
+                      <span>Tocadiscos de Disco Vinilo animado de 33 RPM</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                      <span>Reproductor de Disco Vinilo animado de 33 RPM</span>
+                      <span>Proyector de Diapositivas Retro View-Master 3D interactivo</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                      <span>Galería de 5 fotos Polaroid con notas escritas a mano</span>
+                      <span>Galería de fotos Polaroid artesanal con sellos postales</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                      <span>Carta manuscrita en pergamino retro a máquina</span>
+                      <span>Carta manuscrita en pergamino a máquina de escribir</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                      <span>Bitácora timeline sepia de recuerdos memorables</span>
+                      <span>Cofre Secreto Vintage con Candado de Llave Dorada 🗝️</span>
                     </div>
                     <div className="flex items-center gap-2 font-semibold text-rose-200 bg-rose-500/10 px-2.5 py-1.5 rounded-xl border border-rose-500/20 mt-3">
                       <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
@@ -454,19 +436,19 @@ export default function Home() {
                   <div className="space-y-2 mb-6 text-xs text-emerald-200/90">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      <span>Caja sorpresa 3D con lazo desatable interactivo</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       <span>Talonario de 4 Cupones / Vales de Amor canjeables</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      <span>Lluvia de Fuegos Artificiales al aceptar la propuesta</span>
+                      <span>3 Cajas Misteriosas Unboxing por abrir con confeti</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       <span>Mural de 5 fotos colgadas de luces LED brillante</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>Boleto Raspa y Gana con premio secreto + Fuegos Artificiales</span>
                     </div>
                     <div className="flex items-center gap-2 font-semibold text-rose-200 bg-emerald-500/10 px-2.5 py-1.5 rounded-xl border border-emerald-500/20 mt-3">
                       <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />

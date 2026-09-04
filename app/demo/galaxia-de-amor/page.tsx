@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InteractiveCosmosIntro } from '@/components/galaxy/InteractiveCosmosIntro';
-import { GalaxyAnniversaryCounter } from '@/components/galaxy/GalaxyAnniversaryCounter';
+import { GalaxyReasonsConstellation } from '@/components/galaxy/GalaxyReasonsConstellation';
 import { GalaxyPhotoGrid } from '@/components/galaxy/GalaxyPhotoGrid';
 import { GalaxyLoveLetter } from '@/components/galaxy/GalaxyLoveLetter';
+import { GalaxyShootingStarWishes } from '@/components/galaxy/GalaxyShootingStarWishes';
 import { GalaxyProposal } from '@/components/galaxy/GalaxyProposal';
-import { GalaxyMemoriesTimeline } from '@/components/galaxy/GalaxyMemoriesTimeline';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import { InlineEditorModal } from '@/components/romantic/InlineEditorModal';
 import { PaymentCheckoutModal } from '@/components/checkout/PaymentCheckoutModal';
@@ -127,16 +127,13 @@ export default function GalaxyThemePage() {
               </p>
             </div>
 
-            {/* Section 1: Galaxy Live Anniversary Counter */}
-            <GalaxyAnniversaryCounter
-              startDate={data.anniversaryDate}
-              coupleNames={data.coupleTitle}
-            />
+            {/* Módulo 1: Mapa de Constelaciones de Amor (Razones por las que te amo) */}
+            <GalaxyReasonsConstellation recipientName={data.recipientName} />
 
-            {/* Section 2: Photo Galaxy Grid */}
+            {/* Módulo 2: Fotos en Grid Estelar */}
             <GalaxyPhotoGrid photos={data.photos} />
 
-            {/* Section 3: Interstellar Love Letter */}
+            {/* Módulo 3: Carta de Amor Interestelar */}
             <GalaxyLoveLetter
               title={data.loveLetterTitle}
               body={data.loveLetterBody}
@@ -144,7 +141,10 @@ export default function GalaxyThemePage() {
               recipientName={data.recipientName}
             />
 
-            {/* Section 4: Cosmic Proposal Question */}
+            {/* Módulo 4: Cápsula de Estrellas Fugaces & Deseos */}
+            <GalaxyShootingStarWishes recipientName={data.recipientName} />
+
+            {/* Módulo 5: Pregunta / Propuesta Cósmica Supernova */}
             <GalaxyProposal
               questionTitle={data.questionTitle}
               yesButtonText={data.yesButtonText}
@@ -152,9 +152,6 @@ export default function GalaxyThemePage() {
               senderName={data.senderName}
               recipientName={data.recipientName}
             />
-
-            {/* Section 5: Cosmic Memories Timeline */}
-            <GalaxyMemoriesTimeline memories={data.memories} />
 
             {/* Share / Copy Link Banner */}
             <div className="max-w-md mx-auto px-4 text-center">

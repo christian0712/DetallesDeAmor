@@ -27,7 +27,7 @@ export const defaultAdminSongs: AdminSong[] = [
   },
   {
     id: 'song-2',
-    title: 'Completamente Enamorados',
+    title: 'Yo Te Amo',
     artist: 'Chayanne',
     youtubeUrl: 'https://www.youtube.com/watch?v=XXeoQXXDUMk',
     category: 'Romántico',

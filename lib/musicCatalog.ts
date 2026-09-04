@@ -36,7 +36,7 @@ export const romanticMusicCatalog: SongTrack[] = [
   },
   {
     id: 'song-2',
-    title: 'Completamente Enamorados',
+    title: 'Yo Te Amo',
     artist: 'Chayanne',
     category: 'Romántico',
     coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=300&q=80',
