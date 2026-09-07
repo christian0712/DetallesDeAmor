@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Heart, Sparkles, ArrowRight, Play, Eye, Flame, Gift, Star, CheckCircle, Lock, User, Crown, Clock } from 'lucide-react';
+import { Heart, Sparkles, ArrowRight, Play, Eye, Flame, Gift, Star, CheckCircle, Lock, User, Crown, Clock, PhoneCall, Mail, MessageCircle } from 'lucide-react';
 import { availableTemplates } from '@/lib/defaultData';
 
 export default function Home() {
@@ -25,13 +25,23 @@ export default function Home() {
           </span>
         </div>
 
-        <Link
-          href="/mi-cuenta"
-          className="px-4 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition backdrop-blur-md shadow-lg"
-        >
-          <User className="w-4 h-4 text-rose-400" />
-          <span>Mi Cuenta</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <a
+            href="#contacto"
+            className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition"
+          >
+            <MessageCircle className="w-4 h-4 text-emerald-400" />
+            <span>Contáctanos</span>
+          </a>
+
+          <Link
+            href="/mi-cuenta"
+            className="px-4 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition backdrop-blur-md shadow-lg"
+          >
+            <User className="w-4 h-4 text-rose-400" />
+            <span>Mi Cuenta</span>
+          </Link>
+        </div>
       </header>
 
       {/* Hero Section */}
@@ -137,7 +147,9 @@ export default function Home() {
                   </h3>
                   <p className="text-rose-200/70 text-sm leading-relaxed mb-4">
                     {availableTemplates[0].description}
-                             <div className="space-y-2 mb-6 text-xs text-rose-300/90">
+                  </p>
+
+                  <div className="space-y-2 mb-6 text-xs text-rose-300/90">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                       <span>Sobre 3D interactivo con sello de cera que se abre</span>
@@ -163,7 +175,6 @@ export default function Home() {
                       <span>Publicación online por <strong>1 Año Completo</strong></span>
                     </div>
                   </div>
-                  </p>
                 </div>
               </div>
 
@@ -521,6 +532,60 @@ export default function Home() {
                 </div>
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Contact Us Section */}
+        <section id="contacto" className="mt-20 pt-8 border-t border-rose-500/20">
+          <div className="glass-card-rose rounded-3xl p-8 sm:p-12 border border-rose-500/30 shadow-2xl relative overflow-hidden text-center max-w-4xl mx-auto">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-rose-600/20 blur-3xl pointer-events-none rounded-full" />
+            
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs sm:text-sm font-semibold mb-4 backdrop-blur-md">
+              <MessageCircle className="w-4 h-4 text-rose-400" />
+              <span>Soporte & Atención Personalizada</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-3">
+              ¿Tienes alguna duda o consulta? 💬
+            </h2>
+
+            <p className="text-rose-200/80 text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-8">
+              Estamos disponibles para ayudarte a personalizar tu página romántica, responder tus preguntas o asistirte con tu pedido en tiempo real.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              {/* WhatsApp Card */}
+              <a
+                href="https://wa.me/59175949161?text=Hola!%20Me%20interesa%20personalizar%20un%20detalle%20rom%C3%A1ntico"
+                target="_blank"
+                rel="noreferrer"
+                className="p-5 rounded-2xl bg-gradient-to-br from-[#132b1a] to-[#0a1c10] border border-emerald-500/40 hover:border-emerald-400 text-white flex items-center gap-4 group transition-all duration-300 hover:scale-[1.02] shadow-xl"
+              >
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 group-hover:scale-110 transition shadow-lg">
+                  <PhoneCall className="w-6 h-6 text-emerald-400" />
+                </div>
+                <div className="text-left min-w-0">
+                  <span className="text-[11px] font-bold text-emerald-300 uppercase tracking-wider block">WhatsApp Directo</span>
+                  <strong className="text-lg font-mono font-bold text-white block">75949161</strong>
+                  <span className="text-[11px] text-emerald-200/70 block">Haz clic para chatear 💬</span>
+                </div>
+              </a>
+
+              {/* Email Card */}
+              <a
+                href="mailto:chris.dev.0712@gmail.com"
+                className="p-5 rounded-2xl bg-gradient-to-br from-[#281236] to-[#160921] border border-rose-500/40 hover:border-rose-400 text-white flex items-center gap-4 group transition-all duration-300 hover:scale-[1.02] shadow-xl"
+              >
+                <div className="w-12 h-12 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0 group-hover:scale-110 transition shadow-lg">
+                  <Mail className="w-6 h-6 text-rose-400" />
+                </div>
+                <div className="text-left min-w-0">
+                  <span className="text-[11px] font-bold text-rose-300 uppercase tracking-wider block">Correo Electrónico</span>
+                  <strong className="text-xs sm:text-sm font-mono font-bold text-white block truncate">chris.dev.0712@gmail.com</strong>
+                  <span className="text-[11px] text-rose-200/70 block">Haz clic para escribirnos ✉️</span>
+                </div>
+              </a>
+            </div>
           </div>
         </section>
       </main>

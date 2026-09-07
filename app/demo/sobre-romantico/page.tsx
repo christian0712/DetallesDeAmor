@@ -12,6 +12,7 @@ import { MemoriesTimeline } from '@/components/romantic/MemoriesTimeline';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import { InlineEditorModal } from '@/components/romantic/InlineEditorModal';
 import { PaymentCheckoutModal } from '@/components/checkout/PaymentCheckoutModal';
+import { CustomizationWarningModal } from '@/components/checkout/CustomizationWarningModal';
 import { defaultRomanticData } from '@/lib/defaultData';
 import { RomanticPageData, Order } from '@/types';
 import { Heart, Sparkles, Share2, Check, QrCode, ArrowLeft } from 'lucide-react';
@@ -21,7 +22,9 @@ export default function RomanticEnvelopePage() {
   const [isOpened, setIsOpened] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [activeOrder, setActiveOrder] = useState<Order | null>(null);
+  const [hasCustomized, setHasCustomized] = useState(false);
+  const [isWarningOpen, setIsWarningOpen] = useState(false);
+  const [isEditorOpenExternal, setIsEditorOpenExternal] = useState(false);
 
   const handleEnvelopeOpen = () => {
     setIsOpened(true);
@@ -29,6 +32,15 @@ export default function RomanticEnvelopePage() {
 
   const handleSaveData = (newData: RomanticPageData) => {
     setData(newData);
+    setHasCustomized(true);
+  };
+
+  const handleBuyClick = () => {
+    if (!hasCustomized) {
+      setIsWarningOpen(true);
+    } else {
+      setIsCheckoutOpen(true);
+    }
   };
 
   const handleShareLink = () => {
@@ -190,7 +202,7 @@ export default function RomanticEnvelopePage() {
       {/* Floating Action Buttons Bar */}
       <div className="fixed bottom-6 left-6 right-6 z-50 flex items-center justify-between pointer-events-none max-w-xl mx-auto">
         <button
-          onClick={() => setIsCheckoutOpen(true)}
+          onClick={handleBuyClick}
           className="pointer-events-auto px-5 py-3 rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white font-bold text-xs sm:text-sm shadow-2xl shadow-emerald-500/50 border border-emerald-300/40 flex items-center gap-2 transform hover:scale-105 active:scale-95 transition-all backdrop-blur-md"
         >
           <QrCode className="w-4 h-4 text-white" />
@@ -199,7 +211,22 @@ export default function RomanticEnvelopePage() {
       </div>
 
       {/* Floating Direct Editor Modal */}
-      <InlineEditorModal data={data} onSave={handleSaveData} />
+      <InlineEditorModal
+        data={data}
+        onSave={handleSaveData}
+        isOpenExternal={isEditorOpenExternal}
+        onCloseExternal={() => setIsEditorOpenExternal(false)}
+      />
+
+      {/* Pre-purchase Customization Warning Modal */}
+      <CustomizationWarningModal
+        isOpen={isWarningOpen}
+        onClose={() => setIsWarningOpen(false)}
+        onCustomize={() => setIsEditorOpenExternal(true)}
+        onProceedToCheckout={() => setIsCheckoutOpen(true)}
+        senderName={data.senderName}
+        recipientName={data.recipientName}
+      />
 
       {/* Payment Checkout Modal */}
       <PaymentCheckoutModal

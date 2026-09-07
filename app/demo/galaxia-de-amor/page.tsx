@@ -12,6 +12,7 @@ import { GalaxyProposal } from '@/components/galaxy/GalaxyProposal';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
 import { InlineEditorModal } from '@/components/romantic/InlineEditorModal';
 import { PaymentCheckoutModal } from '@/components/checkout/PaymentCheckoutModal';
+import { CustomizationWarningModal } from '@/components/checkout/CustomizationWarningModal';
 import { defaultGalaxyData } from '@/lib/defaultData';
 import { RomanticPageData, Order } from '@/types';
 import { Sparkles, Share2, Check, QrCode, Orbit, ArrowLeft } from 'lucide-react';
@@ -21,7 +22,9 @@ export default function GalaxyThemePage() {
   const [isOpened, setIsOpened] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [activeOrder, setActiveOrder] = useState<Order | null>(null);
+  const [hasCustomized, setHasCustomized] = useState(false);
+  const [isWarningOpen, setIsWarningOpen] = useState(false);
+  const [isEditorOpenExternal, setIsEditorOpenExternal] = useState(false);
 
   const handleOpen = () => {
     setIsOpened(true);
@@ -29,6 +32,15 @@ export default function GalaxyThemePage() {
 
   const handleSaveData = (newData: RomanticPageData) => {
     setData(newData);
+    setHasCustomized(true);
+  };
+
+  const handleBuyClick = () => {
+    if (!hasCustomized) {
+      setIsWarningOpen(true);
+    } else {
+      setIsCheckoutOpen(true);
+    }
   };
 
   const handleShareLink = () => {
@@ -141,8 +153,8 @@ export default function GalaxyThemePage() {
               recipientName={data.recipientName}
             />
 
-            {/* Módulo 4: Cápsula de Estrellas Fugaces & Deseos */}
-            <GalaxyShootingStarWishes recipientName={data.recipientName} />
+            {/* Section 5: Shooting Star Wishes Capsule with Unlock Dates */}
+            <GalaxyShootingStarWishes recipientName={data.recipientName} wishes={data.starWishes} />
 
             {/* Módulo 5: Pregunta / Propuesta Cósmica Supernova */}
             <GalaxyProposal
@@ -187,7 +199,7 @@ export default function GalaxyThemePage() {
       {/* Floating Action Buttons Bar */}
       <div className="fixed bottom-6 left-6 right-6 z-50 flex items-center justify-between pointer-events-none max-w-xl mx-auto">
         <button
-          onClick={() => setIsCheckoutOpen(true)}
+          onClick={handleBuyClick}
           className="pointer-events-auto px-5 py-3 rounded-full bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white font-bold text-xs sm:text-sm shadow-2xl shadow-cyan-500/50 border border-cyan-300/40 flex items-center gap-2 transform hover:scale-105 active:scale-95 transition-all backdrop-blur-md"
         >
           <QrCode className="w-4 h-4 text-white" />
@@ -196,7 +208,22 @@ export default function GalaxyThemePage() {
       </div>
 
       {/* Floating Direct Editor Modal */}
-      <InlineEditorModal data={data} onSave={handleSaveData} />
+      <InlineEditorModal
+        data={data}
+        onSave={handleSaveData}
+        isOpenExternal={isEditorOpenExternal}
+        onCloseExternal={() => setIsEditorOpenExternal(false)}
+      />
+
+      {/* Pre-purchase Customization Warning Modal */}
+      <CustomizationWarningModal
+        isOpen={isWarningOpen}
+        onClose={() => setIsWarningOpen(false)}
+        onCustomize={() => setIsEditorOpenExternal(true)}
+        onProceedToCheckout={() => setIsCheckoutOpen(true)}
+        senderName={data.senderName}
+        recipientName={data.recipientName}
+      />
 
       {/* Payment Checkout Modal */}
       <PaymentCheckoutModal

@@ -7,10 +7,12 @@ import confetti from 'canvas-confetti';
 
 interface GiftBoxScratchCardProps {
   recipientName?: string;
+  prizeText?: string;
 }
 
 export const GiftBoxScratchCard: React.FC<GiftBoxScratchCardProps> = ({
   recipientName = 'Camila',
+  prizeText = '¡Válido por una torta especial + regalo sorpresa + velada de celebración inolvidable! 🎂👑❤️',
 }) => {
   const [birthdayDay, setBirthdayDay] = useState<string>('14');
   const [birthdayMonth, setBirthdayMonth] = useState<string>('Agosto');
@@ -132,7 +134,7 @@ export const GiftBoxScratchCard: React.FC<GiftBoxScratchCardProps> = ({
                     ¡PREMIO MAYOR DE CUMPLETIEMPO!
                   </h3>
                   <p className="text-xs text-emerald-100 font-light leading-relaxed">
-                    "Válido por una torta especial + regalo sorpresa + velada de celebración inolvidable."
+                    "{prizeText}"
                   </p>
                 </div>
 

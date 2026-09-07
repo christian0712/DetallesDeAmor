@@ -178,6 +178,12 @@ export const generateFriendlyUserCode = (senderName: string = ''): string => {
   return `${cleanName}-${randomNumber}`;
 };
 
+export const isRealReceiptUrl = (url?: string): boolean => {
+  if (!url) return false;
+  if (url.includes('unsplash.com/photo-1554224155')) return false;
+  return true;
+};
+
 export const saveOrder = (
   pageData: RomanticPageData,
   phoneNumber: string,
@@ -200,7 +206,7 @@ export const saveOrder = (
     senderName: pageData.senderName,
     phoneNumber,
     paymentMethod,
-    receiptUrl: receiptUrl || 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80',
+    receiptUrl: receiptUrl && receiptUrl.trim().length > 0 ? receiptUrl : undefined,
     status: 'PENDIENTE',
     createdAt: new Date().toISOString(),
     amountBs: paymentConfig.priceBs || 49,

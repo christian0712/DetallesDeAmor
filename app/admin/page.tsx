@@ -42,7 +42,8 @@ import {
   TrendingUp,
   PieChart,
   ZoomIn,
-  Award
+  Award,
+  Printer
 } from 'lucide-react';
 import { Order, OrderStatus, PaymentMethodsConfig, BankAccount, AdminSong } from '@/types';
 import { AudioPlayer } from '@/components/romantic/AudioPlayer';
@@ -58,10 +59,13 @@ import {
   defaultAdminSongs,
   syncAllAdminDataFromSupabase,
   deleteOrder,
+  isRealReceiptUrl,
+  generateFriendlyUserCode,
 } from '@/lib/store';
 import { getYouTubeVideoId } from '@/lib/musicCatalog';
 import { uploadClientPhotoToSupabase } from '@/lib/supabase';
-import { QRCodeSVG } from 'qrcode.react';
+import { QRCodeSVG, QRCodeCanvas } from 'qrcode.react';
+import { exportPrintableQRCard } from '@/lib/qrCardExporter';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -135,6 +139,18 @@ export default function AdminPage() {
     setOrders(getStoredOrders());
     if (selectedOrder && selectedOrder.id === orderId && rejected) {
       setSelectedOrder(rejected);
+    }
+  };
+
+  const handleDeleteOrder = (orderId: string) => {
+    if (confirm('¿Estás seguro de que deseas eliminar este pedido permanentemente? Esta acción lo borrará del sistema y de Supabase.')) {
+      deleteOrder(orderId);
+      setOrders(getStoredOrders());
+      if (selectedOrder && selectedOrder.id === orderId) {
+        setSelectedOrder(null);
+      }
+      setSaveSuccessMessage('¡Pedido eliminado exitosamente!');
+      setTimeout(() => setSaveSuccessMessage(null), 3500);
     }
   };
 
@@ -518,13 +534,25 @@ export default function AdminPage() {
                       </span>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-4 text-xs text-rose-300/80 font-mono">
-                      <span className="flex items-center gap-1">
-                        <PhoneCall className="w-3.5 h-3.5 text-rose-400" />
-                        Celular / Clave: <strong className="text-white">{order.phoneNumber}</strong>
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-rose-300/80 font-mono">
+                      <span className="flex items-center gap-1 text-amber-300 font-bold bg-[#1d092e] px-2 py-0.5 rounded border border-amber-500/30">
+                        <User className="w-3.5 h-3.5 text-amber-400" />
+                        Usuario Login: {order.clientCode || generateFriendlyUserCode(order.senderName)}
                       </span>
                       <span>|</span>
-                      <span>Método: <strong>{order.paymentMethod.toUpperCase()}</strong></span>
+                      <span className="flex items-center gap-1">
+                        <PhoneCall className="w-3.5 h-3.5 text-rose-400" />
+                        Celular: <strong className="text-white">{order.phoneNumber}</strong>
+                      </span>
+                      <span>|</span>
+                      <span>
+                        Comprobante:{' '}
+                        {isRealReceiptUrl(order.receiptUrl) ? (
+                          <strong className="text-emerald-400 font-sans">📸 Con Comprobante</strong>
+                        ) : (
+                          <strong className="text-amber-400 font-sans">⚠️ Sin Comprobante</strong>
+                        )}
+                      </span>
                       <span>|</span>
                       <span>Monto: <strong className="text-amber-400">{order.amountBs} Bs</strong></span>
                     </div>
@@ -572,6 +600,15 @@ export default function AdminPage() {
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     )}
+
+                    <button
+                      onClick={() => handleDeleteOrder(order.id)}
+                      className="px-3.5 py-2 rounded-xl bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-500/30 hover:border-red-500 font-bold text-xs flex items-center gap-1.5 transition active:scale-95"
+                      title="Eliminar Pedido"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-400" />
+                      <span>Eliminar</span>
+                    </button>
                   </div>
                 </motion.div>
               ))
@@ -1407,27 +1444,45 @@ export default function AdminPage() {
               </h2>
 
               <div className="space-y-4 text-xs mb-6">
-                <div className="bg-[#240e36] p-4 rounded-2xl border border-rose-500/20 space-y-2">
-                  <div className="flex justify-between">
+                <div className="bg-[#240e36] p-4 rounded-2xl border border-rose-500/20 space-y-3">
+                  <div className="flex justify-between items-center border-b border-rose-500/20 pb-2">
                     <span className="text-rose-300/70">Pareja:</span>
-                    <span className="font-bold text-white text-sm">{selectedOrder.coupleTitle}</span>
+                    <span className="font-bold text-white text-sm font-serif">{selectedOrder.coupleTitle}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-rose-300/70">N° Celular (Contraseña):</span>
-                    <span className="font-mono font-bold text-amber-400">{selectedOrder.phoneNumber}</span>
+
+                  {/* AUTO USER LOGIN CREDENTIALS BOX */}
+                  <div className="p-3.5 rounded-xl bg-[#170729] border border-amber-500/40 space-y-2">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                      <User className="w-4 h-4 text-amber-400" />
+                      <span>Usuario y Datos de Login Automático (/mi-cuenta)</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
+                      <div className="bg-[#250d3d] p-2.5 rounded-lg border border-amber-500/30">
+                        <span className="text-[10px] text-amber-300/80 block uppercase font-bold">Código de Usuario:</span>
+                        <strong className="text-white text-sm font-bold">{selectedOrder.clientCode || generateFriendlyUserCode(selectedOrder.senderName)}</strong>
+                      </div>
+                      <div className="bg-[#250d3d] p-2.5 rounded-lg border border-amber-500/30">
+                        <span className="text-[10px] text-amber-300/80 block uppercase font-bold">Celular / Contraseña:</span>
+                        <strong className="text-amber-400 text-sm font-bold">{selectedOrder.phoneNumber}</strong>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-rose-300/70">
+                      🔑 El cliente puede ingresar a su panel con su <strong>Código de Usuario</strong> o su <strong>Número de Celular</strong>.
+                    </p>
                   </div>
-                  <div className="flex justify-between">
+
+                  <div className="flex justify-between text-xs">
                     <span className="text-rose-300/70">Método de Pago:</span>
                     <span className="font-bold text-white">{selectedOrder.paymentMethod.toUpperCase()}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-rose-300/70">Fecha:</span>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-rose-300/70">Fecha del Pedido:</span>
                     <span className="font-mono text-rose-200">{new Date(selectedOrder.createdAt).toLocaleString()}</span>
                   </div>
                 </div>
 
-                {/* Receipt Image Preview with Full Uncropped Display */}
-                {selectedOrder.receiptUrl && (
+                {/* Receipt Image Preview or "Sin comprobante" notification */}
+                {isRealReceiptUrl(selectedOrder.receiptUrl) ? (
                   <div className="bg-[#210c33] p-4 rounded-2xl border border-rose-500/30 space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-rose-300 text-xs flex items-center gap-1.5">
@@ -1459,6 +1514,18 @@ export default function AdminPage() {
                       💡 Haz clic sobre la imagen para abrir la captura del comprobante en alta resolución.
                     </p>
                   </div>
+                ) : (
+                  <div className="bg-amber-950/40 p-4 rounded-2xl border border-amber-500/40 text-amber-200 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg shrink-0">
+                      ⚠️
+                    </div>
+                    <div>
+                      <strong className="block text-amber-300 text-xs font-bold">Sin Comprobante de Pago</strong>
+                      <p className="text-[11px] text-amber-200/80">
+                        El cliente no subió ningún comprobante de pago al realizar este pedido.
+                      </p>
+                    </div>
+                  </div>
                 )}
 
                 {/* Generated QR Code Section if Approved */}
@@ -1469,7 +1536,21 @@ export default function AdminPage() {
                       <span>Código QR de Invitación Generado</span>
                     </div>
 
-                    {/* Vector QR */}
+                    {/* Hidden Canvas for Printable Export */}
+                    <div className="hidden">
+                      <QRCodeCanvas
+                        id={`qr-canvas-admin-${selectedOrder.id}`}
+                        value={
+                          selectedOrder.qrUrl ||
+                          `${typeof window !== 'undefined' ? window.location.origin : ''}/p/${selectedOrder.slug}`
+                        }
+                        size={400}
+                        level="H"
+                        includeMargin={true}
+                      />
+                    </div>
+
+                    {/* Vector QR Display */}
                     <div className="w-44 h-44 bg-white p-3 rounded-2xl shadow-2xl mx-auto border-4 border-rose-500 flex items-center justify-center">
                       <QRCodeSVG
                         value={selectedOrder.qrUrl || `${typeof window !== 'undefined' ? window.location.origin : ''}/p/${selectedOrder.slug}`}
@@ -1482,12 +1563,26 @@ export default function AdminPage() {
                       {selectedOrder.qrUrl || `${typeof window !== 'undefined' ? window.location.origin : ''}/p/${selectedOrder.slug}`}
                     </p>
 
-                    <div className="flex gap-2 justify-center">
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          exportPrintableQRCard(
+                            selectedOrder,
+                            `qr-canvas-admin-${selectedOrder.id}`
+                          )
+                        }
+                        className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-600 hover:to-rose-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg transition active:scale-95 border border-amber-300/30"
+                      >
+                        <Printer className="w-4 h-4" />
+                        <span>Exportar Tarjeta Imprimible (PNG) 🖨️</span>
+                      </button>
+
                       <a
                         href={selectedOrder.qrUrl || `/p/${selectedOrder.slug}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center gap-1.5"
+                        className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 hover:text-white font-bold text-xs flex items-center gap-1.5 transition"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                         <span>Probar Enlace QR</span>
@@ -1498,23 +1593,33 @@ export default function AdminPage() {
               </div>
 
               {/* Modal Actions */}
-              <div className="flex justify-end gap-3 pt-4 border-t border-rose-500/20">
-                {selectedOrder.status === 'PENDIENTE' && (
-                  <button
-                    onClick={() => handleApprove(selectedOrder.id)}
-                    className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-lg flex items-center gap-2"
-                  >
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Aprobar Pago y Generar QR</span>
-                  </button>
-                )}
-
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-rose-500/20">
                 <button
-                  onClick={() => setSelectedOrder(null)}
-                  className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 text-sm font-semibold"
+                  onClick={() => handleDeleteOrder(selectedOrder.id)}
+                  className="px-4 py-2.5 rounded-xl bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-500/30 hover:border-red-500 font-bold text-xs flex items-center gap-1.5 transition active:scale-95"
                 >
-                  Cerrar
+                  <Trash2 className="w-4 h-4 text-red-400" />
+                  <span>Eliminar Pedido</span>
                 </button>
+
+                <div className="flex items-center gap-2 ml-auto">
+                  {selectedOrder.status === 'PENDIENTE' && (
+                    <button
+                      onClick={() => handleApprove(selectedOrder.id)}
+                      className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-lg flex items-center gap-2"
+                    >
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>Aprobar Pago y Generar QR</span>
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => setSelectedOrder(null)}
+                    className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 text-sm font-semibold"
+                  >
+                    Cerrar
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>

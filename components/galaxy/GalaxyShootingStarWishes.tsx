@@ -1,66 +1,97 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Heart, Star, Compass, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Heart, Star, Compass, CheckCircle2, Lock } from 'lucide-react';
+import { StarWishItem } from '@/types';
 
-interface Wish {
-  id: number;
-  title: string;
-  wish: string;
-  icon: string;
-  caught: boolean;
-}
-
-const INITIAL_WISHES: Wish[] = [
+const INITIAL_WISHES: StarWishItem[] = [
   {
-    id: 1,
-    title: 'Viaje a las Estrellas ✈️',
-    wish: 'Mi deseo es conocer juntos un nuevo país y ver auroras boreales tomados de la mano.',
-    icon: '🌠',
-    caught: false,
-  },
-  {
-    id: 2,
-    title: 'Noches de Fogata & Chocoflan ☕',
-    wish: 'Prometo incontables noches acurrucados conversando de todo y de nada.',
-    icon: '✨',
-    caught: false,
-  },
-  {
-    id: 3,
-    title: 'Construir Nuestro Hogar 🏡',
-    wish: 'Llenar un espacio propio con nuestras fotos, risas, plantas y recuerdos inolvidables.',
-    icon: '💫',
-    caught: false,
-  },
-  {
-    id: 4,
-    title: 'Amor Eterno e Incondicional ❤️',
-    wish: 'Elegirte hoy, mañana y en cada una de las vidas que volvamos a coincidir.',
+    id: '1',
+    title: 'Mirar las Estrellas & Cenar Rico 🍕🌌',
+    wish: 'Irnos a un lugar tranquilo de noche a recostarnos en una manta a mirar las estrellas, llevando nuestra pizza o comida favorita y brindando bajo la luna.',
     icon: '🌌',
+    unlockDate: '2026-09-01',
+    caught: false,
+  },
+  {
+    id: '2',
+    title: 'Picnic al Atardecer & Fotos 🧺🌅',
+    wish: 'Preparar una canastita con jugos, frutas y nuestros postres favoritos para ver la caída del sol juntos mientras capturamos fotos hermosas.',
+    icon: '🌠',
+    unlockDate: '2026-09-10',
+    caught: false,
+  },
+  {
+    id: '3',
+    title: 'Maratón de Pelis & Chocolates 🎬🍿',
+    wish: 'Una noche entera acurrucados con colchas calientitas, palomitas de maíz, chocolates y nuestras series favoritas sin preocuparnos por el reloj.',
+    icon: '💫',
+    unlockDate: '2026-09-18',
+    caught: false,
+  },
+  {
+    id: '4',
+    title: 'Escapada Sorpresa de Fin de Semana 🚀🏖️',
+    wish: 'Hacer maletas y escaparnos un fin de semana a un lugar nuevo donde el único plan sea disfrutar de nuestro amor y desconectarnos del mundo.',
+    icon: '⭐',
+    unlockDate: '2026-09-25',
     caught: false,
   },
 ];
 
 interface GalaxyShootingStarWishesProps {
   recipientName?: string;
+  wishes?: StarWishItem[];
 }
 
 export const GalaxyShootingStarWishes: React.FC<GalaxyShootingStarWishesProps> = ({
   recipientName = 'mi amor',
+  wishes: customWishes,
 }) => {
-  const [wishes, setWishes] = useState<Wish[]>(INITIAL_WISHES);
-  const [activeWish, setActiveWish] = useState<Wish | null>(null);
+  const [items, setItems] = useState<StarWishItem[]>(INITIAL_WISHES);
+  const [activeWish, setActiveWish] = useState<StarWishItem | null>(null);
+  const [lockedNotice, setLockedNotice] = useState<string | null>(null);
 
-  const handleCatchWish = (wish: Wish) => {
-    setWishes((prev) =>
+  useEffect(() => {
+    if (customWishes && customWishes.length > 0) {
+      setItems(customWishes.map(w => ({ ...w, caught: false })));
+    }
+  }, [customWishes]);
+
+  const isUnlocked = (dateStr?: string) => {
+    if (!dateStr) return true;
+    const today = new Date().toISOString().slice(0, 10);
+    return dateStr <= today;
+  };
+
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return '';
+    const [year, month, day] = dateStr.split('-');
+    if (!year || !month || !day) return dateStr;
+    const dateObj = new Date(Number(year), Number(month) - 1, Number(day));
+    return dateObj.toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const handleCatchWish = (wish: StarWishItem) => {
+    if (!isUnlocked(wish.unlockDate)) {
+      setLockedNotice(`🔒 Esta estrella fugaz se liberará en el universo el ${formatDate(wish.unlockDate)}.`);
+      setTimeout(() => setLockedNotice(null), 4000);
+      return;
+    }
+
+    setItems((prev) =>
       prev.map((item) => (item.id === wish.id ? { ...item, caught: true } : item))
     );
     setActiveWish({ ...wish, caught: true });
+    setLockedNotice(null);
   };
 
-  const caughtCount = wishes.filter((w) => w.caught).length;
+  const caughtCount = items.filter((w) => w.caught).length;
 
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 relative">
@@ -82,49 +113,79 @@ export const GalaxyShootingStarWishes: React.FC<GalaxyShootingStarWishesProps> =
             Cápsula de Estrellas Fugaces 💫
           </h2>
           <p className="text-xs sm:text-sm text-purple-200/70 font-light max-w-md mx-auto">
-            Captura las 4 estrellas fugaces que cruzan el universo para revelar los deseos y promesas de nuestro futuro juntos.
+            Captura las estrellas fugaces que cruzan el universo para revelar los deseos y promesas de nuestro futuro juntos.
           </p>
 
           <div className="inline-flex items-center gap-2 mt-3 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 text-xs text-purple-200">
             <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Estrellas atrapadas: {caughtCount} de 4</span>
+            <span>Estrellas atrapadas: {caughtCount} de {items.length}</span>
           </div>
         </div>
 
+        {/* Locked Notice Banner */}
+        <AnimatePresence>
+          {lockedNotice && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mb-6 p-3.5 bg-amber-950/80 border border-amber-500/60 rounded-2xl text-amber-200 text-xs text-center font-semibold shadow-lg"
+            >
+              {lockedNotice}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Wishes Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
-          {wishes.map((wish) => (
-            <motion.div
-              key={wish.id}
-              whileHover={{ scale: 1.02 }}
-              onClick={() => handleCatchWish(wish)}
-              className={`cursor-pointer p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden flex items-center gap-4 ${
-                wish.caught
-                  ? 'bg-gradient-to-r from-purple-900/60 to-indigo-900/60 border-cyan-400/50 shadow-lg shadow-cyan-500/10'
-                  : 'bg-[#180938]/60 border-purple-500/20 hover:border-purple-400/60'
-              }`}
-            >
-              <div className="text-3xl shrink-0 p-3 bg-purple-950/80 rounded-xl border border-purple-500/30 shadow-inner">
-                {wish.icon}
-              </div>
+          {items.map((wish) => {
+            const unlocked = isUnlocked(wish.unlockDate);
 
-              <div className="min-w-0 flex-1">
-                <h4 className="text-sm sm:text-base font-bold text-white mb-1 flex items-center gap-2">
-                  <span>{wish.title}</span>
-                  {wish.caught && <span className="text-xs text-cyan-400 font-mono">✓ Atrapada</span>}
-                </h4>
-                <p className="text-xs text-purple-200/70 line-clamp-2">
-                  {wish.caught ? wish.wish : 'Toca para atrapar esta estrella fugaz...'}
-                </p>
-              </div>
+            return (
+              <motion.div
+                key={wish.id}
+                whileHover={{ scale: 1.02 }}
+                onClick={() => handleCatchWish(wish)}
+                className={`cursor-pointer p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden flex items-center gap-4 ${
+                  wish.caught
+                    ? 'bg-gradient-to-r from-purple-900/60 to-indigo-900/60 border-cyan-400/50 shadow-lg shadow-cyan-500/10'
+                    : !unlocked
+                    ? 'bg-[#15072c]/80 border-amber-500/30 opacity-90'
+                    : 'bg-[#180938]/60 border-purple-500/20 hover:border-purple-400/60'
+                }`}
+              >
+                <div className="text-3xl shrink-0 p-3 bg-purple-950/80 rounded-xl border border-purple-500/30 shadow-inner flex items-center justify-center">
+                  {!unlocked ? <Lock className="w-6 h-6 text-amber-400" /> : wish.icon || '🌠'}
+                </div>
 
-              {!wish.caught && (
-                <span className="text-[10px] font-mono uppercase tracking-wider text-purple-300/80 px-2 py-1 bg-purple-500/20 rounded-md border border-purple-500/40">
-                  Atrapar 🌠
-                </span>
-              )}
-            </motion.div>
-          ))}
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-sm sm:text-base font-bold text-white mb-1 flex items-center gap-2">
+                    <span>{wish.title}</span>
+                    {wish.caught && <span className="text-xs text-cyan-400 font-mono">✓ Atrapada</span>}
+                  </h4>
+                  <p className="text-xs text-purple-200/70 line-clamp-2">
+                    {wish.caught
+                      ? wish.wish
+                      : !unlocked
+                      ? `🔒 Se liberará el ${formatDate(wish.unlockDate)}`
+                      : 'Toca para atrapar esta estrella fugaz...'}
+                  </p>
+                </div>
+
+                {!wish.caught && (
+                  <span
+                    className={`text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md border shrink-0 ${
+                      !unlocked
+                        ? 'bg-amber-950/60 text-amber-300 border-amber-500/40'
+                        : 'bg-purple-500/20 text-purple-300/80 border-purple-500/40'
+                    }`}
+                  >
+                    {!unlocked ? 'Bloqueada 🔒' : 'Atrapar 🌠'}
+                  </span>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Popup Card Preview */}
@@ -136,7 +197,7 @@ export const GalaxyShootingStarWishes: React.FC<GalaxyShootingStarWishesProps> =
               exit={{ opacity: 0, scale: 0.9 }}
               className="mt-6 p-5 bg-gradient-to-r from-cyan-950/80 via-purple-950/90 to-cyan-950/80 rounded-2xl border border-cyan-400/40 text-center space-y-2 relative z-10 shadow-2xl"
             >
-              <div className="text-3xl">{activeWish.icon}</div>
+              <div className="text-3xl">{activeWish.icon || '🌠'}</div>
               <h3 className="text-lg font-serif font-bold text-white">
                 {activeWish.title}
               </h3>

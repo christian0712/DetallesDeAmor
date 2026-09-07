@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Film, ChevronRight, Sparkles, Heart, RefreshCw } from 'lucide-react';
 
+import { PhotoItem } from '@/types';
+
 interface Slide {
   id: number;
   title: string;
@@ -46,21 +48,32 @@ const DEFAULT_SLIDES: Slide[] = [
 interface VintageSlideProjectorProps {
   recipientName?: string;
   senderName?: string;
+  photos?: PhotoItem[];
 }
 
 export const VintageSlideProjector: React.FC<VintageSlideProjectorProps> = ({
   recipientName = 'Sofía',
   senderName = 'Carlos',
+  photos,
 }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
   const [isClickingLever, setIsClickingLever] = useState<boolean>(false);
 
-  const currentSlide = DEFAULT_SLIDES[currentSlideIndex];
+  const dynamicSlides: Slide[] = (photos && photos.length > 0 ? photos : []).map((p, idx) => ({
+    id: idx + 1,
+    title: `Diapositiva #${idx + 1}`,
+    subtitle: `Recuerdo #${idx + 1}`,
+    photoUrl: p.url,
+    caption: p.caption || `Nuestra foto especial #${idx + 1}`,
+  }));
+
+  const activeSlides = dynamicSlides.length > 0 ? dynamicSlides : DEFAULT_SLIDES;
+  const currentSlide = activeSlides[currentSlideIndex % activeSlides.length];
 
   const handleNextSlide = () => {
     setIsClickingLever(true);
     setTimeout(() => {
-      setCurrentSlideIndex((prev) => (prev + 1) % DEFAULT_SLIDES.length);
+      setCurrentSlideIndex((prev) => (prev + 1) % activeSlides.length);
       setIsClickingLever(false);
     }, 200);
   };

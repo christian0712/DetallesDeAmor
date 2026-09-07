@@ -175,7 +175,7 @@ export default function PublicQRInvitationPage() {
             <GiftBoxVouchers vouchers={data.vouchers} recipientName={data.recipientName} />
             <GiftBoxUnboxingSurprises recipientName={data.recipientName} surprises={data.giftSurprises} />
             <GiftBoxPhotoString photos={data.photos} />
-            <GiftBoxScratchCard recipientName={data.recipientName} />
+            <GiftBoxScratchCard recipientName={data.recipientName} prizeText={data.scratchCardPrize} />
             <GiftBoxProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
             <div className="max-w-md mx-auto px-4 text-center">
               <button onClick={handleShareLink} className="w-full px-6 py-3.5 rounded-2xl bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-200 font-semibold text-sm border border-emerald-500/40 flex items-center justify-center gap-2 transition backdrop-blur-md">
@@ -228,7 +228,7 @@ export default function PublicQRInvitationPage() {
             <GalaxyReasonsConstellation recipientName={data.recipientName} />
             <GalaxyPhotoGrid photos={data.photos} />
             <GalaxyLoveLetter title={data.loveLetterTitle} body={data.loveLetterBody} senderName={data.senderName} recipientName={data.recipientName} />
-            <GalaxyShootingStarWishes recipientName={data.recipientName} />
+            <GalaxyShootingStarWishes recipientName={data.recipientName} wishes={data.starWishes} />
             <GalaxyProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />
             <div className="max-w-md mx-auto px-4 text-center">
               <button onClick={handleShareLink} className="w-full px-6 py-3.5 rounded-2xl bg-cyan-950/40 hover:bg-cyan-900/60 text-cyan-200 font-semibold text-sm border border-cyan-500/30 flex items-center justify-center gap-2 transition backdrop-blur-md">
@@ -279,7 +279,7 @@ export default function PublicQRInvitationPage() {
               </p>
             </div>
             <VintageVinylPlayer audioTitle={data.audioTitle} audioArtist={data.audioArtist} isPlaying={isOpened} />
-            <VintageSlideProjector recipientName={data.recipientName} senderName={data.senderName} />
+            <VintageSlideProjector recipientName={data.recipientName} senderName={data.senderName} photos={data.photos} />
             <VintagePolaroidGallery photos={data.photos} />
             <VintageLoveLetter title={data.loveLetterTitle} body={data.loveLetterBody} senderName={data.senderName} recipientName={data.recipientName} />
             <VintageLockboxProposal questionTitle={data.questionTitle} yesButtonText={data.yesButtonText} yesResponseSubtitle={data.yesResponseSubtitle} senderName={data.senderName} recipientName={data.recipientName} />

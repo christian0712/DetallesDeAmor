@@ -179,10 +179,49 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
               <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white">
                 Finalizar Detalle Romántico
               </h3>
-              <p className="text-rose-200/70 text-xs sm:text-sm mt-1">
+              <div className="text-rose-200/70 text-xs sm:text-sm mt-1">
                 Total a pagar: <strong className="text-amber-400 font-bold text-base">{paymentConfig.priceBs} Bs / {paymentConfig.priceUsdt} USDT</strong>
                 <span className="block text-[11px] text-rose-300/80 mt-0.5 font-medium">✨ Incluye publicación online activa por 1 Año Completo</span>
-              </p>
+              </div>
+            </div>
+
+            {/* Customization Details Summary & Warning */}
+            <div className="mb-6 p-4 rounded-2xl bg-[#230d36] border border-rose-500/30 text-xs space-y-2">
+              <div className="flex items-center justify-between font-semibold border-b border-rose-500/20 pb-2">
+                <span className="text-rose-300 font-serif font-bold text-sm">Resumen de tu Detalle</span>
+                <span className="text-[11px] text-amber-300 font-mono">
+                  {pageData.photos?.length || 0} Fotos personalizadas
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-rose-200">
+                <div>
+                  <span className="text-rose-400 text-[10px] uppercase font-bold block">Para (Destinatario):</span>
+                  <strong className="text-white font-bold">{pageData.recipientName}</strong>
+                </div>
+                <div>
+                  <span className="text-rose-400 text-[10px] uppercase font-bold block">De (Remitente):</span>
+                  <strong className="text-white font-bold">{pageData.senderName}</strong>
+                </div>
+              </div>
+
+              {(pageData.senderName === 'Carlos' || pageData.recipientName === 'Sofía' || pageData.recipientName === 'Valeria') && (
+                <div className="mt-3 p-3 rounded-xl bg-amber-950/80 border border-amber-500/60 text-amber-200 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">⚠️</span>
+                    <div>
+                      <strong className="block text-amber-300">¡Nombres por defecto detectados!</strong>
+                      <span className="text-[11px] text-amber-200/80">Estás por pedir con los nombres de muestra ({pageData.senderName} & {pageData.recipientName}).</span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-amber-950 font-bold text-xs shrink-0 shadow transition"
+                  >
+                    🎨 Personalizar Ahora
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Payment Method Selector Tabs */}

@@ -139,6 +139,36 @@ Desde el día en que nuestras constelaciones se cruzaron, supe que mi destino er
       icon: '🚀',
     },
   ],
+  starWishes: [
+    {
+      id: 'w1',
+      title: 'Mirar las Estrellas & Cenar Rico 🍕🌌',
+      wish: 'Irnos a un lugar tranquilo de noche a recostarnos en una manta a mirar las estrellas, llevando nuestra pizza o comida favorita y brindando bajo la luna.',
+      icon: '🌌',
+      unlockDate: '2026-09-01',
+    },
+    {
+      id: 'w2',
+      title: 'Picnic al Atardecer & Fotos 🧺🌅',
+      wish: 'Preparar una canastita con jugos, frutas y nuestros postres favoritos para ver la caída del sol juntos mientras capturamos fotos hermosas.',
+      icon: '🌠',
+      unlockDate: '2026-09-10',
+    },
+    {
+      id: 'w3',
+      title: 'Maratón de Pelis & Chocolates 🎬🍿',
+      wish: 'Una noche entera acurrucados con colchas calientitas, palomitas de maíz, chocolates y nuestras series favoritas sin preocuparnos por el reloj.',
+      icon: '💫',
+      unlockDate: '2026-09-18',
+    },
+    {
+      id: 'w4',
+      title: 'Escapada Sorpresa de Fin de Semana 🚀🏖️',
+      wish: 'Hacer maletas y escaparnos un fin de semana a un lugar nuevo donde el único plan sea disfrutar de nuestro amor y desconectarnos del mundo.',
+      icon: '⭐',
+      unlockDate: '2026-09-25',
+    },
+  ],
   themeColor: 'purple',
 };
 
@@ -340,6 +370,7 @@ Gracias por hacerme el hombre más afortunado del mundo. Te amo infinitamente y 
       icon: '🗺️',
     },
   ],
+  scratchCardPrize: '¡Válido por una torta especial + regalo sorpresa + velada de celebración inolvidable! 🎂👑❤️',
   themeColor: 'emerald',
 };
 

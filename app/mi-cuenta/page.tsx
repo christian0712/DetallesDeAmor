@@ -19,11 +19,18 @@ import {
   Copy,
   Check,
   KeyRound,
-  LogOut
+  LogOut,
+  Trash2,
+  MessageCircle,
+  Mail,
+  HelpCircle,
+  Download,
+  Printer
 } from 'lucide-react';
-import { findOrderByClientCodeOrPhone } from '@/lib/store';
+import { findOrderByClientCodeOrPhone, deleteOrder } from '@/lib/store';
 import { Order } from '@/types';
-import { QRCodeSVG } from 'qrcode.react';
+import { QRCodeSVG, QRCodeCanvas } from 'qrcode.react';
+import { exportPrintableQRCard } from '@/lib/qrCardExporter';
 
 export default function MiCuentaPage() {
   const [userInput, setUserInput] = useState('');
@@ -66,6 +73,21 @@ export default function MiCuentaPage() {
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
+  };
+
+  const handleDeleteMyOrder = () => {
+    if (!foundOrder) return;
+    if (
+      confirm(
+        '¿Estás seguro de que deseas eliminar tu pedido y publicación? Esta acción borrará permanentemente tus datos del sistema.'
+      )
+    ) {
+      deleteOrder(foundOrder.id);
+      setFoundOrder(null);
+      setUserInput('');
+      setPhoneInput('');
+      setErrorMsg('Tu pedido ha sido eliminado correctamente.');
+    }
   };
 
   return (
@@ -158,6 +180,44 @@ export default function MiCuentaPage() {
                 )}
               </button>
             </form>
+
+            {/* Forgot User Code Assistance Section */}
+            <div className="mt-6 pt-5 border-t border-rose-500/20 text-center space-y-3">
+              <div className="flex items-center justify-center gap-1.5 text-xs text-rose-300 font-semibold">
+                <HelpCircle className="w-4 h-4 text-amber-400" />
+                <span>¿Olvidaste tu Código de Usuario o Contraseña?</span>
+              </div>
+              <p className="text-[11px] text-rose-200/70 max-w-sm mx-auto">
+                No te preocupes. Comunícate directamente con nuestro soporte por WhatsApp o correo para ayudarte a recuperar tu cuenta de inmediato.
+              </p>
+
+              <div className="flex flex-wrap justify-center items-center gap-2 pt-1 text-xs font-bold">
+                <a
+                  href="https://wa.me/59175949161?text=Hola!%20Olvid%C3%A9%20mi%20c%C3%B3digo%20de%20usuario%20o%20acceso%20para%20mi%20detalle"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-md flex items-center gap-1.5 transition active:scale-95 border border-emerald-400/30"
+                >
+                  <MessageCircle className="w-4 h-4 text-emerald-200" />
+                  <span>WhatsApp (75949161)</span>
+                </a>
+
+                <a
+                  href="mailto:chris.dev.0712@gmail.com?subject=Recuperar%20c%C3%B3digo%20de%20usuario"
+                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white shadow-md flex items-center gap-1.5 transition active:scale-95 border border-rose-400/30"
+                >
+                  <Mail className="w-4 h-4 text-rose-200" />
+                  <span>Enviar Correo</span>
+                </a>
+
+                <Link
+                  href="/#contacto"
+                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 hover:text-white transition text-xs font-semibold"
+                >
+                  <span>Contáctanos 💬</span>
+                </Link>
+              </div>
+            </div>
           </motion.div>
         ) : (
           /* Logged In Client Workspace Dashboard */
@@ -177,13 +237,24 @@ export default function MiCuentaPage() {
                 </span>
               </div>
 
-              <button
-                onClick={() => setFoundOrder(null)}
-                className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 text-xs font-semibold flex items-center gap-1.5 transition"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-                <span>Cerrar Sesión</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleDeleteMyOrder}
+                  className="px-3 py-1.5 rounded-xl bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-500/30 text-xs font-semibold flex items-center gap-1.5 transition"
+                  title="Eliminar mi pedido"
+                >
+                  <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                  <span>Eliminar Pedido</span>
+                </button>
+
+                <button
+                  onClick={() => setFoundOrder(null)}
+                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 text-xs font-semibold flex items-center gap-1.5 transition"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Cerrar Sesión</span>
+                </button>
+              </div>
             </div>
 
             <div>
@@ -210,7 +281,21 @@ export default function MiCuentaPage() {
                   </p>
                 </div>
 
-                {/* QR Code */}
+                {/* Hidden QR Canvas for high-res printable export */}
+                <div className="hidden">
+                  <QRCodeCanvas
+                    id={`qr-canvas-client-${foundOrder.id}`}
+                    value={
+                      foundOrder.qrUrl ||
+                      `${typeof window !== 'undefined' ? window.location.origin : ''}/p/${foundOrder.slug}`
+                    }
+                    size={400}
+                    level="H"
+                    includeMargin={true}
+                  />
+                </div>
+
+                {/* QR Code SVG Display */}
                 <div className="w-48 h-48 bg-white p-3 rounded-2xl shadow-2xl mx-auto border-4 border-rose-500 flex items-center justify-center">
                   <QRCodeSVG
                     value={
@@ -222,13 +307,27 @@ export default function MiCuentaPage() {
                   />
                 </div>
 
-                {/* Direct Redirection Link Buttons */}
+                {/* Direct Redirection & Printable Export Buttons */}
                 <div className="space-y-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      exportPrintableQRCard(
+                        foundOrder,
+                        `qr-canvas-client-${foundOrder.id}`
+                      )
+                    }
+                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-rose-500 to-pink-600 hover:from-amber-600 hover:to-pink-700 text-white font-bold text-sm shadow-xl shadow-amber-500/30 flex items-center justify-center gap-2 transition active:scale-95 border border-amber-300/30"
+                  >
+                    <Printer className="w-4 h-4 text-white" />
+                    <span>Exportar Tarjeta Romántica Imprimible (PNG) 🖨️</span>
+                  </button>
+
                   <a
                     href={`/p/${foundOrder.slug}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-sm shadow-xl shadow-rose-500/40 flex items-center justify-center gap-2 transition active:scale-95"
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-xs shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 transition active:scale-95"
                   >
                     <ExternalLink className="w-4 h-4" />
                     <span>Redireccionar Directo a Mi Publicación</span>

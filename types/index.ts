@@ -31,6 +31,15 @@ export interface GiftBoxSurpriseItem {
   icon?: string;
 }
 
+export interface StarWishItem {
+  id: string | number;
+  title: string;
+  wish: string;
+  icon?: string;
+  unlockDate?: string;
+  caught?: boolean;
+}
+
 export interface RomanticPageData {
   id: string;
   recipientName: string;
@@ -51,6 +60,8 @@ export interface RomanticPageData {
   memories: MemoryItem[];
   vouchers?: LoveVoucherItem[];
   giftSurprises?: GiftBoxSurpriseItem[];
+  starWishes?: StarWishItem[];
+  scratchCardPrize?: string;
   themeColor: 'rose' | 'wine' | 'purple' | 'gold' | 'emerald';
 }
 
