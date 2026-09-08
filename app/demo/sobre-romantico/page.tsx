@@ -25,6 +25,7 @@ export default function RomanticEnvelopePage() {
   const [hasCustomized, setHasCustomized] = useState(false);
   const [isWarningOpen, setIsWarningOpen] = useState(false);
   const [isEditorOpenExternal, setIsEditorOpenExternal] = useState(false);
+  const [activeOrder, setActiveOrder] = useState<Order | null>(null);
 
   const handleEnvelopeOpen = () => {
     setIsOpened(true);

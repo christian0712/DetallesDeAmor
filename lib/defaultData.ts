@@ -73,6 +73,7 @@ Gracias por enseñarme lo hermoso que es amar y sentirse amado. Eres la razón p
 
 export const defaultGalaxyData: RomanticPageData = {
   id: 'galaxia-de-amor-demo',
+  templateId: 'galaxia-de-amor',
   recipientName: 'Valeria',
   senderName: 'Mateo',
   coupleTitle: 'Mateo & Valeria',

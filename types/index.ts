@@ -42,6 +42,7 @@ export interface StarWishItem {
 
 export interface RomanticPageData {
   id: string;
+  templateId?: string;
   recipientName: string;
   senderName: string;
   coupleTitle: string; // e.g. "Carlos & Sofía"
