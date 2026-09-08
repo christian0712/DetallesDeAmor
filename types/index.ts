@@ -135,4 +135,5 @@ export interface Order {
   qrUrl?: string;
   amountBs: number;
   amountUsdt: number;
+  includeStickers?: boolean;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Heart, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { PhotoItem } from '@/types';
@@ -11,6 +11,15 @@ interface PhotoSliderProps {
 
 export const PhotoSlider: React.FC<PhotoSliderProps> = ({ photos }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Automatic slideshow autoplay (switches every 3.5s)
+  useEffect(() => {
+    if (!photos || photos.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % photos.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [photos]);
 
   if (!photos || photos.length === 0) return null;
 
@@ -47,21 +56,15 @@ export const PhotoSlider: React.FC<PhotoSliderProps> = ({ photos }) => {
           >
             <img
               src={photos[currentIndex].url}
-              alt={photos[currentIndex].caption || 'Foto de novios'}
+              alt="Foto de novios"
               className="w-full h-full object-cover object-center"
             />
             {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             
-            {/* Caption */}
-            <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-white z-10">
-              <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 max-w-md">
-                <p className="text-sm md:text-base font-medium flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-rose-400 fill-rose-500 shrink-0" />
-                  <span>{photos[currentIndex].caption}</span>
-                </p>
-              </div>
-              <span className="text-xs font-mono bg-rose-600/80 px-3 py-1.5 rounded-full font-bold">
+            {/* Counter Badge */}
+            <div className="absolute bottom-5 right-5 text-white z-10">
+              <span className="text-xs font-mono bg-black/60 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full font-bold">
                 {currentIndex + 1} / {photos.length}
               </span>
             </div>

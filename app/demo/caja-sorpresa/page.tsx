@@ -71,13 +71,14 @@ export default function GiftBoxThemePage() {
       </div>
 
       {/* Top Return Header */}
-      <header className="fixed top-4 left-4 z-50">
+      <header className="fixed top-3 left-3 sm:top-4 sm:left-4 z-50">
         <Link
           href="/"
-          className="px-4 py-2 rounded-full bg-[#0e241b]/90 hover:bg-[#15382a] text-emerald-200 border border-emerald-500/40 text-xs font-semibold backdrop-blur-md shadow-xl flex items-center gap-2 transition hover:scale-105"
+          className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#0e241b]/90 hover:bg-[#15382a] text-emerald-200 border border-emerald-500/40 text-xs font-semibold backdrop-blur-md shadow-xl flex items-center gap-1.5 sm:gap-2 transition hover:scale-105"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Volver al inicio / Elegir otra plantilla</span>
+          <ArrowLeft className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+          <span className="hidden sm:inline">Volver al inicio</span>
+          <span className="sm:hidden">Volver</span>
         </Link>
       </header>
 
@@ -194,13 +195,21 @@ export default function GiftBoxThemePage() {
       </AnimatePresence>
 
       {/* Floating Action Buttons Bar */}
-      <div className="fixed bottom-6 left-6 right-6 z-50 flex items-center justify-between pointer-events-none max-w-xl mx-auto">
+      <div className="fixed bottom-4 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 z-50 flex items-center justify-center gap-2.5 sm:gap-4 pointer-events-none max-w-md mx-auto">
+        <button
+          onClick={() => setIsEditorOpenExternal(true)}
+          className="pointer-events-auto flex-1 py-3 px-3 sm:px-4 rounded-full bg-[#180a24]/90 hover:bg-[#28133b] text-rose-200 hover:text-white font-bold text-xs sm:text-sm shadow-2xl border border-rose-500/40 flex items-center justify-center gap-1.5 sm:gap-2 transform hover:scale-105 active:scale-95 transition-all backdrop-blur-md"
+        >
+          <Sparkles className="w-4 h-4 text-rose-400 shrink-0" />
+          <span>Personalizar</span>
+        </button>
+
         <button
           onClick={handleBuyClick}
-          className="pointer-events-auto px-5 py-3 rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-xs sm:text-sm shadow-2xl shadow-emerald-500/50 border border-emerald-300/40 flex items-center gap-2 transform hover:scale-105 active:scale-95 transition-all backdrop-blur-md"
+          className="pointer-events-auto flex-1 py-3 px-3 sm:px-4 rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-xs sm:text-sm shadow-2xl shadow-emerald-500/50 border border-emerald-300/40 flex items-center justify-center gap-1.5 sm:gap-2 transform hover:scale-105 active:scale-95 transition-all backdrop-blur-md"
         >
-          <QrCode className="w-4 h-4 text-white" />
-          <span>Comprar (49bs)</span>
+          <QrCode className="w-4 h-4 text-white shrink-0" />
+          <span>Comprar</span>
         </button>
       </div>
 

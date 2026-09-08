@@ -188,7 +188,8 @@ export const saveOrder = (
   pageData: RomanticPageData,
   phoneNumber: string,
   paymentMethod: PaymentMethod,
-  receiptUrl?: string
+  receiptUrl?: string,
+  includeStickers: boolean = false
 ): Order => {
   const orders = getStoredOrders();
   const paymentConfig = getPaymentConfig();
@@ -196,6 +197,9 @@ export const saveOrder = (
     .replace(/[^a-z0-9-]/g, '');
 
   const clientCode = generateFriendlyUserCode(pageData.senderName);
+
+  const baseBs = paymentConfig.priceBs || 49;
+  const finalBs = baseBs + (includeStickers ? 10 : 0);
 
   const newOrder: Order = {
     id: `ord-${Date.now().toString().slice(-6)}`,
@@ -209,9 +213,10 @@ export const saveOrder = (
     receiptUrl: receiptUrl && receiptUrl.trim().length > 0 ? receiptUrl : undefined,
     status: 'PENDIENTE',
     createdAt: new Date().toISOString(),
-    amountBs: paymentConfig.priceBs || 49,
+    amountBs: finalBs,
     amountUsdt: paymentConfig.priceUsdt || 7,
     pageData,
+    includeStickers,
   };
 
   const updated = [newOrder, ...orders];

@@ -95,18 +95,19 @@ export default function MiCuentaPage() {
       {/* Ambient background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-rose-600/20 blur-3xl pointer-events-none rounded-full" />
 
-      <header className="max-w-4xl mx-auto flex items-center justify-between py-4 mb-8 relative z-10">
+      <header className="max-w-4xl mx-auto flex items-center justify-between py-4 mb-6 sm:mb-8 relative z-10 px-2 sm:px-0 gap-2">
         <Link
           href="/"
-          className="flex items-center gap-2 text-rose-300 hover:text-white text-xs font-semibold transition"
+          className="flex items-center gap-1.5 text-rose-300 hover:text-white text-xs font-semibold transition shrink-0"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Volver al Inicio</span>
+          <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span className="hidden xs:inline">Volver al Inicio</span>
+          <span className="xs:hidden">Inicio</span>
         </Link>
 
-        <div className="flex items-center gap-2">
-          <Heart className="w-5 h-5 text-rose-500 fill-rose-500 animate-pulse" />
-          <span className="font-serif font-bold text-lg text-gradient-rose">DetallesDeAmor</span>
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500 fill-rose-500 animate-pulse shrink-0" />
+          <span className="font-serif font-bold text-base sm:text-lg text-gradient-rose">DetallesDeAmor</span>
         </div>
       </header>
 

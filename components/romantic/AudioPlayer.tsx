@@ -109,9 +109,10 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   };
 
   // If YouTube URL / ID is provided, render YouTube Embedded Background Audio Player
+  // If YouTube URL / ID is provided, render YouTube Embedded Background Audio Player
   if (youtubeId) {
     return (
-      <div className="fixed top-4 right-4 z-50">
+      <div className="fixed top-3 right-3 sm:top-4 sm:right-4 z-50">
         {/* In-Viewport Transparent YouTube Player Iframe (kept in viewport so Chrome viewport observer allows audio) */}
         <div className="absolute top-0 right-0 w-1 h-1 opacity-0 pointer-events-none overflow-hidden -z-10">
           <iframe
@@ -125,31 +126,31 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
           />
         </div>
 
-        <div className="relative glass-card-rose rounded-full px-4 py-2 flex items-center gap-3 shadow-xl backdrop-blur-md border border-rose-500/40 text-white transition-all duration-300 hover:scale-105">
+        <div className="relative glass-card-rose rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-3 shadow-xl backdrop-blur-md border border-rose-500/40 text-white transition-all duration-300 hover:scale-105">
           <button
             onClick={togglePlay}
-            className="relative w-9 h-9 rounded-full bg-gradient-to-r from-red-600 to-rose-600 flex items-center justify-center shadow-lg hover:shadow-red-500/50 transition-all active:scale-95 shrink-0"
+            className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-r from-red-600 to-rose-600 flex items-center justify-center shadow-lg hover:shadow-red-500/50 transition-all active:scale-95 shrink-0"
             title={isPlaying ? 'Pausar música de YouTube' : 'Reproducir música de YouTube'}
           >
-            {isPlaying ? <Pause className="w-4 h-4 text-white" /> : <Play className="w-4 h-4 text-white ml-0.5" />}
+            {isPlaying ? <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" /> : <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white ml-0.5" />}
             {isPlaying && (
-              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-red-500"></span>
               </span>
             )}
           </button>
 
-          <div className="hidden sm:flex flex-col pr-1">
+          <div className="hidden md:flex flex-col pr-1">
             <div className="flex items-center gap-1.5 text-xs font-semibold text-rose-200">
-              <Youtube className="w-3.5 h-3.5 text-red-500 animate-pulse" />
+              <Youtube className="w-3.5 h-3.5 text-red-500 animate-pulse shrink-0" />
               <span className="max-w-[120px] truncate">{audioTitle}</span>
             </div>
             <span className="text-[10px] text-rose-300/70 max-w-[120px] truncate">{audioArtist}</span>
           </div>
 
           {/* Sound Wave Visualizer */}
-          <div className="flex items-center gap-0.5 h-4 px-1">
+          <div className="flex items-center gap-0.5 h-4 px-0.5">
             {[0.6, 1, 0.4, 0.8, 0.5].map((scale, i) => (
               <div
                 key={i}
@@ -157,7 +158,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
                   isPlaying ? 'animate-bounce' : 'h-1 opacity-40'
                 }`}
                 style={{
-                  height: isPlaying ? `${scale * 16}px` : '4px',
+                  height: isPlaying ? `${scale * 14}px` : '3px',
                   animationDelay: `${i * 0.15}s`,
                 }}
               />
@@ -166,10 +167,10 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
           <button
             onClick={toggleMute}
-            className="text-rose-300 hover:text-rose-100 transition-colors p-1"
+            className="text-rose-300 hover:text-rose-100 transition-colors p-1 shrink-0"
             title={isMuted ? 'Activar sonido' : 'Silenciar'}
           >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            {isMuted ? <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
           </button>
         </div>
       </div>
@@ -179,11 +180,11 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   // If Spotify URL is provided, render Spotify Player
   if (spotifyEmbedUrl) {
     return (
-      <div className="fixed top-4 right-4 z-50 max-w-[280px] sm:max-w-[320px] w-full">
+      <div className="fixed top-3 right-3 sm:top-4 sm:right-4 z-50 max-w-[200px] xs:max-w-[240px] sm:max-w-[320px] w-full">
         <div className="rounded-2xl overflow-hidden shadow-2xl border border-rose-500/40 bg-[#12071f]/90 backdrop-blur-md p-1.5 flex flex-col gap-1">
-          <div className="flex items-center gap-1.5 px-2 py-0.5 text-[11px] text-emerald-400 font-bold font-mono">
-            <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-            <span>Reproductor de Spotify 🎵</span>
+          <div className="flex items-center gap-1.5 px-2 py-0.5 text-[10px] sm:text-[11px] text-emerald-400 font-bold font-mono">
+            <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse shrink-0" />
+            <span className="truncate">Spotify 🎵</span>
           </div>
           <iframe
             src={spotifyEmbedUrl}
@@ -201,33 +202,33 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
   // Standard Audio Player for MP3 / Direct links
   return (
-    <div className="fixed top-4 right-4 z-50">
+    <div className="fixed top-3 right-3 sm:top-4 sm:right-4 z-50">
       <audio ref={audioRef} src={audioUrl} loop preload="auto" />
-      <div className="glass-card-rose rounded-full px-4 py-2 flex items-center gap-3 shadow-xl backdrop-blur-md border border-rose-500/30 text-white transition-all duration-300 hover:scale-105">
+      <div className="glass-card-rose rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-3 shadow-xl backdrop-blur-md border border-rose-500/30 text-white transition-all duration-300 hover:scale-105">
         <button
           onClick={togglePlay}
-          className="relative w-9 h-9 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 flex items-center justify-center shadow-lg hover:shadow-rose-500/50 transition-all active:scale-95"
+          className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 flex items-center justify-center shadow-lg hover:shadow-rose-500/50 transition-all active:scale-95 shrink-0"
           title={isPlaying ? 'Pausar música' : 'Reproducir música romántica'}
         >
-          {isPlaying ? <Pause className="w-4 h-4 text-white" /> : <Play className="w-4 h-4 text-white ml-0.5" />}
+          {isPlaying ? <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" /> : <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white ml-0.5" />}
           {isPlaying && (
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-rose-500"></span>
             </span>
           )}
         </button>
 
-        <div className="hidden sm:flex flex-col pr-1">
+        <div className="hidden md:flex flex-col pr-1">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-rose-200">
-            <Music className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
+            <Music className="w-3.5 h-3.5 text-rose-400 animate-pulse shrink-0" />
             <span className="max-w-[120px] truncate">{audioTitle}</span>
           </div>
           <span className="text-[10px] text-rose-300/70 max-w-[120px] truncate">{audioArtist}</span>
         </div>
 
         {/* Music Sound Wave Visualizer */}
-        <div className="flex items-center gap-0.5 h-4 px-1">
+        <div className="flex items-center gap-0.5 h-4 px-0.5">
           {[0.6, 1, 0.4, 0.8, 0.5].map((scale, i) => (
             <div
               key={i}
@@ -235,7 +236,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
                 isPlaying ? 'animate-bounce' : 'h-1 opacity-40'
               }`}
               style={{
-                height: isPlaying ? `${scale * 16}px` : '4px',
+                height: isPlaying ? `${scale * 14}px` : '3px',
                 animationDelay: `${i * 0.15}s`,
               }}
             />
@@ -244,10 +245,10 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
         <button
           onClick={toggleMute}
-          className="text-rose-300 hover:text-rose-100 transition-colors p-1"
+          className="text-rose-300 hover:text-rose-100 transition-colors p-1 shrink-0"
           title={isMuted ? 'Activar sonido' : 'Silenciar'}
         >
-          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          {isMuted ? <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
         </button>
       </div>
     </div>

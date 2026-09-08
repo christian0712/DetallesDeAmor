@@ -1,12 +1,14 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Heart, Sparkles, ArrowRight, Play, Eye, Flame, Gift, Star, CheckCircle, Lock, User, Crown, Clock, PhoneCall, Mail, MessageCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Heart, Sparkles, ArrowRight, Play, Eye, Flame, Gift, Star, CheckCircle, Lock, User, Crown, Clock, PhoneCall, Mail, MessageCircle, ZoomIn, X } from 'lucide-react';
 import { availableTemplates } from '@/lib/defaultData';
 
 export default function Home() {
+  const [activeStickerImage, setActiveStickerImage] = useState<string | null>(null);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0b0512] via-[#1a0826] to-[#0b0512] text-white relative overflow-hidden">
       
@@ -15,31 +17,33 @@ export default function Home() {
       <div className="absolute top-1/3 right-10 w-96 h-96 bg-pink-600/10 blur-3xl pointer-events-none rounded-full" />
 
       {/* Navigation Header */}
-      <header className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between relative z-20">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-600 flex items-center justify-center shadow-lg shadow-rose-500/40">
-            <Heart className="w-6 h-6 text-white fill-white animate-pulse" />
+      <header className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6 flex items-center justify-between gap-2 relative z-20">
+        <Link href="/" className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-600 flex items-center justify-center shadow-lg shadow-rose-500/40 shrink-0">
+            <Heart className="w-4 h-4 sm:w-6 sm:h-6 text-white fill-white animate-pulse" />
           </div>
-          <span className="font-serif font-bold text-xl md:text-2xl text-gradient-rose tracking-wide">
+          <span className="font-serif font-bold text-base sm:text-xl md:text-2xl text-gradient-rose tracking-tight sm:tracking-wide shrink-0">
             DetallesDeAmor
           </span>
-        </div>
+        </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <a
             href="#contacto"
-            className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition"
+            className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 text-rose-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-1 sm:gap-1.5 transition shrink-0"
           >
-            <MessageCircle className="w-4 h-4 text-emerald-400" />
-            <span>Contáctanos</span>
+            <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 shrink-0" />
+            <span className="hidden xs:inline">Contáctanos</span>
+            <span className="xs:hidden">Contacto</span>
           </a>
 
           <Link
             href="/mi-cuenta"
-            className="px-4 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition backdrop-blur-md shadow-lg"
+            className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition backdrop-blur-md shadow-lg shrink-0"
           >
-            <User className="w-4 h-4 text-rose-400" />
-            <span>Mi Cuenta</span>
+            <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-400 shrink-0" />
+            <span className="hidden xs:inline">Mi Cuenta</span>
+            <span className="xs:hidden">Cuenta</span>
           </Link>
         </div>
       </header>
@@ -535,6 +539,117 @@ export default function Home() {
           </div>
         </section>
 
+        {/* WhatsApp Stickers Special Offer Section */}
+        <section className="mt-20 pt-8 border-t border-rose-500/20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="glass-card-rose rounded-3xl p-6 sm:p-10 border border-emerald-500/40 shadow-2xl relative overflow-hidden max-w-4xl mx-auto bg-gradient-to-br from-[#0a2618] via-[#123624] to-[#0a2618]"
+          >
+            <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 blur-3xl pointer-events-none rounded-full" />
+
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+              <div className="text-left space-y-4 max-w-xl">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold shadow">
+                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  <span>¡NUEVO SERVICIO ADICIONAL! 📦💬</span>
+                </div>
+
+                <h3 className="text-2xl sm:text-4xl font-serif font-bold text-white leading-tight">
+                  Stickers para WhatsApp a Pedido <span className="text-emerald-400 block text-xl sm:text-2xl font-sans mt-1">¡Sólo 10 Bs por Pack!</span>
+                </h3>
+
+                <p className="text-rose-100/90 text-xs sm:text-sm leading-relaxed font-light">
+                  Con <strong>una sola foto</strong> de tu pareja, novio/a o ambos, generamos un pack exclusivo de <strong>9 divertidos stickers personalizados</strong> para usar y compartir en WhatsApp.
+                </p>
+
+                <div className="space-y-2 text-xs text-emerald-200/90">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>9 Stickers únicos listos para instalar en WhatsApp</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Requiere únicamente 1 foto en buena resolución</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Agrégalo directamente al pedir tu web o solicítalo por separado</span>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <a
+                    href="https://wa.me/59175949161?text=Hola!%20Quisiera%20solicitar%20el%20pack%20de%209%20Stickers%20de%20WhatsApp%20por%2010bs"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-sm shadow-xl shadow-emerald-500/30 transition hover:scale-105 active:scale-95 border border-emerald-300/30"
+                  >
+                    <MessageCircle className="w-4 h-4 text-emerald-200" />
+                    <span>Pedir Pack de 9 Stickers (10 Bs)</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Sticker Preview Images (Grupo 1 & Grupo 2) */}
+              <div className="w-full md:w-80 shrink-0 space-y-3">
+                <div className="text-center md:text-left">
+                  <span className="text-[11px] font-bold text-emerald-300 uppercase tracking-wider font-mono">
+                    📸 Muestras Reales (9 por Foto):
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {/* Sample 1: grupo1.png */}
+                  <div
+                    onClick={() => setActiveStickerImage('/demo-photos/stickers/grupo1.png')}
+                    className="p-2.5 bg-black/40 rounded-2xl border border-emerald-500/40 shadow-xl backdrop-blur-md cursor-pointer group hover:border-emerald-400 transition-all duration-300 transform hover:scale-[1.03]"
+                  >
+                    <div className="relative overflow-hidden rounded-xl">
+                      <img
+                        src="/demo-photos/stickers/grupo1.png"
+                        alt="Demo 9 Stickers WhatsApp - Modelo 1"
+                        className="w-full h-24 object-contain bg-white/5 p-1 transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-1 text-white font-bold text-[10px]">
+                        <ZoomIn className="w-4 h-4 text-emerald-400" />
+                        <span>Ampliar</span>
+                      </div>
+                    </div>
+                    <span className="block text-center text-[10px] font-bold text-emerald-300 mt-1.5 font-mono truncate">
+                      🔍 Pack #1
+                    </span>
+                  </div>
+
+                  {/* Sample 2: grupo2.png */}
+                  <div
+                    onClick={() => setActiveStickerImage('/demo-photos/stickers/grupo2.png')}
+                    className="p-2.5 bg-black/40 rounded-2xl border border-emerald-500/40 shadow-xl backdrop-blur-md cursor-pointer group hover:border-emerald-400 transition-all duration-300 transform hover:scale-[1.03]"
+                  >
+                    <div className="relative overflow-hidden rounded-xl">
+                      <img
+                        src="/demo-photos/stickers/grupo2.png"
+                        alt="Demo 9 Stickers WhatsApp - Modelo 2"
+                        className="w-full h-24 object-contain bg-white/5 p-1 transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-1 text-white font-bold text-[10px]">
+                        <ZoomIn className="w-4 h-4 text-emerald-400" />
+                        <span>Ampliar</span>
+                      </div>
+                    </div>
+                    <span className="block text-center text-[10px] font-bold text-emerald-300 mt-1.5 font-mono truncate">
+                      🔍 Pack #2
+                    </span>
+                  </div>
+                </div>
+                <span className="block text-center text-[10px] text-emerald-200/70 font-mono">
+                  Haz clic en cualquier muestra para verla en alta definición
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
         {/* Contact Us Section */}
         <section id="contacto" className="mt-20 pt-8 border-t border-rose-500/20">
           <div className="glass-card-rose rounded-3xl p-8 sm:p-12 border border-rose-500/30 shadow-2xl relative overflow-hidden text-center max-w-4xl mx-auto">
@@ -607,6 +722,86 @@ export default function Home() {
           </Link>
         </div>
       </footer>
+
+      {/* Sticker Image Zoom Lightbox Modal */}
+      <AnimatePresence>
+        {activeStickerImage && (
+          <div
+            onClick={() => setActiveStickerImage(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md cursor-pointer"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              className="relative max-w-2xl w-full bg-[#0a1e14] p-4 sm:p-6 rounded-3xl border-2 border-emerald-400 shadow-2xl text-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setActiveStickerImage(null)}
+                className="absolute top-4 right-4 p-2 rounded-full bg-black/60 hover:bg-emerald-600 text-white transition border border-emerald-400/40"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="mb-3">
+                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block font-mono">
+                  📦 Muestra Real de Pack de 9 Stickers WhatsApp
+                </span>
+                <h4 className="text-lg font-serif font-bold text-white">
+                  9 Stickers Personalizados por solo 10 Bs
+                </h4>
+              </div>
+
+              {/* Sample Switcher Tabs */}
+              <div className="flex justify-center gap-2 mb-3">
+                <button
+                  type="button"
+                  onClick={() => setActiveStickerImage('/demo-photos/stickers/grupo1.png')}
+                  className={`px-3 py-1 rounded-full text-xs font-bold transition border ${
+                    activeStickerImage === '/demo-photos/stickers/grupo1.png'
+                      ? 'bg-emerald-500 text-slate-950 border-emerald-300'
+                      : 'bg-black/40 text-emerald-300 border-emerald-500/40 hover:bg-white/10'
+                  }`}
+                >
+                  Muestra #1 📸
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveStickerImage('/demo-photos/stickers/grupo2.png')}
+                  className={`px-3 py-1 rounded-full text-xs font-bold transition border ${
+                    activeStickerImage === '/demo-photos/stickers/grupo2.png'
+                      ? 'bg-emerald-500 text-slate-950 border-emerald-300'
+                      : 'bg-black/40 text-emerald-300 border-emerald-500/40 hover:bg-white/10'
+                  }`}
+                >
+                  Muestra #2 📸
+                </button>
+              </div>
+
+              <div className="rounded-2xl overflow-hidden bg-black/50 p-3 border border-emerald-500/30">
+                <img
+                  src={activeStickerImage}
+                  alt="Muestra ampliada 9 Stickers WhatsApp"
+                  className="w-full max-h-[65vh] object-contain mx-auto rounded-xl"
+                />
+              </div>
+
+              <div className="mt-4 flex justify-center">
+                <a
+                  href="https://wa.me/59175949161?text=Hola!%20Quisiera%20solicitar%20el%20pack%20de%209%20Stickers%20de%20WhatsApp%20por%2010bs"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-sm shadow-xl flex items-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4 text-emerald-200" />
+                  <span>Pedir estos Stickers por WhatsApp (10 Bs)</span>
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -223,15 +223,6 @@ export const InlineEditorModal: React.FC<InlineEditorModalProps> = ({
 
   return (
     <>
-      {/* Floating Edit Control Pill */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-full bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700 text-white font-bold text-sm shadow-2xl shadow-rose-600/50 hover:shadow-rose-600/80 border border-rose-300/40 flex items-center gap-2 transform hover:scale-105 active:scale-95 transition-all duration-300 backdrop-blur-md"
-      >
-        <Edit3 className="w-4 h-4 text-white animate-pulse" />
-        <span>Personalizar este Diseño</span>
-      </button>
-
       {/* Editor Modal Overlay */}
       <AnimatePresence>
         {isOpen && (
@@ -487,19 +478,6 @@ export const InlineEditorModal: React.FC<InlineEditorModalProps> = ({
                               </>
                             )}
                           </label>
-                        </div>
-
-                        <div>
-                          <label className="block text-[11px] text-rose-300/80 mb-1 font-semibold">
-                            Descripción / Leyenda de la Foto #{idx + 1}:
-                          </label>
-                          <input
-                            type="text"
-                            value={photo.caption || ''}
-                            onChange={(e) => handlePhotoCaptionChange(idx, e.target.value)}
-                            placeholder="Ej: Nuestra primera salida juntos ❤️"
-                            className="w-full bg-[#190829] border border-rose-500/30 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-rose-400"
-                          />
                         </div>
                       </div>
                     ))}

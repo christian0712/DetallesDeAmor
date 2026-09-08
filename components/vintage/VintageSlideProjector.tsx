@@ -162,7 +162,7 @@ export const VintageSlideProjector: React.FC<VintageSlideProjectorProps> = ({
                 isClickingLever ? 'translate-y-1 bg-amber-800' : ''
               }`}
             >
-              <span>Jalar Palanca (Siguiente Diapositiva)</span>
+              <span>Siguiente</span>
               <ChevronRight className="w-4 h-4 text-amber-200" />
             </motion.button>
           </div>

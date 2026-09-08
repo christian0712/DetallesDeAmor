@@ -98,9 +98,10 @@ export const VintagePolaroidGallery: React.FC<VintagePolaroidGalleryProps> = ({ 
             >
               <button
                 onClick={() => setActivePhoto(null)}
-                className="absolute top-4 right-4 text-amber-900 hover:text-rose-600 p-2 rounded-full hover:bg-amber-200/50 transition z-10 font-bold text-lg"
+                className="absolute top-3 right-3 z-30 p-2.5 rounded-full bg-slate-900/90 hover:bg-rose-600 text-white shadow-xl backdrop-blur-md border border-white/30 transition hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer"
+                title="Cerrar foto"
               >
-                ✕
+                <X className="w-5 h-5 text-white" />
               </button>
 
               <div className="rounded-2xl overflow-hidden mb-4 aspect-[4/3] bg-black border-2 border-amber-300/50 shadow-lg relative">

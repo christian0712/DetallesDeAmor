@@ -18,7 +18,9 @@ import {
   CheckCircle2,
   Sparkles,
   PhoneCall,
-  UserCheck
+  UserCheck,
+  ZoomIn,
+  Download,
 } from 'lucide-react';
 import { RomanticPageData, PaymentMethod, Order, PaymentMethodsConfig } from '@/types';
 import { saveOrder, getPaymentConfig } from '@/lib/store';
@@ -46,6 +48,61 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
   const [receiptName, setReceiptName] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createdOrder, setCreatedOrder] = useState<Order | null>(null);
+  const [isQrZoomed, setIsQrZoomed] = useState(false);
+
+  const qrSvgRef = React.useRef<HTMLDivElement>(null);
+
+  const handleDownloadQr = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+
+    if (paymentConfig.qrBolivia?.qrImageUrl) {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = paymentConfig.qrBolivia.qrImageUrl;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || 500;
+        canvas.height = img.naturalHeight || 500;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0);
+          const a = document.createElement('a');
+          a.download = 'QR-Pago-Detalles-De-Amor.png';
+          a.href = canvas.toDataURL('image/png');
+          a.click();
+        }
+      };
+      img.onerror = () => {
+        const link = document.createElement('a');
+        link.href = paymentConfig.qrBolivia?.qrImageUrl || '';
+        link.download = 'QR-Pago-Detalles-De-Amor.png';
+        link.target = '_blank';
+        link.click();
+      };
+    } else if (qrSvgRef.current) {
+      const svgElement = qrSvgRef.current.querySelector('svg');
+      if (svgElement) {
+        const svgString = new XMLSerializer().serializeToString(svgElement);
+        const canvas = document.createElement('canvas');
+        canvas.width = 400;
+        canvas.height = 400;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          const img = new Image();
+          img.onload = () => {
+            ctx.drawImage(img, 20, 20, 360, 360);
+            const a = document.createElement('a');
+            a.download = 'QR-Pago-Detalles-De-Amor.png';
+            a.href = canvas.toDataURL('image/png');
+            a.click();
+          };
+          img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
+        }
+      }
+    }
+  };
 
   React.useEffect(() => {
     const updateConfig = () => {
@@ -180,7 +237,7 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
                 Finalizar Detalle Romántico
               </h3>
               <div className="text-rose-200/70 text-xs sm:text-sm mt-1">
-                Total a pagar: <strong className="text-amber-400 font-bold text-base">{paymentConfig.priceBs} Bs / {paymentConfig.priceUsdt} USDT</strong>
+                Total a pagar: <strong className="text-amber-400 font-bold text-base">{paymentConfig.priceBs || 49} Bs / {paymentConfig.priceUsdt} USDT</strong>
                 <span className="block text-[11px] text-rose-300/80 mt-0.5 font-medium">✨ Incluye publicación online activa por 1 Año Completo</span>
               </div>
             </div>
@@ -255,30 +312,66 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
                     {paymentConfig.qrBolivia.instructions}
                   </span>
                   
-                  {/* Display Uploaded QR Image or Generated QR */}
-                  <div className="mx-auto flex items-center justify-center">
+                  {/* Clickable QR Code with Zoom & Ref */}
+                  <div
+                    ref={qrSvgRef}
+                    onClick={() => setIsQrZoomed(true)}
+                    className="mx-auto flex flex-col items-center justify-center cursor-pointer group relative"
+                  >
                     {paymentConfig.qrBolivia.qrImageUrl ? (
-                      <div className="p-2 bg-white rounded-2xl border-4 border-rose-500 shadow-xl max-w-[220px]">
+                      <div className="relative p-2 bg-white rounded-2xl border-4 border-rose-500 shadow-xl max-w-[220px] group-hover:border-amber-400 transition-all duration-300 group-hover:scale-105">
                         <img
                           src={paymentConfig.qrBolivia.qrImageUrl}
                           alt="QR Bolivia Oficial"
                           className="max-h-56 w-auto object-contain rounded-xl mx-auto"
                         />
+                        <div className="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-1 text-white text-xs font-bold backdrop-blur-[2px]">
+                          <ZoomIn className="w-8 h-8 text-amber-300 animate-bounce" />
+                          <span className="bg-amber-500 text-slate-950 px-2.5 py-0.5 rounded-full text-[11px] shadow font-extrabold">
+                            Haz clic para ampliar 🔍
+                          </span>
+                        </div>
                       </div>
                     ) : (
-                      <div className="w-44 h-44 bg-white p-3 rounded-2xl shadow-xl border-4 border-rose-500 flex items-center justify-center">
+                      <div className="relative w-44 h-44 bg-white p-3 rounded-2xl shadow-xl border-4 border-rose-500 group-hover:border-amber-400 flex items-center justify-center group-hover:scale-105 transition-all duration-300">
                         <QRCodeSVG
                           value={paymentConfig.qrBolivia.qrValue || 'https://qr.simple.bo/pay/detalles-de-amor-49bs'}
                           size={150}
                           level="H"
                           includeMargin={false}
                         />
+                        <div className="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-1 text-white text-xs font-bold backdrop-blur-[2px]">
+                          <ZoomIn className="w-8 h-8 text-amber-300 animate-bounce" />
+                          <span className="bg-amber-500 text-slate-950 px-2.5 py-0.5 rounded-full text-[11px] shadow font-extrabold">
+                            Haz clic para ampliar 🔍
+                          </span>
+                        </div>
                       </div>
                     )}
                   </div>
 
+                  {/* QR Action Buttons: Zoom & Download */}
+                  <div className="flex items-center justify-center gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setIsQrZoomed(true)}
+                      className="px-3.5 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 font-bold text-xs flex items-center gap-1.5 border border-rose-500/30 transition shadow-sm"
+                    >
+                      <ZoomIn className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Ampliar QR</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleDownloadQr}
+                      className="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-xs flex items-center gap-1.5 border border-amber-500/40 transition shadow-sm"
+                    >
+                      <Download className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Descargar QR</span>
+                    </button>
+                  </div>
+
                   <p className="text-[11px] text-rose-200/80 font-mono">
-                    Titular: {paymentConfig.qrBolivia.holder} | Monto: {paymentConfig.priceBs}.00 Bs
+                    Titular: {paymentConfig.qrBolivia.holder} | Monto: {paymentConfig.priceBs || 49}.00 Bs
                   </p>
                 </div>
               )}
@@ -514,6 +607,80 @@ export const PaymentCheckoutModal: React.FC<PaymentCheckoutModalProps> = ({
           </div>
         )}
       </motion.div>
+
+      {/* Lightbox Modal for Enlarged QR View */}
+      <AnimatePresence>
+        {isQrZoomed && (
+          <div
+            onClick={() => setIsQrZoomed(false)}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md cursor-pointer"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              className="relative max-w-lg w-full bg-[#1b0829] p-6 sm:p-8 rounded-3xl border-2 border-rose-500 shadow-2xl text-center space-y-5"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setIsQrZoomed(false)}
+                className="absolute top-4 right-4 p-2 rounded-full bg-black/60 hover:bg-rose-600 text-white transition border border-rose-500/40"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div>
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider block font-mono mb-1">
+                  📲 Escanear Código QR de Pago
+                </span>
+                <h4 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                  Monto a pagar: {paymentConfig.priceBs || 49}.00 Bs
+                </h4>
+                <p className="text-xs text-rose-200/80 mt-1 font-mono">
+                  Titular: {paymentConfig.qrBolivia?.holder || 'Detalles de Amor SRL'}
+                </p>
+              </div>
+
+              {/* Large Zoomed QR Code */}
+              <div className="w-72 h-72 sm:w-80 sm:h-80 bg-white p-4 rounded-3xl border-4 border-rose-500 shadow-2xl flex items-center justify-center mx-auto">
+                {paymentConfig.qrBolivia?.qrImageUrl ? (
+                  <img
+                    src={paymentConfig.qrBolivia.qrImageUrl}
+                    alt="QR Bolivia Ampliado"
+                    className="w-full h-full object-contain rounded-xl"
+                  />
+                ) : (
+                  <QRCodeSVG
+                    value={paymentConfig.qrBolivia?.qrValue || 'https://qr.simple.bo/pay/detalles-de-amor-49bs'}
+                    size={260}
+                    level="H"
+                    includeMargin={false}
+                  />
+                )}
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={handleDownloadQr}
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-600 hover:to-amber-700 text-amber-950 font-extrabold text-sm shadow-xl flex items-center justify-center gap-2 border border-amber-300 transition"
+                >
+                  <Download className="w-5 h-5" />
+                  <span>Descargar Código QR</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsQrZoomed(false)}
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-rose-200 font-semibold text-sm transition border border-rose-500/30"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
